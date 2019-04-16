@@ -1,0 +1,30 @@
+#' Do an iteration of population bases MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
+#' @title Create an object of cmaes_gen class.
+#' @param population The number of objective functions. A scalar value.
+#' @param ps_target The target success rate. Used to initialize cmaes_gen$averageSuccessRate.
+#' @param stepSize The initial step size.
+#' @return An object of cmaes_gen class. It can be used as MO-CMA-ES parent. It is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable).
+#' @examples
+#' nVar <- 14
+#' nObjective <- 5
+#' nIndividual <- 100
+#' crossoverProbability <- 1
+#' ps_target <- 1 / (5 + ( 1 / 2  ) )
+#' pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
+#' a_list <- cmaes_gen(pop)
+#' newGeneration <- CMAES(a_list,nObjective,"WFG8",ps_target,crossoverProbability,TRUE) # will run a generation of MO-CMA-ES with standard WFG8 test function.
+#' @export
+cmaes_gen <- function(population,ps_target= (1 / (5.5)),stepSize=0.5 ){
+  a_list <- vector('list') # container for the parent list
+  populationSize <- ncol(population)
+  for (populationIndex in 1:populationSize) {
+    a <- list(x = population[,populationIndex],
+              averageSuccessRate = ps_target,
+              stepSize = stepSize,
+              evoPath = rep(0,nrow(population)),
+              covarianceMatrix = diag(nrow(population)))
+    a_list[[populationIndex]] <- a
+  }
+  class(a_list) <- 'cmaes_gen'
+  return(a_list)
+}
