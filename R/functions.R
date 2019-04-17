@@ -412,8 +412,7 @@ NormalizeObjective <- function(objectiveValue){
   return(newList)
 }
 
-
-
+# Used in NSGA-III line-association
 CalcDistanceFromLine <- function(pointAInLine, pointBInLine, pointC){
   pa <- pointC - pointAInLine;
   ba <- pointBInLine - pointAInLine;
@@ -423,6 +422,7 @@ CalcDistanceFromLine <- function(pointAInLine, pointBInLine, pointC){
   return(distance)
 }
 
+# Used in NSGA-III line-association
 CalcDistRefLineToSolution <- function(normalizedObjective,referencePoint){
   nRefPoint <- ncol(referencePoint)
   populationSize <- ncol(normalizedObjective)
@@ -467,6 +467,7 @@ CalcIGDDistanceToObjective <- function(objective,referencePoint){
   return(distances) #each column represent different solution, each row different refline
 }
 
+# Used in NSGA-III
 AssociateLine <- function(distanceFromLines){
   populationSize <- ncol(distanceFromLines)
   associatedLine <- matrix(,nrow = 1,ncol = populationSize)
@@ -476,12 +477,17 @@ AssociateLine <- function(distanceFromLines){
   return(associatedLine)
 }
 
-IGD <- function(populationObjective, referencePoint,rnk){
-  nRef <- ncol(referencePoint)
-  nonDominatedObjective <- matrix(populationObjective[,rnk[[1]]],nrow = nrow(populationObjective))
+#' Get IGD value of the population objective w.r.t. a matrix of reference set (each row contain 1 point).
+#' @title Get IGD value
+#' @param populationObjective The objective value of the corresponding individual
+#' @param referenceSet The reference points for computing IGD
+#' @return The IGD metric. A Scalar value.
+#' @export
+GetIGD <- function(populationObjective, referenceSet){
+  nRef <- ncol(referenceSet)
 
   IGDval <- 0
-  distances <- CalcIGDDistanceToObjective(nonDominatedObjective,referencePoint)
+  distances <- CalcIGDDistanceToObjective(nonDominatedObjective,referenceSet)
   for(refPointIndex in 1: nRef){
     IGDval <- IGDval + min(distances[refPointIndex,])
   }
@@ -490,37 +496,6 @@ IGD <- function(populationObjective, referencePoint,rnk){
 }
 
 
-CalculateHypervolumeContribution <- function(populationObjective,individualofInterestIndex){
-  nObjective <- nrow(populationObjective)
-  nInterest <- length(individualofInterestIndex)
-
-  interestObjVal <- matrix(populationObjective[,individualofInterestIndex],nrow = nObjective,ncol = nInterest)
-
-  hypervolumeContribution <- integer(nInterest)+1
-  for(interestIndex in 1:nInterest){
-    for(objectiveIndex in 1:nObjective){
-      worseSolutionIndex <- NULL
-      worseSolution <- populationObjective[objectiveIndex,] > interestObjVal[objectiveIndex,interestIndex]
-
-      for(populationIndex in 1:ncol(populationObjective)){
-        if(worseSolution[populationIndex]==TRUE)
-          worseSolutionIndex <- c(worseSolutionIndex,populationIndex)
-      }
-      bestValueAmongWorse <- min(populationObjective[objectiveIndex,worseSolutionIndex])
-
-      if(is.infinite(bestValueAmongWorse)){
-        bestValueAmongWorse <- 2
-      }
-
-      if(length(bestValueAmongWorse>0))
-        distance <- bestValueAmongWorse - interestObjVal[objectiveIndex,interestIndex]
-      else
-        distance <- 2 - interestObjVal[objectiveIndex,interestIndex]
-      hypervolumeContribution[interestIndex] <- hypervolumeContribution[interestIndex] * distance
-    }
-  }
-  return(hypervolumeContribution)
-}
 
 ApproximateHypervolumeContribution <- function(populationObjective,referencePoint,numberOfSamples){
   nObjective <- nrow(populationObjective)
@@ -576,7 +551,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' @param reference The reference point for computing HV
 #' @param method the HV computation method
 
-#' @return A matrix of size chromosomeLength x nIndividual.
+#' @return The index of the least contributor, an integer.
 #' @examples
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
@@ -603,6 +578,22 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
   return(smallestContributor)
 }
 
+#' Get the HV contribution of the individual with least HV contribution.
+#' @title Get least HV contribution
+#' @param populationObjective The objective value of the corresponding individual
+#' @param reference The reference point for computing HV
+#' @param method the HV computation method
+
+#' @return The HV contribution value of the least contributor.
+#' @examples
+#' nObjective <- 5 # the number of objectives
+#' nPoint <- 10 # the number of points that will form the hypervolume
+#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' GetHypervolume(objective,,"exact") # no reference supplied
+#'
+#' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
+#' GetLeastContribution(objective,reference,"exact")
+#' @export
 GetLeastContribution<- function(populationObjective,reference=NULL,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
@@ -617,6 +608,29 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
   }
 
   return(smallestContribution)
+}
+
+#' Get the HV contribution of the population. Dominated front will give 0 contribution.
+#' @title Get HV contribution of all points.
+#' @param populationObjective The objective value of the corresponding individual
+#' @param reference The reference point for computing HV
+#' @param method the HV computation method. Currently ignored and uses the WFG exact method.
+#' @return A vector of length ncol(populationObjective)
+#' @examples
+#' nObjective <- 5 # the number of objectives
+#' nPoint <- 10 # the number of points that will form the hypervolume
+#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' GetHypervolume(objective,,"exact") # no reference supplied
+#'
+#' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
+#' GetHVContribution(objective,reference)
+#' @export
+GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
+#  if(method=="exact"){
+  hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
+#  }
+
+  return(hypervolumeContribution)
 }
 
 #' Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point+(1,...,1).
