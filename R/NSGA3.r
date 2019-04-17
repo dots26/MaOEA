@@ -65,9 +65,9 @@ NSGA3.test <- function(population,fun="DTLZ2",nObjective,control= list(reference
 
   #Mutation
   if((problemType==3) && (WFGScaling==TRUE)){
-    offspringTemp <- myBoundedPolyMutation(t(offspring),rep(0,chromosomeLength),seq(2,2*chromosomeLength,2),mutationProbability,mutationDistribution)
+    offspringTemp <- nsga2R::boundedPolyMutation(t(offspring),rep(0,chromosomeLength),seq(2,2*chromosomeLength,2),mutationProbability,mutationDistribution)
   }else{
-    offspringTemp <- myBoundedPolyMutation(t(offspring),rep(0,chromosomeLength),rep(1,chromosomeLength),mutationProbability,mutationDistribution)
+    offspringTemp <- nsga2R::boundedPolyMutation(t(offspring),rep(0,chromosomeLength),rep(1,chromosomeLength),mutationProbability,mutationDistribution)
   }
   offspring <- t(offspringTemp)
 
