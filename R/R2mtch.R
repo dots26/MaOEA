@@ -137,7 +137,7 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,nWeight = 300,indexO
       }
       #print(c('windex',weightIndex))
       minR <- min(c(minimumStar,pointAchievementToBoundary))
-      minR <- minR^nObj
+      minR <- minR#^nObj
       #      sumR2 <- sumR2 + minR
       minRset <- append(minRset,minR)
     }

@@ -4,7 +4,7 @@
 \alias{compute_R2HVC}
 \title{Modified tchebyscheff R2-indicator contribution designed to approximate HV}
 \usage{
-compute_R2HVC(dataPoints, reference, weights = NULL, nPoints = 300,
+compute_R2HVC(dataPoints, reference, weights = NULL, nWeight = 300,
   indexOfInterest = 1:ncol(dataPoints))
 }
 \arguments{

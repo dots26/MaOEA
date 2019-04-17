@@ -589,7 +589,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list()){
   if(method=="exact"){
     print('Start hv contrib computation')
-    hypervolumeContribution <- HvContrib(populationObjective)
+    hypervolumeContribution <- HVContrib_WFG(populationObjective)
 
     smallestContributor <- nnet::which.is.max(-hypervolumeContribution)
   }
@@ -606,9 +606,9 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 GetLeastContribution<- function(populationObjective,reference=NULL,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
-      hypervolumeContribution <- emoa::hypervolume_contribution(populationObjective)
+      hypervolumeContribution <- HVContrib_WFG(populationObjective)
     else
-      hypervolumeContribution <- emoa::hypervolume_contribution(populationObjective, reference)
+      hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
 
     smallestContribution <- min(hypervolumeContribution)
   }
@@ -639,9 +639,9 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 GetHypervolume <- function(objective,reference=NULL,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
-      hypervolume <- emoa::dominated_hypervolume(objective)
+      hypervolume <- HypervolumeExact(objective)
     else{
-      hypervolume <- emoa::dominated_hypervolume(objective, reference)
+      hypervolume <- HypervolumeExact(objective, reference)
     }
   }
   if(method=="approx"){

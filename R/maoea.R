@@ -92,3 +92,28 @@ optimMaOEA <- function(problem,
   }
   return(list(population,Smetric))
 }
+
+pygmo <- NULL
+rndGen <- NULL
+
+.onLoad <- function(libname, pkgname){
+  # use superassignment to update global reference to scipy
+  library(reticulate)
+  #pysys <- import("sys")
+  #pysys$modules('pygmo') = NULL
+  have_pygmo <- py_module_available("pygmo")
+  if (!have_pygmo)
+    print("PyGMO not available, install dependecies using MaOEA::install_python_dependecies()")
+
+  pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
+  rndGen <<- reticulate::import("numpy", delay_load = TRUE)
+}
+
+#' Install the required python package: PyGMO
+#' @title Install PyGMO python package
+#' @param method Default: auto
+#' @param conda Default: auto
+#' @export
+install_python_dependecies <- function(method = "auto", conda = "auto") {
+  reticulate::py_install("pygmo", method = method, conda = conda)
+}

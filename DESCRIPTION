@@ -5,7 +5,7 @@ Version: 0.4.0
 Author: Dani Irawan
 Maintainer: Dani Irawan <irawan_dani@yahoo.com>
 Description: Many-objective optimization using various popular method. Some test problem also included in the package
-License: What license is it under?
+License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1

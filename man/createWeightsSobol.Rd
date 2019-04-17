@@ -4,7 +4,7 @@
 \alias{createWeightsSobol}
 \title{Sobol sequence weights}
 \usage{
-createWeightsSobol(nPoints, nDim)
+createWeightsSobol(nPoints, nDim, seed = 4177)
 }
 \arguments{
 \item{nDim}{The dimensionality of the problem. In EA, usually this is used in the objective space, hence nDim = nObjective}
