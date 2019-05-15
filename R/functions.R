@@ -90,6 +90,7 @@ EvaluateIndividual.test <- function(individual,nObj,problem = "DTLZ2"){
   return(objective)
 }
 
+#' @export
 EvaluateIndividual.default <- function(individual,problem,...){
   nVar <- length(individual)
 
@@ -562,17 +563,19 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' GetLeastContributor(objective,reference,"exact")
 #' @export
 GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list()){
+  if(is.null(reference)){
+    for(objectiveIndex in 1:nrow(populationObjective))
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
+  }
+
   if(method=="exact"){
     print('Start hv contrib computation')
-    hypervolumeContribution <- HVContrib_WFG(populationObjective)
+    hypervolumeContribution <- HVContrib_WFG(populationObjective,reference)
 
     smallestContributor <- nnet::which.is.max(-hypervolumeContribution)
-  }
-  if(method=="approx"){
-    smallestContributor <- LeastContributorBFapprox(populationObjective,reference)
-  }
-  if(method=="HVK"){
-    smallestContributor <- LeastContributorHVK(populationObjective,reference,hypervolumeMethodParam)
+  }else{
+    string <- paste('LeastContributor',method,'(populationObjective,reference,hypervolumeMethodParam)',sep='')
+    smallestContributor <- eval(parse(text=string))
   }
 
   return(smallestContributor)
@@ -627,8 +630,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' @export
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #  if(method=="exact"){
-  hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
-#  }
+   hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
 
   return(hypervolumeContribution)
 }
@@ -662,22 +664,5 @@ GetHypervolume <- function(objective,reference=NULL,method="exact"){
     hypervolume <- HypervolumeBFapprox(populationObjective,reference)
   }
   return(hypervolume)
-}
-
-ExclusiveBFapprox <- function(populationObjective,index,reference=NULL){
-  if(is.null(reference)){
-    for(objectiveIndex in 1:nrow(populationObjective))
-      append(reference,max(populationObjective[objectiveIndex,])+1)
-  }
-
-  hv <- pygmo$hypervolume(t(populationObjective))
-  hv_rem <- pygmo$hypervolume(t(populationObjective[,-index]))
-
-  hv_alg <- pygmo$bf_fpras(0.05,0.05,as.integer(p*1000))
-
-  approxHvMain <- hv$compute(reference,hv_alg)
-  approxHvRemoved <- hv$compute(reference,hv_alg)
-
-  exclusiveHv <- approxHvMain - approxHvRemoved
 }
 
