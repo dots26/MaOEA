@@ -101,12 +101,15 @@ rndGen <- NULL
   library(reticulate)
   #pysys <- import("sys")
   #pysys$modules('pygmo') = NULL
+
+  print('Importing PyGMO')
+  pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
+  print('Importing NumPy')
+  rndGen <<- reticulate::import("numpy", delay_load = TRUE)
+
   have_pygmo <- py_module_available("pygmo")
   if (!have_pygmo)
     print("PyGMO not available, install dependecies using MaOEA::install_python_dependecies()")
-
-  pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
-  rndGen <<- reticulate::import("numpy", delay_load = TRUE)
 }
 
 #' Install the required python package: PyGMO
