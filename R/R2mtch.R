@@ -103,7 +103,7 @@ compute_R2HV <- function(dataPoints,reference,weights=NULL,nPoints = 100){
 #'
 #' compute_R2HVC(points,reference)
 #' @export
-compute_R2HVC <- function(dataPoints,reference,weights=NULL,nWeight = 300,indexOfInterest = 1:ncol(dataPoints)){
+compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 300,indexOfInterest = 1:ncol(dataPoints)){
   nObj <- nrow(dataPoints)
   if(is.null(weights)) {
     weights <- createWeightsSobol(nDim=nObj,nPoints = nWeight)
@@ -125,10 +125,7 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,nWeight = 300,indexO
 
       for(secondaryPointIndex in 1:nPoints){
         if( secondaryPointIndex != sIndex){
-          #  now <- Sys.time()
           new_g2tch <- g2tch_star(dataPoints[,secondaryPointIndex],dataPoints[,sIndex],weights[,weightIndex])
-          #  then <- Sys.time()
-          # print(then-now)
 
           if(minimumStar > new_g2tch ){
             minimumStar <- new_g2tch
@@ -137,7 +134,7 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,nWeight = 300,indexO
       }
       #print(c('windex',weightIndex))
       minR <- min(c(minimumStar,pointAchievementToBoundary))
-      minR <- minR#^nObj
+      minR <- minR^alpha
       #      sumR2 <- sumR2 + minR
       minRset <- append(minRset,minR)
     }
@@ -152,6 +149,7 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,nWeight = 300,indexO
 gmtch <- function(point, reference, weight){
   nObj <- nrow(point)
   achievement_vector <- abs(point-reference)/weight
+
   return(min(achievement_vector))
 }
 
@@ -227,10 +225,10 @@ createWeights <- function(nDim,axisDivision = nDim+2,noZero=FALSE){
 #'
 #' createWeightsSobol(nPoint,nObjective)
 #' @export
-createWeightsSobol <- function(nPoints, nDim,seed=4177){
-  weights <- randtoolbox::sobol(nPoints, dim = nDim,scrambling=3,seed = seed)
+createWeightsSobol <- function(nWeights, nDim,seed=4177){
+  weights <- randtoolbox::sobol(nWeights, dim = nDim,scrambling=3,seed = seed)
   weights <- t(weights)
-  for(pointIndex in 1:nPoints){
+  for(pointIndex in 1:nWeights){
     weights[,pointIndex] <- weights[,pointIndex]/norm(weights[,pointIndex,drop=FALSE],'F')
   }
 
