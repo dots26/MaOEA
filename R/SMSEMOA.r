@@ -145,8 +145,7 @@ SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...
   generation <- list(population=population,
                      populationObjective=populationObjective,
                      successfulOffspring = newPointSurvives)
-  #print('end')
+
   return(generation)
-  #print(c('Rindex',Rindex))
 }
 
