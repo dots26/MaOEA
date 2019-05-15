@@ -50,7 +50,9 @@ HypervolumeExact <- function(populationObjective,reference=NULL){
     }
   }
   hv <- pygmo$hypervolume(t(populationObjective))
-  hypervolume <- hv$compute(reference)
+  algo <- pygmo$hvwfg()
+
+  hypervolume <- hv$compute(reference,algo)
 }
 
 
@@ -59,18 +61,12 @@ HVContrib_WFG <- function(populationObjective,reference=NULL){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference <- append(reference,max(populationObjective[objectiveIndex,])+1)
   }
-  #totalHV <- HypervolumeExact(populationObjective,reference[,,drop=TRUE])
-  #hvContrib <- matrix(,ncol=0,nrow = 1)
-  #for(i in 1:ncol(populationObjective)){
-  #  remHV <- HypervolumeExact(populationObjective[,-i],reference[,,drop=TRUE])
-  #  hvContrib <- cbind(hvContrib,totalHV-remHV)
-  #}
+
   hv <- pygmo$hypervolume(t(populationObjective))
   algo <- pygmo$hvwfg()
   if(is.matrix(reference)){
     reference <- reference[,]
   }
   hvContrib <- hv$contributions(reference,algo)
-  #print(hvContrib)
   return(hvContrib)
 }
