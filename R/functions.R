@@ -569,7 +569,6 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
   }
 
   if(method=="exact"){
-    print('Start hv contrib computation')
     hypervolumeContribution <- HVContrib_WFG(populationObjective,reference)
 
     smallestContributor <- nnet::which.is.max(-hypervolumeContribution)
