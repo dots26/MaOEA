@@ -13,6 +13,8 @@ CMAES(parent, nObjective, problem = "DTLZ2", successProbTarget,
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
+\item{problem}{A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
+
 \item{successProbTarget}{Target success probability}
 
 \item{successProbThreshold}{The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.}
@@ -22,8 +24,6 @@ CMAES(parent, nObjective, problem = "DTLZ2", successProbTarget,
 \item{WFGScaling}{The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.}
 
 \item{crossoverDistribution}{The distribution index for SBX. Larger index makes the distribution sharper around each parent.}
-
-\item{problemType}{A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
 }
 \value{
 Returns a list for the next generation. It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective

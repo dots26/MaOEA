@@ -25,4 +25,6 @@ Create initial sample using LHS method for WFG problems. Variable range: 0-2i, i
 nVar <- 14
 nIndividual <- 100
 InitializePopulationWFG(nIndividual,nVar,FALSE)
+
+
 }

@@ -9,12 +9,14 @@ NSGA3(population, ...)
 \arguments{
 \item{population}{The parent generation. One individual per column. nrow = number of variable, ncol = number of individuals in the population.}
 
+\item{...}{Further arguments to be passed to \code{fun}}
+
 \item{fun}{A string containing which problem are being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
 \item{control}{A list, containing the following:
-\code{referencePoint} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Size: nrow = nObjective,ncol = number of refernce points
+\code{referencePoint} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
@@ -23,8 +25,8 @@ NSGA3(population, ...)
 }
 \value{
 #' @return Returns a list for the next generation
-\code{population} The new generation design points.
-\code{populationObjective} The new generation's objective values.
+\code{population} The new generation design points. Column major.
+\code{populationObjective} The new generation's objective values. Column major.
 }
 \description{
 Do an iteration of NSGA-III. THe variation is using SBX and polynomial mutation.

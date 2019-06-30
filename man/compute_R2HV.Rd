@@ -13,7 +13,7 @@ compute_R2HV(dataPoints, reference, weights = NULL, nPoints = 100)
 
 \item{weights}{The weights/direction to be used to compute the achievement scalarization. Each column contains a single weight vector. If no weight is supplied, weights are generated using Sobol sequences.}
 
-\item{axisDivision}{Used only when no weights are supplied. An input for the structured weight distribution. This defines how many division are created in each axis.}
+\item{nPoints}{Used only when no weights are supplied. An input for the weight generator (sobol sequences). This defines how many points are created.}
 }
 \value{
 The function return the powered R2-indicator of the set.

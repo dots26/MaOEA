@@ -16,12 +16,12 @@ SMSEMOA(population, ...)
 \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
-\code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point.}
+\code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).}
 }
 \value{
 Returns a list for the next generation
-\code{population} The new generation.
-\code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes.
+\code{population} The new generation. Column major, each row contain 1 set of objectives.
+\code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes. Column major.
 \code{populationObjective} The new generation's objective values.
 }
 \description{

@@ -7,9 +7,11 @@
 createWeightsSobol(nWeights, nDim, seed = 4177)
 }
 \arguments{
+\item{nWeights}{Number of weights to generate.}
+
 \item{nDim}{The dimensionality of the problem. In EA, usually this is used in the objective space, hence nDim = nObjective}
 
-\item{nPoint}{Number of weights to generate.}
+\item{seed}{Seed for scrambling}
 }
 \value{
 The function return a set of weight vectors.

@@ -9,11 +9,17 @@ InitializePopulationLHS(numberOfIndividuals, chromosomeLength,
   samplingMethod = 0)
 }
 \arguments{
+\item{numberOfIndividuals}{The number of individual in the population. Integer > 0.}
+
 \item{chromosomeLength}{The number of variables per individual}
 
 \item{binaryEncoding}{whether to use binary encoding or real encoding. Default to FALSE}
 
-\item{nIndividual}{The number of individual in the population. Integer > 0.}
+\item{minVal}{Minimum value of the resulting sample}
+
+\item{maxVal}{Maximum value of the resulting sample}
+
+\item{samplingMethod}{Not used}
 }
 \value{
 A matrix of size chromosomeLength x nIndividual.

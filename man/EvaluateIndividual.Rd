@@ -9,9 +9,7 @@ EvaluateIndividual(individual, ...)
 \arguments{
 \item{individual}{The individual to be evaluated}
 
-\item{nObj}{The number of objective}
-
-\item{problem}{A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
+\item{...}{Further parameters used by the specific class evaluation}
 }
 \value{
 A matrix of size nObjective, containing the objective values.

@@ -13,6 +13,8 @@ GetLeastContributor(populationObjective, reference = NULL,
 \item{reference}{The reference point for computing HV}
 
 \item{method}{the HV computation method}
+
+\item{hypervolumeMethodParam}{A list of parameters to be passed to the hypervolumeMethod}
 }
 \value{
 The index of the least contributor, an integer.

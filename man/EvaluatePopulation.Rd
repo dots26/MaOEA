@@ -2,16 +2,14 @@
 % Please edit documentation in R/functions.R
 \name{EvaluatePopulation}
 \alias{EvaluatePopulation}
-\title{Evaluate objective value of a single individual}
+\title{Evaluate objective value of a set of individuals}
 \usage{
 EvaluatePopulation(pop, ...)
 }
 \arguments{
+\item{...}{Further parameters used by the specific class evaluation}
+
 \item{population}{The population to be evaluated. An individual should occupy a column, therefore each row in the column correseponds to a gene.}
-
-\item{nObj}{The number of objective}
-
-\item{problem}{A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
 }
 \value{
 A matrix of size nObjective, containing the objective values.
