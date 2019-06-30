@@ -1,9 +1,11 @@
 #' Create initial sample using LHS method. The variables will be ranged between 0-1
 #' @title Initialize population with Latin Hypercube Sampling
-#' @param nIndividual The number of individual in the population. Integer > 0.
+#' @param numberOfIndividuals The number of individual in the population. Integer > 0.
 #' @param chromosomeLength The number of variables per individual
 #' @param binaryEncoding whether to use binary encoding or real encoding. Default to FALSE
-#'
+#' @param minVal Minimum value of the resulting sample
+#' @param maxVal Maximum value of the resulting sample
+#' @param samplingMethod Not used
 #' @return A matrix of size chromosomeLength x nIndividual.
 #' @examples
 #' nVar <- 14
@@ -37,7 +39,7 @@ InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength,binaryE
 #' nVar <- 14
 #' nIndividual <- 100
 #' InitializePopulationWFG(nIndividual,nVar,FALSE)
-#' @export
+#'
 #'
 InitializePopulationWFG <- function(numberOfIndividuals,chromosomeLength,binaryEncoding = TRUE, minVal=0,maxVal=1,samplingMethod=0) {
   # population<-optimumLHS(n=numberOfIndividuals,k=chromosomeLength,maxSweeps=10,eps=.1,verbose=FALSE)
@@ -54,8 +56,7 @@ InitializePopulationWFG <- function(numberOfIndividuals,chromosomeLength,binaryE
 #' Evaluate individual with the specified test function. Non-feasible solution are given Inf as objective values.
 #' @title Evaluate objective value of a single individual
 #' @param individual The individual to be evaluated
-#' @param nObj The number of objective
-#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @param ... Further parameters used by the specific class evaluation
 #' @return A matrix of size nObjective, containing the objective values.
 #'
 #' @export
@@ -64,32 +65,12 @@ EvaluateIndividual <- function(individual,...){
   UseMethod('EvaluateIndividual',individual)
 }
 
-EvaluateIndividual.test <- function(individual,nObj,problem = "DTLZ2"){
-  nVar <- length(individual)
-  isWFG <- (substr(problem, start = 1, stop = 3) == "WFG")
-  if(  isWFG  )
-    objective <- do.call(problem,args = list(individual=individual,nObj=nObj))
-  else # additional nVar for DTLZ
-    objective <- do.call(problem,args = list(individual=individual,nObj=nObj))
-
-  if(isWFG){
-    for(varIndex in 1:length(individual)){
-      if(individual[varIndex]>2*varIndex)
-        objective <- Inf
-      if(individual[varIndex]<0)
-        objective <- Inf
-    }
-  }else{
-    for(varIndex in 1:length(individual)){
-      if(individual[varIndex]>1)
-        objective <- Inf
-      if(individual[varIndex]<0)
-        objective <- Inf
-    }
-  }
-  return(objective)
-}
-
+#' Evaluate individual with the specified test function. Non-feasible solution are given Inf as objective values.
+#' @title Evaluate objective value of a single individual
+#' @param individual The individual to be evaluated
+#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @return A matrix of size nObjective, containing the objective values.
+#'
 #' @export
 EvaluateIndividual.default <- function(individual,problem,...){
   nVar <- length(individual)
@@ -100,10 +81,9 @@ EvaluateIndividual.default <- function(individual,problem,...){
 
 
 #' Evaluate a population with the specified test function. Non-feasible solution are given Inf as objective values.
-#' @title Evaluate objective value of a single individual
+#' @title Evaluate objective value of a set of individuals
 #' @param population The population to be evaluated. An individual should occupy a column, therefore each row in the column correseponds to a gene.
-#' @param nObj The number of objective
-#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @param ... Further parameters used by the specific class evaluation
 #' @return A matrix of size nObjective, containing the objective values.
 #'
 #' @export
@@ -111,6 +91,14 @@ EvaluateIndividual.default <- function(individual,problem,...){
 EvaluatePopulation <- function(pop,...){
   UseMethod('EvaluatePopulation',pop)
 }
+
+#' Evaluate a population with the specified test function. Non-feasible solution are given Inf as objective values.
+#' @title Evaluate objective value of a set of individuals
+#' @param individual The individual to be evaluated
+#' @param nObj The number of objective
+#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @return A matrix of size nObjective, containing the objective values.
+#'
 #' @export
 EvaluatePopulation.default <- function(pop,nObj,problem = "DTLZ2"){
   popSize <- ncol(pop)
@@ -376,10 +364,10 @@ MutateReal <- function(original,mutationProbability){
 #' for(individual in 1:nIndividual){
 #'    objective[,individual] <- WFG4(population[,individual],nObj)
 #' }
-#' NormalizeObjective(objective)
+#' AdaptiveNormalization(objective)
 #' @export
 #'
-NormalizeObjective <- function(objectiveValue){
+AdaptiveNormalization <- function(objectiveValue){
   minObjVal <- matrix(,nrow = nrow(objectiveValue),ncol = 1)
   nObjective <- nrow(objectiveValue)
   idealPoint <- rep(Inf,nObjective)
@@ -397,7 +385,6 @@ NormalizeObjective <- function(objectiveValue){
 
   # get the normalization minimum value to zero
   normalizedObjective <- objectiveValue - rep(minObjVal,ncol(objectiveValue))
-
   #get the intercept, set it as maximum value
   for (i in 1:nObjective) {
     summedMaxRow <- sum(normalizedObjective[,indexOfMax[i]])
@@ -407,8 +394,61 @@ NormalizeObjective <- function(objectiveValue){
   }
 
 
+  newList <- list(normalizedObjective = normalizedObjective,idealPoint = idealPoint, nadirPoint = nadirPoint)# "numeric" = normalizedRefPoint)
 
-  newList <- list(normalizedObjective = normalizedObjective, idealPoint = idealPoint, nadirPoint = nadirPoint)# "numeric" = normalizedRefPoint)
+  return(newList)
+}
+
+#' Normalize the objectives AND reference (combined) to 0-1. The origin is the ideal point. (1,...,1) is the nadir.
+#'
+#' @title Objective space normalization.
+#' @param objectiveValue Set of objective vectors to normalize
+#' @param referencePoints Set of reference points to transform following the objective vector normalization
+#'
+#' @return A list containing the following:
+#' \code{normalizedObjective} The normalized values
+#' \code{idealPoint} The ideal point corresponding to the origin
+#' \code{transformedReference} The location of reference points in the normalized Space
+#' @examples
+#' nObj <- 5
+#' nIndividual <- 100
+#' population <- InitializePopulationLHS(nIndividual,nVar,FALSE)
+#' objective <- matrix(,nrow=nObj,ncol=nIndividual)
+#' for(individual in 1:nIndividual){
+#'    objective[,individual] <- WFG4(population[,individual],nObj)
+#' }
+#' Normalize(objective)
+#' @export
+#'
+Normalize <- function(objectiveValue,referencePoints=NULL){
+  minObjVal <- matrix(,nrow = nrow(objectiveValue),ncol = 1)
+  nObjective <- nrow(objectiveValue)
+  idealPoint <- rep(Inf,nObjective)
+  popSize <- ncol(objectiveValue)
+  if(!is.null(referencePoints)) {
+    referencePoints <- matrix(referencePoints,nrow = nObjective)
+    objectiveValue <- cbind(objectiveValue,referencePoints)
+  }
+  indexOfMax <- matrix(,nrow = nObjective,ncol = 1)
+
+  for (i in 1:nObjective) {
+    indexOfMax[i] <- nnet::which.is.max(objectiveValue[i,]) # get the individual with max objective for objective i
+    minObjVal[i] <- min(objectiveValue[i,])
+    if(minObjVal[i]>idealPoint[i])
+      minObjVal[i] <- idealPoint[i]
+    else
+      idealPoint[i] <- minObjVal[i]
+  }
+  # get the normalization minimum value to zero
+  normalizedObjective <- objectiveValue - rep(minObjVal,ncol(objectiveValue))
+
+  #get the intercept, set it as maximum value
+  for (i in 1:nObjective) {
+    maxObj <- (normalizedObjective[i,indexOfMax[i]])
+    normalizedObjective[i,] <- normalizedObjective[i,] / maxObj
+  }
+
+  newList <- list(normalizedObjective = normalizedObjective[,1:popSize], transformedReference =normalizedObjective[,-(1:popSize)],idealPoint = idealPoint)# "numeric" = normalizedRefPoint)
 
   return(newList)
 }
@@ -551,7 +591,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
 #' @param method the HV computation method
-
+#' @param hypervolumeMethodParam A list of parameters to be passed to the hypervolumeMethod
 #' @return The index of the least contributor, an integer.
 #' @examples
 #' nObjective <- 5 # the number of objectives
