@@ -20,7 +20,7 @@
 compute_R2mtch <- function(dataPoints,reference,weights=NULL,nPoints = 100){
   nObj <- nrow(dataPoints)
   if(is.null(weights)) {
-    weights <- createWeightsSobol(nDim=nObj,nPoints = nPoints)
+    weights <- createWeightsSobol(nDim=nObj,nWeights = nPoints)
   }
   #  if(is.null(weights)) {
   #    weights <- createWeights(nObj,axisDivision,noZero = TRUE)
@@ -46,7 +46,7 @@ compute_R2mtch <- function(dataPoints,reference,weights=NULL,nPoints = 100){
 #' @param dataPoints The Points coordinate. Each column contains a single point (column major).
 #' @param reference The reference point for computing R2-mtch (similar as reference for HV)
 #' @param weights The weights/direction to be used to compute the achievement scalarization. Each column contains a single weight vector. If no weight is supplied, weights are generated using Sobol sequences.
-#' @param axisDivision Used only when no weights are supplied. An input for the structured weight distribution. This defines how many division are created in each axis.
+#' @param nPoints Used only when no weights are supplied. An input for the weight generator (sobol sequences). This defines how many points are created.
 #'
 #' @return The function return the powered R2-indicator of the set.
 #' @examples
@@ -63,7 +63,7 @@ compute_R2mtch <- function(dataPoints,reference,weights=NULL,nPoints = 100){
 compute_R2HV <- function(dataPoints,reference,weights=NULL,nPoints = 100){
   nObj <- nrow(dataPoints)
   if(is.null(weights)) {
-    weights <- createWeightsSobol(nDim=nObj,nPoints = nPoints)
+    weights <- createWeightsSobol(nDim=nObj,nWeights = nPoints)
   }
   #if(is.null(weights)) {
   #  weights <- createWeights(nObj,axisDivision,noZero = TRUE)
@@ -106,11 +106,12 @@ compute_R2HV <- function(dataPoints,reference,weights=NULL,nPoints = 100){
 compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 300,indexOfInterest = 1:ncol(dataPoints)){
   nObj <- nrow(dataPoints)
   if(is.null(weights)) {
-    weights <- createWeightsSobol(nDim=nObj,nPoints = nWeight)
+    weights <- createWeightsSobol(nDim=nObj,nWeights = nWeight)
   }
   sumR2 <- 0
   R2contrib <- NULL
   R2skewness <- NULL
+  R2median <- NULL
   R2sd <- NULL
   R2kurtosis <- NULL
 
@@ -128,28 +129,35 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
           new_g2tch <- g2tch_star(dataPoints[,secondaryPointIndex],dataPoints[,sIndex],weights[,weightIndex])
 
           if(minimumStar > new_g2tch ){
+            #print(secondaryPointIndex)
             minimumStar <- new_g2tch
           }
         }
       }
       #print(c('windex',weightIndex))
+     # print(c(weightIndex,minimumStar,pointAchievementToBoundary))
       minR <- min(c(minimumStar,pointAchievementToBoundary))
+      # print(c(weightIndex,minR,minR^alpha))
       minR <- minR^alpha
       #      sumR2 <- sumR2 + minR
       minRset <- append(minRset,minR)
     }
     R2contrib <- append(R2contrib,mean(minRset))
     R2sd <- append(R2sd,sd(minRset))
-    R2skewness <- append(R2skewness,skewness(minRset,1))
-    R2kurtosis <- append(R2kurtosis,kurtosis(minRset,1))
+    R2skewness <- append(R2skewness,e1071::skewness(minRset,1))
+    R2kurtosis <- append(R2kurtosis,e1071::kurtosis(minRset,1))
+    R2median <- append(R2median,median(minRset))
   }
-  return(list(R2=R2contrib,sd=R2sd,skew=R2skewness,kurtosis=R2kurtosis))
+  return(list(maxval=max(minRset),R2=R2contrib,sd=R2sd,skew=R2skewness,kurtosis=R2kurtosis,median=R2median))
 }
 
 gmtch <- function(point, reference, weight){
   nObj <- nrow(point)
   achievement_vector <- abs(point-reference)/weight
 
+  if(min(achievement_vector) <0)
+  print('gmtch')
+#  print(min(achievement_vector))
   return(min(achievement_vector))
 }
 
@@ -163,6 +171,8 @@ g2tch <- function(point, ref, weight){
 g2tch_star <- function(a, s, weight){
   nObj <- nrow(a)
   achievement_vector <- (a-s)/weight
+
+
   return(max(achievement_vector))
 }
 
@@ -215,9 +225,9 @@ createWeights <- function(nDim,axisDivision = nDim+2,noZero=FALSE){
 
 #' Generate a set of weights following Sobol sequence generator
 #' @title Sobol sequence weights
-#' @param nPoint Number of weights to generate.
+#' @param nWeights Number of weights to generate.
 #' @param nDim The dimensionality of the problem. In EA, usually this is used in the objective space, hence nDim = nObjective
-
+#' @param seed Seed for scrambling
 #' @return The function return a set of weight vectors.
 #' @examples
 #' nObjective <- 3
