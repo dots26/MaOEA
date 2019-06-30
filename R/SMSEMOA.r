@@ -8,10 +8,10 @@
 #' \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
-#' \code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point.
+#' \code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).
 #' @return Returns a list for the next generation
-#' \code{population} The new generation.
-#' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes.
+#' \code{population} The new generation. Column major, each row contain 1 set of objectives.
+#' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes. Column major.
 #' \code{populationObjective} The new generation's objective values.
 #' @examples
 #' nVar <- 14
@@ -109,9 +109,9 @@ SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...
   # remove one according to the secondary selection method.
   if(newPopulationSize>populationSize){
     # normalize objectives to 0-1, minimization problem, ideal point is at (0,0)
-    normalizationList <- NormalizeObjective(newPopulationObjective)
-    normalizedObjective <- normalizationList[[1]]
-    idealPoint <- normalizationList[[2]]
+    normalizationList <- Normalize(newPopulationObjective)
+    normalizedObjective <- normalizationList$normalizedObjective
+    idealPoint <- normalizationList$idealPoint
 
     for(individualIndex in worstFrontIndex){
       individualIndexTobeChecked <- c(individualIndexTobeChecked,individualIndex)
@@ -142,8 +142,8 @@ SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...
   class(population) <- keep_class
   populationObjective <- newPopulationObjective
 
-  generation <- list(population=population,
-                     populationObjective=populationObjective,
+  generation <- list(population=(population),
+                     objective=(populationObjective),
                      successfulOffspring = newPointSurvives)
 
   return(generation)
