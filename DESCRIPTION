@@ -9,4 +9,4 @@ License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: reticulate, nsga2R, lhs, gtools, nnet, stringr, randtoolbox
+Imports: reticulate, nsga2R, lhs, gtools, nnet, stringr, randtoolbox, e1071
