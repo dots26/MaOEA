@@ -5,7 +5,6 @@
 #' @param fun A string containing which problem are being solved. Currently DTLZ1-DTLZ4, WFG4-WFG9 is in the package. Default to the "easy" DTLZ2.
 #' @param control (list) Options to control the SMS-EMOA:
 #' \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
-#' \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 #' \code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).
@@ -13,6 +12,7 @@
 #' \code{population} The new generation. Column major, each row contain 1 set of objectives.
 #' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes. Column major.
 #' \code{populationObjective} The new generation's objective values.
+#' @param ... Further arguments to be passed to \code{fun}
 #' @examples
 #' nVar <- 14
 #' nObjective <- 5
@@ -21,7 +21,7 @@
 #' mutationProbability <- 1/nVar
 #' population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 #' SMSEMOA(population,"WFG8",nObjective,list(crossoverProbability = crossoverProbability,
-#'                                           mutationProbability = mutationProbability)) # will run a generation of SMS-EMOA with standard WFG8 test function.
+#'                                           mutationProbability = mutationProbability),nObjective) # will run a generation of SMS-EMOA with standard WFG8 test function.
 #' @export
 SMSEMOA <- function(population,...){
    UseMethod('SMSEMOA',population)
@@ -35,7 +35,6 @@ SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...
 
   con <- list(crossoverProbability=1,
               mutationProbability=1,
-              WFGScaling=TRUE,
               mutationDistribution=20,
               crossoverDistribution=30,
               hypervolumeMethod='exact',
