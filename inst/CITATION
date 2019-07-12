@@ -1,0 +1,16 @@
+citHeader("To cite MaOEA in publications, use:")
+
+citEntry(entry="InProceedings",
+         title = "Comparison of Reference- and Hypervolume-Based {MOEA} on Solving Many-Objective Optimization Problems",
+         author = personList(person(family="Irawan", given="Dani"),
+                             person(family="Naujoks",given="Boris")),
+         booktitle = "Evolutionary Multi-Criterion Optimization - 10th International Conference, {EMO} 2019, East Lansing, MI, USA, March 10-13, 2019, Proceedings",
+         year = "2019",
+         address = "Michigan, USA",
+         pages ={266--277},
+         url = "https://doi.org/10.1007/978-3-030-12598-1\\_22",
+         textVersion = paste("Irawan, Dani and Naujoks, Boris. ",
+         " Comparison of Reference- and Hypervolume-Based MOEA on Solving Many-Objective Optimization Problems.",
+         " In Evolutionary Multi-Criterion Optimization - 10th International Conference (EMO 2019). ", sep="")
+)
+
