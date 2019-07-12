@@ -609,9 +609,8 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
   }
 
   if(method=="exact"){
-    hypervolumeContribution <- HVContrib_WFG(populationObjective,reference)
-
-    smallestContributor <- nnet::which.is.max(-hypervolumeContribution)
+    #hypervolumeContribution <- HVContrib_WFG(populationObjective,reference)
+    smallestContributor <- LeastContributorExact(populationObjective,reference)#nnet::which.is.max(-hypervolumeContribution)
   }else{
     string <- paste('LeastContributor',method,'(populationObjective,reference,hypervolumeMethodParam)',sep='')
     smallestContributor <- eval(parse(text=string))
@@ -691,7 +690,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' GetHypervolume(objective,reference,"exact") # using reference point
 #' @export
 #'
-GetHypervolume <- function(objective,reference=NULL,method="exact"){
+  GetHypervolume <- function(objective,reference=NULL,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
       hypervolume <- HypervolumeExact(objective)
