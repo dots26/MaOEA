@@ -13,6 +13,10 @@
 #' @return #' @return Returns a list for the next generation
 #' \code{population} The new generation design points. Column major.
 #' \code{populationObjective} The new generation's objective values. Column major.
+#' @references Deb, K., Jain, H.: An evolutionary many-objective optimization algorithm using
+#' reference-point-based  nondominated  sorting  approach,  part  I:  Solving  problems with box constraints.
+#' Trans. Evol. Comp. 18 (4), 577–601 (2014)
+#'
 #' @examples
 #' nVar <- 14
 #' nObjective <- 5

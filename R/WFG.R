@@ -6,7 +6,7 @@
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG1(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 
 WFG1 <- function(individual, nObj){
@@ -84,6 +84,7 @@ WFG1 <- function(individual, nObj){
 #' nObj <- 4
 #' WFG2(individual,nObj)
 #'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG2 <- function(individual, nObj){
   M <- nObj
@@ -150,7 +151,7 @@ WFG2 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG4(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG4 <- function(individual, nObj){
   M <- nObj
@@ -200,7 +201,7 @@ WFG4 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG5(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG5 <- function(individual, nObj){
   M <- nObj
@@ -250,7 +251,7 @@ WFG5 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG6(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG6 <- function(individual, nObj){
   M <- nObj
@@ -299,7 +300,7 @@ WFG6 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG7(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG7 <- function(individual, nObj){
   M <- nObj
@@ -363,7 +364,7 @@ WFG7 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG8(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG8 <- function(individual, nObj){
   M <- nObj
@@ -417,7 +418,7 @@ WFG8 <- function(individual, nObj){
 #' individual <- runif(14)
 #' nObj <- 4
 #' WFG9(individual,nObj)
-#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 WFG9 <- function(individual, nObj){
   M <- nObj

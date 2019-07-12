@@ -13,6 +13,9 @@
 #' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes. Column major.
 #' \code{populationObjective} The new generation's objective values.
 #' @param ... Further arguments to be passed to \code{fun}
+#' @references Beume,  N.,  Naujoks,  B.,  Emmerich,  M.:  SMS-EMOA:  Multiobjective  selection
+#' based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007
+#'
 #' @examples
 #' nVar <- 14
 #' nObjective <- 5
