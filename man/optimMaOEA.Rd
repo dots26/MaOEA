@@ -13,7 +13,7 @@ optimMaOEA(x = NULL, fun = "DTLZ2", solver = "NSGA3", nObjective,
 
 \item{fun}{A string containing which problem are being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9. Can be user specified, using \code{x} as input and returning all objectives for each individual in \code{x}. Defaults to the "easy" DTLZ2.}
 
-\item{solver}{Name of the solver. Currently available: 'SMSEMOA' and 'NSGA3'.}
+\item{solver}{Name of the solver. Currently available: 'SMSEMOA', 'CMAES','SCMAES', and 'NSGA3'.}
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
@@ -37,7 +37,7 @@ optimMaOEA(x = NULL, fun = "DTLZ2", solver = "NSGA3", nObjective,
 \code{populationObjective} The new generation's objective values.
 }
 \description{
-Run a generation evolutionary many-objective optimization algorithm.
+Main interface for the many-objective optimization evolutionary algorithm (MaOEA) package.
 }
 \examples{
 nVar <- 14

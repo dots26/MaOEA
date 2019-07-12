@@ -21,5 +21,7 @@ The DTLZ2 test function.
 individual <- runif(14)
 nObj <- 4
 DTLZ2(individual,nObj)
-
+}
+\references{
+Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 }

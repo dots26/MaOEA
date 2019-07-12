@@ -4,7 +4,9 @@
 \alias{cmaes_gen}
 \title{Create an object of cmaes_gen class.}
 \usage{
-cmaes_gen(population, ps_target = (1/(5.5)), stepSize = 0.5)
+cmaes_gen(population, ps_target = (1/(5 + (1/2)^0.5)), stepSize = 0.5,
+  evoPath = rep(0, nrow(population)),
+  covarianceMatrix = diag(nrow(population)))
 }
 \arguments{
 \item{population}{The number of objective functions. A scalar value.}
@@ -24,7 +26,7 @@ nVar <- 14
 nObjective <- 5
 nIndividual <- 100
 crossoverProbability <- 1
-ps_target <- 1 / (5 + ( 1 / 2  ) )
+ps_target <- 1 / (5 + ( 1 / 2  )^0.5 )
 pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
 a_list <- cmaes_gen(pop)
 newGeneration <- CMAES(a_list,nObjective,"WFG8",ps_target,crossoverProbability,TRUE) # will run a generation of MO-CMA-ES with standard WFG8 test function.

@@ -19,7 +19,6 @@ NSGA3(population, ...)
 \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
-\code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.}
 }
@@ -43,4 +42,9 @@ population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 
 
 NSGA3(population, "WFG8",nObjective,ctrl) # will run a generation of NSGA-III with standard WFG8 test function.
+}
+\references{
+Deb, K., Jain, H.: An evolutionary many-objective optimization algorithm using
+reference-point-based  nondominated  sorting  approach,  part  I:  Solving  problems with box constraints.
+Trans. Evol. Comp. 18 (4), 577–601 (2014)
 }

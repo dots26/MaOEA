@@ -21,5 +21,7 @@ The WFG1 test function.
 individual <- runif(14)
 nObj <- 4
 WFG1(individual,nObj)
-
+}
+\references{
+Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 }

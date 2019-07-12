@@ -23,3 +23,6 @@ nObj <- 4
 WFG2(individual,nObj)
 
 }
+\references{
+Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
+}
