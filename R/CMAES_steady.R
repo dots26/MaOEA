@@ -2,13 +2,15 @@
 #' @title Steady-state Multi-Objective CMA-ES
 #' @param parent The parent generation, an object of class cmaes_gen. The MO-CMA-ES parent is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable). The parent is then should be a vector of lists (see example).
 #' @param nObjective The number of objective functions. A scalar value.
-#' @param problemType A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
-#' @param successProbTarget Target success probability
-#' @param successProbThreshold The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
-#' @param crossoverProbability The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
-#' @param WFGScaling The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
-#' @param crossoverDistribution The distribution index for SBX. Larger index makes the distribution sharper around each parent.
+#' @param fun A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @param control List of parameters for CMA-ES. Available control are as follows:
+#' \code{successProbTarget} Target success probability
+#' \code{successProbThreshold} The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
+#' \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
+#' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
+#' @param ... Further arguments to be passed to \code{fun}
 #' @return Returns a list for the next generation. It contains It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
+#' @references Voß, T., Hansen, N., Igel, C.: Improved step size adaptation for the MO-CMA-ES. In: Genetic and Evolutionary Computation (GECCO). pp. 487–494. ACM, New York, NY (2010)
 #' @examples
 #' nVar <- 14
 #' nObjective <- 5
@@ -17,28 +19,27 @@
 #' ps_target <- 1 / (5 + ( 1 / 2  ) )
 #' pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
 #' a_list <- cmaes_gen(pop)
-#'
-#' newGeneration <- SCMAES(a_list,nObjective ,"WFG8",crossoverProbability,TRUE) # will run a generation of steady state MOCMAES with standard WFG8 test function.
+#' control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
+#' newGeneration <- SMOCMAES(a_list,nObjective,"WFG8",control,nObjective) # will run a generation of SMO-CMA-ES with standard WFG8 test function.
 #' @export
-SCMAES <- function(parent,...){
-  print(class(parent))
- # UseMethod(SCMAES,parent, nObjective,problem="DTLZ2",successProbTarget,successProbThreshold = 0.44,crossoverProbability=1,WFGScaling=TRUE,crossoverDistribution=30)
-  UseMethod('SCMAES')
+SMOCMAES <- function(parent,...){
+  UseMethod('SMOCMAES')
 }
 
 #' @export
-SCMAES.cmaes_gen <- function(parent,nObjective ,problem="DTLZ2",successProbTarget,successProbThreshold = 0.44,crossoverProbability=1,WFGScaling=TRUE,crossoverDistribution=30,...){
-  ps_threshold <- successProbThreshold
-  ps_target <- successProbTarget
-  if(!is.na(stringr::str_match(problem,"DTLZ"))){
-    if(!is.na(stringr::str_match(problem,"DTLZ1")))
-      problemType <- 1
-    else
-      problemType <- 2
-  }
-  if(!is.na(stringr::str_match(problem,"WFG"))){
-    problemType <- 3
-  }
+SMOCMAES.cmaes_gen <- function(parent,nObjective ,fun="DTLZ2",control=list(),...){
+  con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5),
+              successProbThreshold = 0.44,
+              crossoverProbability=1,
+              crossoverDistribution=30,
+              hypervolumeMethod='exact',
+              hypervolumeMethodParam=list(),
+              referencePoint = NULL)
+  con[names(control)] <- control
+  control <- con
+  ps_threshold <- control$successProbThreshold
+  ps_target <- control$successProbTarget
+
   chromosomeLength <- length(parent[[1]]$x)
   populationSize <- length(parent)
 
@@ -55,10 +56,10 @@ SCMAES.cmaes_gen <- function(parent,nObjective ,problem="DTLZ2",successProbTarge
   }
 
   populationObjective<-matrix(,nrow=nObjective,ncol=0);
+
   #evaluation of parents
   for(parentIndex in 1:populationSize){
-    #individualObjectiveValue<-EvaluateIndividual(population[,parentIndex])
-    individualObjectiveValue<-EvaluateIndividual(population[,parentIndex],nObjective)
+    individualObjectiveValue<-EvaluateIndividual(population[,parentIndex],fun,...)
     populationObjective<-cbind(populationObjective,individualObjectiveValue)
   }
 
@@ -103,11 +104,7 @@ SCMAES.cmaes_gen <- function(parent,nObjective ,problem="DTLZ2",successProbTarge
     }
 
     #recombination
-    if((problemType==3) && (WFGScaling==TRUE)){
-      offspring <- nsga2R::boundedSBXover(t(parent_x),rep(0,chromosomeLength),seq(2,2*chromosomeLength,2),crossoverProbability,30)
-    }else{
-      offspring <- nsga2R::boundedSBXover(t(parent_x),rep(0,chromosomeLength),rep(1,chromosomeLength),crossoverProbability,30)
-    }
+    offspring <- nsga2R::boundedSBXover(t(parent_x),rep(0,chromosomeLength),rep(1,chromosomeLength),control$crossoverProbability,control$crossoverDistribution)
     offspring <- t(offspring)
 
     # update the population's x
@@ -121,7 +118,7 @@ SCMAES.cmaes_gen <- function(parent,nObjective ,problem="DTLZ2",successProbTarge
   new_a_list$x <- MASS::mvrnorm(1, mu = individual, Sigma = covariance)
   #check feasibility
 
-  newObjectiveValue <- EvaluateIndividual(new_a_list$x,nObjective)
+  newObjectiveValue <- EvaluateIndividual(new_a_list$x,fun,...)
   new_population <- new_a_list$x
   notFeasible <- FALSE
 
@@ -153,7 +150,10 @@ SCMAES.cmaes_gen <- function(parent,nObjective ,problem="DTLZ2",successProbTarge
   }
   while (newPopulationSize > populationSize) #new population is overcapacity, remove least contributor
   {
-    leastContrib <- GetLeastContributor(newPopulationObjective,,getOption("hypervolumeMethod"))
+    leastContrib <- GetLeastContributor(newPopulationObjective,
+                                        control$referencePoint,
+                                        control$hypervolumeMethod,
+                                        control$hypervolumeMethodParam)
     newPopulationIndex <- newPopulationIndex[-leastContrib]
     newPopulation <- newPopulation[,-leastContrib]
     newPopulationObjective <- newPopulationObjective[,-leastContrib]
