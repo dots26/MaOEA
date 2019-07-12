@@ -4,7 +4,7 @@ Title: Many Objective Evolutionary Algorithm
 Version: 0.4.0
 Author: Dani Irawan
 Maintainer: Dani Irawan <irawan_dani@yahoo.com>
-Description: Many-objective optimization using various popular method. Some test problem also included in the package
+Description: Many-objective optimization using various algorithm. DTLZ and WFG benchmark problem also included in the package
 License: GPL
 Encoding: UTF-8
 LazyData: true
