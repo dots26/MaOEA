@@ -110,10 +110,8 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
   }
   sumR2 <- 0
   R2contrib <- NULL
-  R2skewness <- NULL
-  R2median <- NULL
-  R2sd <- NULL
-  R2kurtosis <- NULL
+  log_R2 <- NULL
+  logsd_R2 <- NULL
 
   nWeight <- ncol(weights)
   nPoints <- ncol(dataPoints)
@@ -143,12 +141,14 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
       minRset <- append(minRset,minR)
     }
     R2contrib <- append(R2contrib,mean(minRset))
-    R2sd <- append(R2sd,sd(minRset))
-    R2skewness <- append(R2skewness,e1071::skewness(minRset,1))
-    R2kurtosis <- append(R2kurtosis,e1071::kurtosis(minRset,1))
-    R2median <- append(R2median,median(minRset))
+    log_R2 <- append(log_R2,mean(log(minRset)))
+    logsd_R2 <- append(logsd_R2,sd(log(minRset)))
+    #R2sd <- append(R2sd,sd(minRset))
+    #R2skewness <- append(R2skewness,e1071::skewness(minRset,1))
+    #R2kurtosis <- append(R2kurtosis,e1071::kurtosis(minRset,1))
+    #R2median <- append(R2median,median(minRset))
   }
-  return(list(maxval=max(minRset),R2=R2contrib,sd=R2sd,skew=R2skewness,kurtosis=R2kurtosis,median=R2median))
+  return(list(R2=R2contrib,log_R2=log_R2,logsd_R2=logsd_R2))
 }
 
 gmtch <- function(point, reference, weight){
