@@ -16,7 +16,7 @@ NSGA3(population, ...)
 \item{nObjective}{The number of objective functions. A scalar value.}
 
 \item{control}{A list, containing the following:
-\code{referencePoint} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
+\code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
