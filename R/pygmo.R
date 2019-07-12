@@ -1,14 +1,21 @@
-#pygmo <- import("pygmo")
-#rndGen <- import("numpy")
-#garbage <- import("gc")
-#p<-1
-#rndGen$random$seed(as.integer(p*1000))
+LeastContributorExact <- function(populationObjective,reference=NULL){
+  if(is.null(reference)){
+    for(objectiveIndex in 1:nrow(populationObjective))
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
+  }
 
+  hv <- pygmo$hypervolume(t(populationObjective))
+  hv_cont_alg <- pygmo$bf_approx(TRUE,1L,0.01,0.05)
+
+
+  leastContributor <- hv$least_contributor(reference,hv_cont_alg)
+  return(leastContributor+1)
+}
 
 LeastContributorBFapprox <- function(populationObjective,reference=NULL){
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])+1)
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
   }
 
   hv <- pygmo$hypervolume(t(populationObjective))
@@ -22,7 +29,7 @@ LeastContributorBFapprox <- function(populationObjective,reference=NULL){
 LeastContributionApprox <- function(populationObjective,reference=NULL){
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])+1)
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
   }
 
   hv <- pygmo$hypervolume(t(populationObjective))
@@ -34,7 +41,7 @@ LeastContributionApprox <- function(populationObjective,reference=NULL){
 HypervolumeBFapprox <- function(populationObjective,reference=NULL){
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      append(reference,max(populationObjective[objectiveIndex,])+1)
+      append(reference,max(populationObjective[objectiveIndex,])*1.1)
   }
 
   hv <- pygmo$hypervolume(t(populationObjective))
@@ -46,7 +53,7 @@ HypervolumeBFapprox <- function(populationObjective,reference=NULL){
 HypervolumeExact <- function(populationObjective,reference=NULL){
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective)){
-      reference <- append(reference,max(populationObjective[objectiveIndex,])+1)
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
     }
   }
   hv <- pygmo$hypervolume(t(populationObjective))
