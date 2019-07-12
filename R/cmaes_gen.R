@@ -9,20 +9,21 @@
 #' nObjective <- 5
 #' nIndividual <- 100
 #' crossoverProbability <- 1
-#' ps_target <- 1 / (5 + ( 1 / 2  ) )
+#' ps_target <- 1 / (5 + ( 1 / 2  )^0.5 )
 #' pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
 #' a_list <- cmaes_gen(pop)
 #' newGeneration <- CMAES(a_list,nObjective,"WFG8",ps_target,crossoverProbability,TRUE) # will run a generation of MO-CMA-ES with standard WFG8 test function.
 #' @export
-cmaes_gen <- function(population,ps_target= (1 / (5.5)),stepSize=0.5 ){
+cmaes_gen <- function(population,ps_target= (1 / (5 + ( 1 / 2  )^0.5)),stepSize=0.5,evoPath = rep(0,nrow(population)),
+                      covarianceMatrix = diag(nrow(population)) ){
   a_list <- vector('list') # container for the parent list
   populationSize <- ncol(population)
   for (populationIndex in 1:populationSize) {
     a <- list(x = population[,populationIndex],
               averageSuccessRate = ps_target,
               stepSize = stepSize,
-              evoPath = rep(0,nrow(population)),
-              covarianceMatrix = diag(nrow(population)))
+              evoPath = evoPath,
+              covarianceMatrix = covarianceMatrix)
     a_list[[populationIndex]] <- a
   }
   class(a_list) <- 'cmaes_gen'
