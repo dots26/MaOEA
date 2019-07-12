@@ -115,11 +115,11 @@ EvaluatePopulation.default <- function(pop,nObj,problem = "DTLZ2"){
 #' @param individual The individual to be evaluated
 #' @param nObj The number of objective
 #' @return A matrix of size nObjective, containing the objective values.
+#' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- runif(14)
 #' nObj <- 4
 #' DTLZ1(individual,nObj)
-#'
 #' @export
 DTLZ1 <- function(individual,nObj){
   nVar <- length(individual)
@@ -149,11 +149,11 @@ DTLZ1 <- function(individual,nObj){
 #' @param individual The individual to be evaluated
 #' @param nObj The number of objective
 #' @return A matrix of size nObjective, containing the objective values.
+#' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- runif(14)
 #' nObj <- 4
 #' DTLZ2(individual,nObj)
-#'
 #' @export
 DTLZ2 <- function(individual,nObj){
   nVar <- length(individual)
@@ -181,11 +181,11 @@ DTLZ2 <- function(individual,nObj){
 #' @param nObj The number of objective
 #' @return A matrix of size nObjective, containing the objective values.
 #'
+#' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- runif(14)
 #' nObj <- 4
 #' DTLZ3(individual,nObj)
-#'
 #' @export
 DTLZ3 <- function(individual,nObj){
   nVar <- length(individual)
@@ -214,6 +214,7 @@ DTLZ3 <- function(individual,nObj){
 #' @param nObj The number of objective
 #' @param alpha Alpha value of DTLZ4 function.
 #' @return A matrix of size nObjective, containing the objective values.
+#' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- runif(14)
 #' nObj <- 4
