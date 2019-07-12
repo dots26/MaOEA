@@ -1,6 +1,7 @@
 #' The WFG1 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -9,10 +10,9 @@
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
 
-WFG1 <- function(individual, nObj){
+WFG1 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
 
   individual1 <- individual
@@ -78,6 +78,7 @@ WFG1 <- function(individual, nObj){
 #' The WFG2 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -86,10 +87,9 @@ WFG1 <- function(individual, nObj){
 #'
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG2 <- function(individual, nObj){
+WFG2 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
 
 
@@ -146,6 +146,7 @@ WFG2 <- function(individual, nObj){
 #' The WFG4 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -153,10 +154,9 @@ WFG2 <- function(individual, nObj){
 #' WFG4(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG4 <- function(individual, nObj){
+WFG4 <- function(individual, nObj, k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
   #individual <- individual/seq(2,2*n,2)
   individual1 <- individual
@@ -176,7 +176,6 @@ WFG4 <- function(individual, nObj){
 
     x[i] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex],weightVector)
   }
-
   rsumMinIndex <- k+1
   rsumMaxIndex <- n
 
@@ -196,6 +195,7 @@ WFG4 <- function(individual, nObj){
 #' The WFG5 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -203,10 +203,9 @@ WFG4 <- function(individual, nObj){
 #' WFG5(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG5 <- function(individual, nObj){
+WFG5 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
  # individual <- individual/seq(2,2*n,2)
   individual1 <- individual
@@ -246,6 +245,7 @@ WFG5 <- function(individual, nObj){
 #' The WFG6 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -256,7 +256,7 @@ WFG5 <- function(individual, nObj){
 WFG6 <- function(individual, nObj){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
+  k <- (M-1)
   l <- n-k
 
  # individual <- individual/seq(2,2*n,2)
@@ -295,6 +295,7 @@ WFG6 <- function(individual, nObj){
 #' The WFG7 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -302,10 +303,9 @@ WFG6 <- function(individual, nObj){
 #' WFG7(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG7 <- function(individual, nObj){
+WFG7 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
   #individual <- individual/seq(2,2*n,2)
   individual1 <- individual
@@ -359,6 +359,7 @@ WFG7 <- function(individual, nObj){
 #' The WFG8 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -366,10 +367,9 @@ WFG7 <- function(individual, nObj){
 #' WFG8(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG8 <- function(individual, nObj){
+WFG8 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
 #  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
@@ -413,6 +413,7 @@ WFG8 <- function(individual, nObj){
 #' The WFG9 test function.
 #' @param nObj The number of objective
 #' @param individual The individual to be evaluated
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
 #' individual <- runif(14)
@@ -420,10 +421,9 @@ WFG8 <- function(individual, nObj){
 #' WFG9(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG9 <- function(individual, nObj){
+WFG9 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- 2*(M-1)
   l <- n-k
 #  individual <- individual/seq(2,2*n,2)
   individual1 <- individual

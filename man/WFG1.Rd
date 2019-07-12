@@ -4,12 +4,14 @@
 \alias{WFG1}
 \title{The WFG1 test function.}
 \usage{
-WFG1(individual, nObj)
+WFG1(individual, nObj, k = nObj - 1)
 }
 \arguments{
 \item{individual}{The individual to be evaluated}
 
 \item{nObj}{The number of objective}
+
+\item{k}{Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1}
 }
 \value{
 A matrix of size nObjective, containing the objective values.
