@@ -107,11 +107,10 @@ s_deceptive <- function(y,A,B,C){
 }
 
 s_multi <- function(y,A,B,C){
-  first_term <- cos((4*A)+2)*pi*(0.5-(abs(y-C)/(2*(floor(C-y)+C))))
+  first_term <- cos((4*A)+2*pi*(0.5-(abs(y-C)/(2*(floor(C-y)+C)))))
   second_term <- 4*B * (abs(y-C)/(2*(floor(C-y)+C))) * (abs(y-C)/(2*(floor(C-y)+C)))
   nominator <- 1 + first_term + second_term
   denominator <- B + 2
-
   x <- nominator/denominator
 }
 
