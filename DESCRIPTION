@@ -4,7 +4,7 @@ Title: Many Objective Evolutionary Algorithm
 Version: 0.5.1
 Author: Dani Irawan
 Maintainer: Dani Irawan <irawan_dani@yahoo.com>
-Description: Many-objective optimization using various algorithm. Available algorithms are: SMS-EMOA, NSGA-III, MO-CMA-ES, and steady-state MO-CMA-ES. The following many-objective benchmark problems are also provided: DTLZ1-DTLZ4 and WFG4-WFG9.
+Description: Many-objective optimization using various algorithms. Available algorithms are: SMS-EMOA, NSGA-III, MO-CMA-ES, and steady-state MO-CMA-ES. The following many-objective benchmark problems are also provided: DTLZ1-DTLZ4 and WFG4-WFG9. Requires python modules: numpy and pygmo.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
