@@ -4,20 +4,24 @@
 \alias{optimMaOEA}
 \title{Elitist Non-dominated Sorting Genetic Algorithm version III}
 \usage{
-optimMaOEA(x = NULL, fun = "DTLZ2", solver = "NSGA3", nObjective,
-  nGeneration = 1, nVar = ncol(x), seed = 1000,
-  populationSize = nrow(x), control = list(), ...)
+optimMaOEA(x = NULL, fun, solver = NSGA3, nObjective,
+  nGeneration = 1, nVar = nrow(x), populationSize = ncol(x),
+  seed = 2000, control = list(), ...)
 }
 \arguments{
 \item{x}{The initial population. If not supplied, will be generated using LHS. Column major, each column contain one entry.}
 
-\item{fun}{A string containing which problem are being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9. Can be user specified, using \code{x} as input and returning all objectives for each individual in \code{x}. Defaults to the "easy" DTLZ2.}
+\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
-\item{solver}{Name of the solver. Currently available: 'SMSEMOA', 'CMAES','SCMAES', and 'NSGA3'.}
+\item{solver}{Function name of the solver. Currently available: SMSEMOA, MOCMAES, SMOCMAES, and NSGA3.}
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
 \item{nGeneration}{Optional, the number of generation the solver should run.}
+
+\item{nVar}{Number of variables, will be used if \code{x} is not given.}
+
+\item{populationSize}{Number of individuals in the population, will be used if \code{x} is not given.}
 
 \item{seed}{random number seed for reproduction of code}
 
@@ -46,9 +50,16 @@ nIndividual <- 100
 #control for NSGA3
 ctrl <- list(crossoverProbability = 1,
              mutationProbability = 1/nVar)
-#Initial population
-population <- matrix(runif(nIndividual*nVar), nrow = nVar)
+#Initial population can be supplied, like below but for this example, we skip it
+#population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 
+# Hybrid NSGA-III and SMSEMOA example
+# 2 calls for nObjective. 1 for optimMaOEA, 1 for WFG8
+# generate initial population and run 10 gen. NSGA-III with standard WFG8 test function.
+newPop <- optimMaOEA( , WFG8,NSGA3,nObjective,10,nVar,nIndividual,,ctrl,nObjective)$x
 
-NSGA3(population, "WFG8",nObjective,ctrl) # will run a generation of NSGA-III with standard WFG8 test function.
+# run 5 generations of SMSEMOA with standard WFG8 test function starting with newPop.
+result <- optimMaOEA( newPop, WFG8,SMSEMOA,nObjective,5,,,1000,ctrl,nObjective)
+finalPop <- result$x
+finalObjective <- result$y
 }

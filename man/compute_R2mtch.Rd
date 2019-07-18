@@ -4,7 +4,7 @@
 \alias{compute_R2mtch}
 \title{Modified tchebyscheff R2-indicator}
 \usage{
-compute_R2mtch(dataPoints, reference, weights = NULL, nPoints = 100)
+compute_R2mtch(dataPoints, reference, weights = NULL, nWeight = 100)
 }
 \arguments{
 \item{dataPoints}{The Points coordinate. Each column contains a single point (column major).}
@@ -13,7 +13,7 @@ compute_R2mtch(dataPoints, reference, weights = NULL, nPoints = 100)
 
 \item{weights}{The weights/direction to be used to compute the achievement scalarization. Each column contains a single weight vector. If no weight is supplied, weights are generated using Sobol sequences.}
 
-\item{axisDivision}{Used only when no weights are supplied. An input for the structured weight distribution. This defines how many division are created in each axis.}
+\item{nWeight}{Used only when no weights are supplied. An input for the sobol weight generation. This defines how many points to be generated.}
 }
 \value{
 The function return the R2-indicator of the set.
