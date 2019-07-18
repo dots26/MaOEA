@@ -3,19 +3,33 @@ r:
  - oldrel
  - release
  - devel
-python: 3.6
-os:
- - linux
- - osx
-before_install:
- - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
- - bash miniconda.sh -b -p $HOME/miniconda
- - export PATH="$HOME/miniconda/bin:$PATH"
- - hash -r
- - conda config --set always_yes yes --set changeps1 no
- - conda update -q conda
- - conda info -a
- - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
- - source activate test-env
- - conda install -c anaconda numpy
- - conda install -c conda-forge pygmo
+matrix:
+include:
+ - name: "Python 3-6 and 3.7.1 on Xenial Linux"
+   python:
+   - 3.7           # this works for Linux but is ignored on macOS or Windows
+   - 3.6
+   - 2.7
+   dist: xenial          # required for Python >= 3.7
+   before_install:       # pygmo is available on pip for linux, but not on macOS
+    - pip install --upgrade pip
+    - pip install numpy
+    - pip install pygmo
+ - name: "Python 3.6 on macOS"
+   os: osx
+   python:
+   - 3.6
+   - 2.7
+   before_install: # install conda, then python packages
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+    - source activate test-env
+    - conda install -c anaconda numpy
+    - conda install -c conda-forge/label/gcc7 pygmo
+
