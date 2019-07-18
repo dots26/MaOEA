@@ -12,7 +12,6 @@ matrix:
  - name: "Python 3-6 on Linux"
    python: 3.6
    r: release
-
    before_install:       # pygmo is available on pip for linux, but not on macOS
     - sudo pip install --upgrade pip
     - pip install --user numpy
@@ -20,6 +19,28 @@ matrix:
  - name: "Python 2.7 on Linux"
    python: 2.7
    r: release
+   before_install:       # pygmo is available on pip for linux, but not on macOS
+    - sudo pip install --upgrade pip
+    - pip install --user numpy
+    - pip install --user pygmo
+ - name: "Python 3-7 on Xenial Linux oldrel"
+   python: 3.7
+   dist: xenial          # required for Python >= 3.7
+   r:  oldrel
+   before_install:       # pygmo is available on pip for linux, but not on macOS
+    - sudo pip install --upgrade pip
+    - pip install --user numpy
+    - pip install --user pygmo
+ - name: "Python 3-6 on Linux oldrel"
+   python: 3.6
+   r:  oldrel
+   before_install:       # pygmo is available on pip for linux, but not on macOS
+    - sudo pip install --upgrade pip
+    - pip install --user numpy
+    - pip install --user pygmo
+ - name: "Python 2.7 on Linux  oldrel"
+   python: 2.7
+   r:  oldrel
    before_install:       # pygmo is available on pip for linux, but not on macOS
     - sudo pip install --upgrade pip
     - pip install --user numpy
@@ -40,7 +61,7 @@ matrix:
     - source activate test-env
     - conda install -c anaconda numpy
     - conda install -c conda-forge pygmo
-- name: "Python 2.7 on macOS"
+ - name: "Python 2.7 on macOS"
    os: osx
    r: release
    python: 2.7
@@ -56,4 +77,35 @@ matrix:
     - source activate test-env
     - conda install -c anaconda numpy
     - conda install -c conda-forge pygmo
-
+ - name: "Python 3.6 on macOS oldrel"
+   os: osx
+   r: oldrel
+   python: 3.6
+   before_install: # install conda, then python packages
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+    - source activate test-env
+    - conda install -c anaconda numpy
+    - conda install -c conda-forge pygmo
+ - name: "Python 2.7 on macOS oldrel"
+   os: osx
+   r: oldrel
+   python: 2.7
+   before_install: # install conda, then python packages
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+    - source activate test-env
+    - conda install -c anaconda numpy
+    - conda install -c conda-forge pygmo
