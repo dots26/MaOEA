@@ -2,14 +2,16 @@
 % Please edit documentation in R/functions.R
 \name{EvaluateIndividual}
 \alias{EvaluateIndividual}
-\title{Evaluate objective value of a single individual}
+\title{Evaluate objective values of a single individual}
 \usage{
-EvaluateIndividual(individual, ...)
+EvaluateIndividual(individual, fun, ...)
 }
 \arguments{
 \item{individual}{The individual to be evaluated}
 
-\item{...}{Further parameters used by the specific class evaluation}
+\item{fun}{A string containing which problem is being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9.}
+
+\item{...}{Further parameters used by \code{fun}}
 }
 \value{
 A matrix of size nObjective, containing the objective values.

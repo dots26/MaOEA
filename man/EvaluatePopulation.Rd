@@ -4,12 +4,14 @@
 \alias{EvaluatePopulation}
 \title{Evaluate objective value of a set of individuals}
 \usage{
-EvaluatePopulation(pop, ...)
+EvaluatePopulation(pop, fun, ...)
 }
 \arguments{
-\item{...}{Further parameters used by the specific class evaluation}
+\item{pop}{The population to be evaluated}
 
-\item{population}{The population to be evaluated. An individual should occupy a column, therefore each row in the column correseponds to a gene.}
+\item{fun}{A string containing which problem is being solved. Currently available in the package: DTLZ1-DTLZ4, WFG4-WFG9.}
+
+\item{...}{Further parameters used by \code{fun}}
 }
 \value{
 A matrix of size nObjective, containing the objective values.
