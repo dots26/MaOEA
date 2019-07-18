@@ -2,7 +2,7 @@ citHeader("To cite MaOEA in publications, use:")
 
 citEntry(entry="InProceedings",
          title = "Comparison of Reference- and Hypervolume-Based {MOEA} on Solving Many-Objective Optimization Problems",
-         author = personList(person(family="Irawan", given="Dani"),
+         author = personList(person(family="Irawan", given="Dani",comment=c(ORCID='0000-0002-4213-941X')),
                              person(family="Naujoks",given="Boris")),
          booktitle = "Evolutionary Multi-Criterion Optimization - 10th International Conference, {EMO} 2019, East Lansing, MI, USA, March 10-13, 2019, Proceedings",
          year = "2019",
