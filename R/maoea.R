@@ -1,115 +1,93 @@
-optimMaOEA <- function(problem,
-                       optimizer,
+#' Main interface for the many-objective optimization evolutionary algorithm (MaOEA) package.
+#'
+#' @title Elitist Non-dominated Sorting Genetic Algorithm version III
+#' @param x The initial population. If not supplied, will be generated using LHS. Column major, each column contain one entry.
+#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param nObjective The number of objective functions. A scalar value.
+#' @param solver Function name of the solver. Currently available: SMSEMOA, MOCMAES, SMOCMAES, and NSGA3.
+#' @param nGeneration Optional, the number of generation the solver should run.
+#' @param nVar Number of variables, will be used if \code{x} is not given.
+#' @param populationSize Number of individuals in the population, will be used if \code{x} is not given.
+#' @param seed random number seed for reproduction of code
+#' @param control A list, containing the following:
+#' \code{weightVectorSet} A set of weight vector for the optimizer. The weight vector can be any point in the objective space. If not supplied, 5*nObjective points are generated from a sobol sequence. Size: nrow = nObjective,ncol = number of weight vectors
+#' \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
+#' \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
+#' \code{WFGScaling} The use of scaling factor in WFG. Will be ignored in DTLZ problems. Without the scaling, the Pareto front would be on the all-positive portion of hypersphere with radius 1.
+#' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
+#' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
+#' @param ... Further arguments to be passed to \code{fun}
+#' @return #' @return Returns a list for the next generation
+#' \code{population} The new generation design points.
+#' \code{populationObjective} The new generation's objective values.
+#' @examples
+#' nVar <- 14
+#' nObjective <- 5
+#' nIndividual <- 100
+#' #control for NSGA3
+#' ctrl <- list(crossoverProbability = 1,
+#'              mutationProbability = 1/nVar)
+#' #Initial population can be supplied, like below but for this example, we skip it
+#' #population <- matrix(runif(nIndividual*nVar), nrow = nVar)
+#'
+#' # Hybrid NSGA-III and SMSEMOA example
+#' # 2 calls for nObjective. 1 for optimMaOEA, 1 for WFG8
+#' # generate initial population and run 10 gen. NSGA-III with standard WFG8 test function.
+#' newPop <- optimMaOEA( , WFG8,NSGA3,nObjective,10,nVar,nIndividual,,ctrl,nObjective)$x
+#'
+#' # run 5 generations of SMSEMOA with standard WFG8 test function starting with newPop.
+#' result <- optimMaOEA( newPop, WFG8,SMSEMOA,nObjective,5,,,1000,ctrl,nObjective)
+#' finalPop <- result$x
+#' finalObjective <- result$y
+#' @export
+optimMaOEA <- function(x=NULL,
+                       fun,
+                       solver=NSGA3,
                        nObjective,
-                       nVar,
-                       populationSize,
-                       referencePoint,
-                       hypervolumeTarget=0.99,
-                       crossoverProbability=1,
-                       crossoverDistribution=30,
-                       mutationProbability=1,
-                       mutationDistribution=20,
-                       successProbThreshold = 0.44,
-                       successProbTarget = 0.5){
-  # check which problem are being solved
-  if(!is.na(stringr::str_match(problem,"DTLZ"))){
-    if(!is.na(stringr::str_match(problem,"DTLZ1")))
-      problemType <- 1
-    else
-      problemType <- 2
+                       nGeneration = 1,
+                       nVar=nrow(x),
+                       populationSize=ncol(x),
+                       seed =2000,
+                       control=list(),...){
+  set.seed(seed)
+  print(seed)
+  #initialize population if not specified
+  if(is.null(x)){
+    if(is.null(nVar)) stop('Initial population and number of variable is not specified. Need either one to run.')
+    x<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
   }
-  if(!is.na(stringr::str_match(problem,"WFG"))){
-    problemType <- 3
+  con <- list( hypervolumeReferencePoint=NULL,
+               hypervolumeTarget=0.99,
+               weightVectorSet=NULL,
+               crossoverProbability=1,
+               crossoverDistribution=30,
+               mutationProbability=1,
+               mutationDistribution=20,
+               successProbThreshold = 0.44,
+               successProbTarget = 0.5)
+
+  con[names(control)] <- control
+
+  for(i in 1:nGeneration){
+    newGeneration <- solver(x,fun,nObjective,con,...)
+    x <- newGeneration$population
+    y <- newGeneration$objective
   }
-  #initialize population
-  if((problemType==3) && (WFGScaling==TRUE)){
-    population<-InitializePopulationWFG(populationSize,nVar,FALSE,0,1)
-  }else{
-    population<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
-  }
 
-  intersectionPoint <- referencePoint
-  # get the intersection of the refline and sigma(x^2)=1 (for the concave problems, slightly different for DTLZ1)
-  # x^2  + y^2  + z^2  = 1
-  # the refline is the line from (0,0,0) to some {(x,y,z) | x+y+z=1} (the ref point)
-  # which means if for example the ref point is at (x*,y*,z*)
-  # the line has length = a = root(x*^2+y*^2+z*^2)
-  # to make the line to have length = 1, we simply multiply the initial ref point by 1/a
-  #
-  intersectionPoint <- referencePoint
-  nRefPoint <- ncol(referencePoint)
-  for (refPointIndex in 1:nRefPoint){
-    if(problemType == 1) #DTLZ1
-      a <- (sum(referencePoint[,refPointIndex]))*2 # for DTLZ1
-    else
-      a <- (sum(referencePoint[,refPointIndex]*referencePoint[,refPointIndex]))^0.5 # for other DTLZ and WFG
-    intersectionPoint[,refPointIndex] <- intersectionPoint[,refPointIndex]/a
-  }
-  origin <- integer(nObjective)
-
-  targetSmetric <- hypervolumeTarget * GetHypervolume(intersectionPoint,rep(2,nObjective),"exact")
-  Smetric <- 0 # s-metric is the hypervolume
-  parent_list <- cmaes_gen(population)
-
-  while(Smetric < (targetSmetric)){ # use this if there is a Hypervolume target
-    populationObjective<-matrix(,nrow=nObjective,ncol=0)
-    if((optimizer=="NSGA"))
-      NSGA3(nObjective, population,referencePoint,problem,crossoverProbability,mutationProbability,TRUE,mutationDistribution,crossoverDistribution)
-    else if((optimizer=="SCMAES") ||(optimizer=="CMAES")) {
-
-      if(optimizer=="SCMAES")
-        newGeneration <- SCMAES(nObjective, parent_list,problem,successProbTarget,crossoverProbability,TRUE)
-      else
-        newGeneration <- CMAES(nObjective, parent_list,problem,successProbTarget,crossoverProbability,TRUE)
-
-
-      parent_list <- newGeneration[[1]]
-      population <- newGeneration[[2]]
-    }else{
-      newGeneration <- SMSEMOA(nObjective, population,problem,crossoverProbability,mutationProbability,TRUE,mutationDistribution,crossoverDistribution)
-      population <- newGeneration$population
-    }
-
-
-    #evaluate the new generation
-    for(popIndex in 1:populationSize){
-      individualObjectiveValue<-EvaluateIndividual(population[,popIndex],nObjective)
-      populationObjective<-cbind(populationObjective,individualObjectiveValue)
-    }
-    # scale the objective (in case of WFG problem)
-    if((problemType == 3) && (WFGScaling == TRUE))
-      scaledObj <- populationObjective/(seq(2,2*nObjective,2))
-    else
-      scaledObj <- populationObjective
-
-    #compute the hypervolume
-    if(max(scaledObj)<2) # if the farthest point is smaller than 2, no shift needed
-      Smetric <- GetHypervolume(scaledObj,reference = rep(2,nObjective),method=getOption('hypervolumeMethod'))
-    else{ # if any objective exceed 2, shift it to a number slightly less than 2 so it will give nearly zero hypervolume
-      scaledObjMaxed <- (scaledObj>2)*1.999999+(scaledObj<2)*scaledObj
-      Smetric <- GetHypervolume(scaledObjMaxed,reference = rep(2,nObjective),method=getOption('hypervolumeMethod'))
-    }
-  }
-  return(list(population,Smetric))
+  return(list(x=x,y=y))
 }
 
 pygmo <- NULL
 rndGen <- NULL
 
 .onLoad <- function(libname, pkgname){
-  # use superassignment to update global reference to scipy
-  library(reticulate)
-  #pysys <- import("sys")
-  #pysys$modules('pygmo') = NULL
-
-  print('Importing PyGMO')
+  # library(reticulate)
   pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
-  print('Importing NumPy')
   rndGen <<- reticulate::import("numpy", delay_load = TRUE)
 
   have_pygmo <- py_module_available("pygmo")
   if (!have_pygmo)
-    print("PyGMO not available, install dependecies using MaOEA::install_python_dependecies()")
+    packageStartupMessage("PyGMO not available, install dependencies using MaOEA::install_python_dependencies(). Installation instruction is also available in: https://esa.github.io/pagmo2/install.html")
 }
 
 #' Install the required python package: PyGMO
@@ -117,6 +95,6 @@ rndGen <- NULL
 #' @param method Default: auto
 #' @param conda Default: auto
 #' @export
-install_python_dependecies <- function(method = "auto", conda = "auto") {
+install_python_dependencies <- function(method = "auto", conda = "auto") {
   reticulate::py_install("pygmo", method = method, conda = conda)
 }
