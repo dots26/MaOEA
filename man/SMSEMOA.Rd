@@ -4,20 +4,22 @@
 \alias{SMSEMOA}
 \title{S-Metric Selection EMOA}
 \usage{
-SMSEMOA(population, ...)
+SMSEMOA(population, fun, nObjective, control = list(), ...)
 }
 \arguments{
 \item{population}{The parent generation. One individual per column.}
 
-\item{...}{Further arguments to be passed to \code{fun}}
+\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
-\item{fun}{A string containing which problem are being solved. Currently DTLZ1-DTLZ4, WFG4-WFG9 is in the package. Default to the "easy" DTLZ2.}
+\item{nObjective}{Number of objective}
 
 \item{control}{(list) Options to control the SMS-EMOA:
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 \code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).}
+
+\item{...}{Further arguments to be passed to \code{fun}}
 }
 \value{
 Returns a list for the next generation
@@ -35,8 +37,10 @@ nIndividual <- 100
 crossoverProbability <- 1
 mutationProbability <- 1/nVar
 population <- matrix(runif(nIndividual*nVar), nrow = nVar)
-SMSEMOA(population,"WFG8",nObjective,list(crossoverProbability = crossoverProbability,
-                                          mutationProbability = mutationProbability),nObjective) # will run a generation of SMS-EMOA with standard WFG8 test function.
+
+# run a generation of SMS-EMOA with standard WFG6 test function.
+SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
+                                          mutationProbability = mutationProbability),nObjective)
 }
 \references{
 Beume,  N.,  Naujoks,  B.,  Emmerich,  M.:  SMS-EMOA:  Multiobjective  selection

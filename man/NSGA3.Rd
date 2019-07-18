@@ -4,14 +4,12 @@
 \alias{NSGA3}
 \title{Elitist Non-dominated Sorting Genetic Algorithm version III}
 \usage{
-NSGA3(population, ...)
+NSGA3(population, fun, nObjective, control = list(), ...)
 }
 \arguments{
 \item{population}{The parent generation. One individual per column. nrow = number of variable, ncol = number of individuals in the population.}
 
-\item{...}{Further arguments to be passed to \code{fun}}
-
-\item{fun}{A string containing which problem are being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
+\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
@@ -21,6 +19,8 @@ NSGA3(population, ...)
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.}
+
+\item{...}{Further arguments to be passed to \code{fun}}
 }
 \value{
 #' @return Returns a list for the next generation
@@ -40,8 +40,8 @@ ctrl <- list(crossoverProbability = 1,
 #Initial population
 population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 
-
-NSGA3(population, "WFG8",nObjective,ctrl) # will run a generation of NSGA-III with standard WFG8 test function.
+# run a generation of NSGA-III with standard WFG8 test function.
+NSGA3(population, WFG8,nObjective,ctrl,nObjective)
 }
 \references{
 Deb, K., Jain, H.: An evolutionary many-objective optimization algorithm using
