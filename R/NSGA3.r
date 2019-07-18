@@ -1,7 +1,7 @@
 #' Do an iteration of NSGA-III. THe variation is using SBX and polynomial mutation.
 #' @title Elitist Non-dominated Sorting Genetic Algorithm version III
 #' @param population The parent generation. One individual per column. nrow = number of variable, ncol = number of individuals in the population.
-#' @param fun A string containing which problem are being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param nObjective The number of objective functions. A scalar value.
 #' @param control A list, containing the following:
 #' \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
@@ -27,16 +27,10 @@
 #' #Initial population
 #' population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 #'
-#'
-#' NSGA3(population, "WFG8",nObjective,ctrl) # will run a generation of NSGA-III with standard WFG8 test function.
+#' # run a generation of NSGA-III with standard WFG8 test function.
+#' NSGA3(population, WFG8,nObjective,ctrl,nObjective)
 #' @export
-
-NSGA3 <- function(population,...){
-  UseMethod('NSGA3',population)
-}
-
-#' @export
-NSGA3.default <- function(population,fun,nObjective,control=list(),...){
+NSGA3 <- function(population,fun,nObjective,control=list(),...){
   con <- list(crossoverProbability=1,
               mutationProbability=1,
               mutationDistribution=20,

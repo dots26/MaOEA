@@ -2,7 +2,7 @@
 #' @title Multi-Objective CMA-ES
 #' @param parent The parent generation, an object of class cmaes_gen. The MO-CMA-ES parent is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable). The parent is then should be a vector of lists (see example).
 #' @param nObjective The number of objective functions. A scalar value.
-#' @param fun A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
+#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param control List of parameters for CMA-ES. Available control are as follows:
 #' \code{successProbTarget} Target success probability
 #' \code{successProbThreshold} The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
@@ -17,17 +17,14 @@
 #' nIndividual <- 100
 #' crossoverProbability <- 1
 #' ps_target <- 1 / (5 + ( 1 / 2  )^0.5 )
-#' pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
+#' pop <- matrix(stats::runif(nIndividual*nVar), nrow = nVar) # create the population
 #' a_list <- cmaes_gen(pop)
 #' control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
-#' newGeneration <- MOCMAES(a_list,nObjective,"WFG8",control,nObjective) # will run a generation of MO-CMA-ES with standard WFG8 test function.
+#'
+#' # run a generation of MO-CMA-ES with standard WFG8 test function.
+#' newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
 #' @export
-MOCMAES <- function(parent,...){
-  UseMethod('MOCMAES')
-}
-
-#' @export
-MOCMAES.cmaes_gen <- function( parent,nObjective,fun="DTLZ2",control=list(),...){
+MOCMAES <- function( parent,nObjective,fun,control=list(),...){
   con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5 ),
               successProbThreshold = 0.44,
               crossoverProbability=1,
@@ -66,7 +63,7 @@ MOCMAES.cmaes_gen <- function( parent,nObjective,fun="DTLZ2",control=list(),...)
   new_population <- population
   newObjectiveValue <- populationObjective
 
-  if(runif(1) < control$crossoverProbability)
+  if(stats::runif(1) < control$crossoverProbability)
   {
     parentCount <- 0
     parent_x <- population

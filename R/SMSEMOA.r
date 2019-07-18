@@ -2,7 +2,8 @@
 #' @title S-Metric Selection EMOA
 #'
 #' @param population The parent generation. One individual per column.
-#' @param fun A string containing which problem are being solved. Currently DTLZ1-DTLZ4, WFG4-WFG9 is in the package. Default to the "easy" DTLZ2.
+#' @param nObjective Number of objective
+#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param control (list) Options to control the SMS-EMOA:
 #' \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
@@ -23,16 +24,12 @@
 #' crossoverProbability <- 1
 #' mutationProbability <- 1/nVar
 #' population <- matrix(runif(nIndividual*nVar), nrow = nVar)
-#' SMSEMOA(population,"WFG8",nObjective,list(crossoverProbability = crossoverProbability,
-#'                                           mutationProbability = mutationProbability),nObjective) # will run a generation of SMS-EMOA with standard WFG8 test function.
+#'
+#' # run a generation of SMS-EMOA with standard WFG6 test function.
+#' SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
+#'                                           mutationProbability = mutationProbability),nObjective)
 #' @export
-SMSEMOA <- function(population,...){
-   UseMethod('SMSEMOA',population)
-}
-source('R/SMSEMOA.test.R')
-
-#' @export
-SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...){
+SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   chromosomeLength <- nrow(population)
   populationSize <- ncol(population)
 
@@ -119,9 +116,9 @@ SMSEMOA.default <- function(population,fun='DTLZ2',nObjective,control=list(),...
       individualIndexTobeChecked <- c(individualIndexTobeChecked,individualIndex)
     }
     smallestContributor <- GetLeastContributor(combinedObjectiveValue[,worstFrontIndex],
-                                              control$referencePoint,
-                                              control$hypervolumeMethod,
-                                              control$hypervolumeMethodParam)
+                                               control$referencePoint,
+                                               control$hypervolumeMethod,
+                                               control$hypervolumeMethodParam)
     removedPoint <- individualIndexTobeChecked[smallestContributor]
 
     newPopulation <- matrix(,nrow = chromosomeLength,ncol = 0)
