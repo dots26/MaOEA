@@ -4,7 +4,7 @@
 \alias{WFG6}
 \title{The WFG6 test function.}
 \usage{
-WFG6(individual, nObj)
+WFG6(individual, nObj, k = nObj - 1)
 }
 \arguments{
 \item{individual}{The individual to be evaluated}
