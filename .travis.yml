@@ -4,6 +4,5 @@ r:
  - release
  - devel
 before_install:
- - pip install --upgrade pip
- - pip install numpy
- - pip install pygmo
+ - pip3 install numpy
+ - pip3 install pygmo
