@@ -63,6 +63,7 @@ matrix:
     - conda install -c conda-forge pygmo
  - name: "Python 3.7 on macOS"
    os: osx
+   osx_image: xcode10.2
    r: release
    python: 3.7
    before_install: # install conda, then python packages
@@ -111,6 +112,7 @@ matrix:
     - conda install -c conda-forge pygmo
  - name: "Python 3.7 on macOS oldrel"
    os: osx
+   osx_image: xcode10.2
    r: oldrel
    python: 3.7
    before_install: # install conda, then python packages
