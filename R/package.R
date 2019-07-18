@@ -9,6 +9,8 @@
 #' This function is a simple wrapper to call the algorithms listed above for several iterations.
 #' Using this function, users can simply supply the initial population, objective function, the chosen algorithm, and the number of iterations. If number of iteration is not supplied, then only a single iteration is conducted.
 #'
+#' Note: This package uses column-major ordering, i.e. an individual should be contained in a single column, each row represents different variable.
+#' All optimization variable should be scaled to 0-1.
 #' \tabular{ll}{
 #' Package: \tab MaOEA\cr
 #' Type: \tab Package\cr
