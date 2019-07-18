@@ -19,3 +19,7 @@ A matrix of size nObjective, containing the objective values.
 \description{
 Evaluate a population with the specified test function. Non-feasible solution are given Inf as objective values.
 }
+\examples{
+pop <- runif(8,50) # 8 variables, 50 individuals
+EvaluateIndividual(pop,WFG4,3) # the 3 is passed to WFG4 nObj
+}

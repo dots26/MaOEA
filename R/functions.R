@@ -34,7 +34,9 @@ InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength,binaryE
 #' @param fun A string containing which problem is being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
-#'
+#' @examples
+#' individual <- runif(8,1)
+#' EvaluateIndividual(individual,WFG4,3) # the 3 is passed to WFG4 nObj
 #' @export
 EvaluateIndividual <- function(individual,fun,...){
   nVar <- length(individual)
@@ -49,7 +51,9 @@ EvaluateIndividual <- function(individual,fun,...){
 #' @param fun A string containing which problem is being solved. Currently available in the package: DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
-#'
+#' @examples
+#' pop <- runif(8,50) # 8 variables, 50 individuals
+#' EvaluateIndividual(pop,WFG4,3) # the 3 is passed to WFG4 nObj
 #' @export
 EvaluatePopulation <- function(pop,fun,...){
   popSize <- ncol(pop)
