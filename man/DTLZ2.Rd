@@ -18,7 +18,7 @@ A matrix of size nObjective, containing the objective values.
 The DTLZ2 test function.
 }
 \examples{
-individual <- runif(14)
+individual <- stats::runif(14)
 nObj <- 4
 DTLZ2(individual,nObj)
 }
