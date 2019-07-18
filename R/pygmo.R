@@ -45,7 +45,7 @@ HypervolumeBFapprox <- function(populationObjective,reference=NULL){
   }
 
   hv <- pygmo$hypervolume(t(populationObjective))
-  hv_alg <- pygmo$bf_fpras(0.05,0.05,as.integer(p*1000))
+  hv_alg <- pygmo$bf_fpras(0.05,0.05,as.integer(1000))
 
   approxHv <- hv$compute(reference,hv_alg)
 }
