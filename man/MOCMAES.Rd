@@ -4,22 +4,22 @@
 \alias{MOCMAES}
 \title{Multi-Objective CMA-ES}
 \usage{
-MOCMAES(parent, ...)
+MOCMAES(parent, nObjective, fun, control = list(), ...)
 }
 \arguments{
 \item{parent}{The parent generation, an object of class cmaes_gen. The MO-CMA-ES parent is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable). The parent is then should be a vector of lists (see example).}
 
-\item{...}{Further arguments to be passed to \code{fun}}
-
 \item{nObjective}{The number of objective functions. A scalar value.}
 
-\item{fun}{A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.}
+\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
 \item{control}{List of parameters for CMA-ES. Available control are as follows:
 \code{successProbTarget} Target success probability
 \code{successProbThreshold} The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
 \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.}
+
+\item{...}{Further arguments to be passed to \code{fun}}
 }
 \value{
 Returns a list for the next generation. It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
@@ -33,10 +33,12 @@ nObjective <- 5
 nIndividual <- 100
 crossoverProbability <- 1
 ps_target <- 1 / (5 + ( 1 / 2  )^0.5 )
-pop <- matrix(runif(nIndividual*nVar), nrow = nVar) # create the population
+pop <- matrix(stats::runif(nIndividual*nVar), nrow = nVar) # create the population
 a_list <- cmaes_gen(pop)
 control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
-newGeneration <- MOCMAES(a_list,nObjective,"WFG8",control,nObjective) # will run a generation of MO-CMA-ES with standard WFG8 test function.
+
+# run a generation of MO-CMA-ES with standard WFG8 test function.
+newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
 }
 \references{
 Voß, T., Hansen, N., Igel, C.: Improved step size adaptation for the MO-CMA-ES. In: Genetic and Evolutionary Computation (GECCO). pp. 487–494. ACM, New York, NY (2010)
