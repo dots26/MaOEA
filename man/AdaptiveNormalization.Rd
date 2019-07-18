@@ -22,6 +22,7 @@ The normalization is done by using adaptive normalization used in NSGA-III.
 \examples{
 nObj <- 5
 nIndividual <- 100
+nVar <- 10
 population <- InitializePopulationLHS(nIndividual,nVar,FALSE)
 objective <- matrix(,nrow=nObj,ncol=nIndividual)
 for(individual in 1:nIndividual){
