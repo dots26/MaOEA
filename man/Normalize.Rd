@@ -22,6 +22,7 @@ Normalize the objectives AND reference (combined) to 0-1. The origin is the idea
 }
 \examples{
 nObj <- 5
+nVar <- 10
 nIndividual <- 100
 population <- InitializePopulationLHS(nIndividual,nVar,FALSE)
 objective <- matrix(,nrow=nObj,ncol=nIndividual)
