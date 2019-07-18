@@ -253,10 +253,9 @@ WFG5 <- function(individual, nObj,k = nObj-1){
 #' WFG6(individual,nObj)
 #' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
 #' @export
-WFG6 <- function(individual, nObj){
+WFG6 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
-  k <- (M-1)
   l <- n-k
 
  # individual <- individual/seq(2,2*n,2)
