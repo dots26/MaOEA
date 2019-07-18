@@ -28,83 +28,34 @@ InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength,binaryE
   return(population)
 }
 
-#' Create initial sample using LHS method for WFG problems. Variable range: 0-2i, i = variable index.
-#' @title Initialize population for WFG test suite
-#' @param nIndividual The number of individual in the population. Integer > 0.
-#' @param chromosomeLength The number of variables per individual
-#' @param binaryEncoding whether to use binary encoding or real encoding. Default to FALSE
-#'
-#' @return A matrix of size chromosomeLength x nIndividual.
-#' @examples
-#' nVar <- 14
-#' nIndividual <- 100
-#' InitializePopulationWFG(nIndividual,nVar,FALSE)
-#'
-#'
-InitializePopulationWFG <- function(numberOfIndividuals,chromosomeLength,binaryEncoding = TRUE, minVal=0,maxVal=1,samplingMethod=0) {
-  # population<-optimumLHS(n=numberOfIndividuals,k=chromosomeLength,maxSweeps=10,eps=.1,verbose=FALSE)
-  population<-lhs::randomLHS(n=numberOfIndividuals,k=chromosomeLength)
-
-  population<-t(population)
-
-  for(rowIndex in 1:nrow(population)){
-    population[rowIndex,]<-population[rowIndex,] * 2*rowIndex
-  }
-  return(population)
-}
-
 #' Evaluate individual with the specified test function. Non-feasible solution are given Inf as objective values.
-#' @title Evaluate objective value of a single individual
+#' @title Evaluate objective values of a single individual
 #' @param individual The individual to be evaluated
-#' @param ... Further parameters used by the specific class evaluation
+#' @param fun A string containing which problem is being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
 #'
 #' @export
-
-EvaluateIndividual <- function(individual,...){
-  UseMethod('EvaluateIndividual',individual)
-}
-
-#' Evaluate individual with the specified test function. Non-feasible solution are given Inf as objective values.
-#' @title Evaluate objective value of a single individual
-#' @param individual The individual to be evaluated
-#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
-#' @return A matrix of size nObjective, containing the objective values.
-#'
-#' @export
-EvaluateIndividual.default <- function(individual,problem,...){
+EvaluateIndividual <- function(individual,fun,...){
   nVar <- length(individual)
 
-  objective <- do.call((problem),args = list(individual,...))
+  objective <- fun(individual,...)
   return(objective)
 }
 
-
 #' Evaluate a population with the specified test function. Non-feasible solution are given Inf as objective values.
 #' @title Evaluate objective value of a set of individuals
-#' @param population The population to be evaluated. An individual should occupy a column, therefore each row in the column correseponds to a gene.
-#' @param ... Further parameters used by the specific class evaluation
+#' @param pop The population to be evaluated
+#' @param fun A string containing which problem is being solved. Currently available in the package: DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
 #'
 #' @export
-
-EvaluatePopulation <- function(pop,...){
-  UseMethod('EvaluatePopulation',pop)
-}
-
-#' Evaluate a population with the specified test function. Non-feasible solution are given Inf as objective values.
-#' @title Evaluate objective value of a set of individuals
-#' @param individual The individual to be evaluated
-#' @param nObj The number of objective
-#' @param problem A string containing which problem are being solved. Currently available DTLZ1-DTLZ4, WFG4-WFG9. Default to the "easy" DTLZ2.
-#' @return A matrix of size nObjective, containing the objective values.
-#'
-#' @export
-EvaluatePopulation.default <- function(pop,nObj,problem = "DTLZ2"){
+EvaluatePopulation <- function(pop,fun,...){
   popSize <- ncol(pop)
-  popObjective <- matrix(,nrow=nObj,ncol = 0)
+  popObjective <- NULL
   for(individualIndex in 1:popSize){
-    indObjective <- EvaluateIndividual(pop[,individualIndex],nObj,problem)
+    indObjective <- EvaluateIndividual(pop[,individualIndex],fun,...)
     popObjective <- cbind(popObjective,indObjective)
   }
 
@@ -117,7 +68,7 @@ EvaluatePopulation.default <- function(pop,nObj,problem = "DTLZ2"){
 #' @return A matrix of size nObjective, containing the objective values.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
-#' individual <- runif(14)
+#' individual <- stats::runif(14)
 #' nObj <- 4
 #' DTLZ1(individual,nObj)
 #' @export
@@ -151,7 +102,7 @@ DTLZ1 <- function(individual,nObj){
 #' @return A matrix of size nObjective, containing the objective values.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
-#' individual <- runif(14)
+#' individual <- stats::runif(14)
 #' nObj <- 4
 #' DTLZ2(individual,nObj)
 #' @export
@@ -183,7 +134,7 @@ DTLZ2 <- function(individual,nObj){
 #'
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
-#' individual <- runif(14)
+#' individual <- stats::runif(14)
 #' nObj <- 4
 #' DTLZ3(individual,nObj)
 #' @export
@@ -216,7 +167,7 @@ DTLZ3 <- function(individual,nObj){
 #' @return A matrix of size nObjective, containing the objective values.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
-#' individual <- runif(14)
+#' individual <- stats::runif(14)
 #' nObj <- 4
 #' DTLZ4(individual,nObj)
 #' @export
@@ -242,110 +193,6 @@ DTLZ4 <- function(individual,nObj,alpha=100){
 }
 
 
-RandomSelection <- function(population){
-  chosenIndividual <- sample(1:ncol(population),1)
-  return(population[,chosenIndividual])
-}
-
-RouletteSelection <- function(population,populationFitness,rnk){
-  rnkFitness <- 1/rnk
-
-  totalFitness <- sum(rnkFitness)
-
-  scaledFitness <- rnkFitness/totalFitness
-  randomNumber <- runif(1)
-
-  summedFitness <- 0
-  chosenIndividual <- 0
-  while(summedFitness<randomNumber){
-    chosenIndividual <- chosenIndividual + 1
-    summedFitness <- summedFitness+scaledFitness[chosenIndividual]
-  }
-  return(population[,chosenIndividual])
-}
-
-MyTournamentSelection <- function(population,populationFitness,rnk,tournamentSize,tournamentWinningProbability = 0.7){
-  rnkFitness <- 2-(rnk/max(rnk))
-
-  totalFitness <- sum(rnkFitness)
-  scaledFitness <- rnkFitness/totalFitness
-
-  populationSize <- ncol(population)
-  tournamentSampleIndex <- sample(1:populationSize,tournamentSize,FALSE)
-
-  tournamentSampleFitness <- scaledFitness[tournamentSampleIndex]
-  tournamentSampleOrder <- order(tournamentSampleFitness,decreasing = TRUE)
-
-  randomNumber <- runif(1)
-  chosenrnk <- 0
-  while(chosenrnk<tournamentSize){
-    chosenrnk <- chosenrnk + 1
-
-    randomNumber <- runif(1)
-    if(randomNumber < tournamentWinningProbability )
-      break
-  }
-  #print(tournamentSampleOrder)
-  tournamentWinner <-0
-  while(tournamentWinner<tournamentSize){
-    tournamentWinner <- tournamentWinner +1
-    if(tournamentSampleOrder[tournamentWinner] == chosenrnk)
-      break
-  }
-
-  chosenIndividual <- tournamentSampleIndex[tournamentWinner]
-  return(population[,chosenIndividual])
-}
-
-Recombination <- function(parent1, parent2){
-  chromosomeCount <- length(parent1)
-  crossoverPoint <- ceiling(runif(1)*(chromosomeCount-1))
-  offspringData1<-c(parent1[1:crossoverPoint],parent2[(crossoverPoint+1):chromosomeCount])
-  offspringData2<-c(parent2[1:crossoverPoint],parent1[(crossoverPoint+1):chromosomeCount])
-
-  offspring <- matrix(offspringData1,nrow = chromosomeCount,ncol=1)
-  offspring <- cbind(offspring,offspringData2)
-  return(offspring)
-}
-
-RecombinationReal <- function(parent1, parent2){
-  chromosomeCount <- length(parent1)
-  crossoverPoint <- ceiling(runif(1)*(chromosomeCount-1))
-  offspringData1<-c(parent1[1:crossoverPoint-1],parent1[(crossoverPoint):chromosomeCount]*0.5+parent2[(crossoverPoint):chromosomeCount]*0.5)
-  offspringData2<-c(parent2[1:crossoverPoint]*0.6,parent1[(crossoverPoint+1):chromosomeCount]*0.4)
-
-  offspring <- matrix(offspringData1,nrow = chromosomeCount,ncol=1)
-  offspring <- cbind(offspring,offspringData2)
-  return(offspring)
-}
-
-
-Mutate <- function(original,mutationProbability){
-  chromosomeLength <- length(original)
-  mutated <- original
-  for(i in 1:chromosomeLength){
-    if(runif(1)<mutationProbability){
-      mutated[i] <- as.integer(original[i] == 0)
-    }
-  }
-
-  return(mutated)
-}
-
-MutateReal <- function(original,mutationProbability){
-  chromosomeLength <- length(original)
-  mutated <- original
-  for(i in 1:chromosomeLength){
-    if(runif(1)<mutationProbability){
-      mutated[i] <- (mutated[i]-0.05+ runif(1)*0.1)
-    }
-    if(mutated[i]<0)
-      mutated[i]=0
-    if(mutated[i]>1)
-      mutated[i]=1
-  }
-  return(mutated)
-}
 
 #' Normalize the objectives to 0-1. The origin is the ideal point. (1,...,1) is not the nadir point.
 #' The normalization is done by using adaptive normalization used in NSGA-III.
@@ -360,6 +207,7 @@ MutateReal <- function(original,mutationProbability){
 #' @examples
 #' nObj <- 5
 #' nIndividual <- 100
+#' nVar <- 10
 #' population <- InitializePopulationLHS(nIndividual,nVar,FALSE)
 #' objective <- matrix(,nrow=nObj,ncol=nIndividual)
 #' for(individual in 1:nIndividual){
@@ -412,6 +260,7 @@ AdaptiveNormalization <- function(objectiveValue){
 #' \code{transformedReference} The location of reference points in the normalized Space
 #' @examples
 #' nObj <- 5
+#' nVar <- 10
 #' nIndividual <- 100
 #' population <- InitializePopulationLHS(nIndividual,nVar,FALSE)
 #' objective <- matrix(,nrow=nObj,ncol=nIndividual)
@@ -529,14 +378,13 @@ GetIGD <- function(populationObjective, referenceSet){
   nRef <- ncol(referenceSet)
 
   IGDval <- 0
-  distances <- CalcIGDDistanceToObjective(nonDominatedObjective,referenceSet)
+  distances <- CalcIGDDistanceToObjective(populationObjective,referenceSet)
   for(refPointIndex in 1: nRef){
     IGDval <- IGDval + min(distances[refPointIndex,])
   }
   IGDval <- IGDval/nRef
   return(IGDval)
 }
-
 
 
 ApproximateHypervolumeContribution <- function(populationObjective,referencePoint,numberOfSamples){
@@ -556,7 +404,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 
   for(sampleIndex in 1:numberOfSamples){
     for (objectiveIndex in 1:nObjective) {
-      samplePoint[objectiveIndex] <- runif(1)*(referencePoint[objectiveIndex]-objectiveAxisMinimum[objectiveIndex]) + objectiveAxisMinimum[objectiveIndex]
+      samplePoint[objectiveIndex] <- stats::runif(1)*(referencePoint[objectiveIndex]-objectiveAxisMinimum[objectiveIndex]) + objectiveAxisMinimum[objectiveIndex]
     }
     successCount <- 0
     for(popIndex in 1:nPop){
@@ -597,7 +445,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' @examples
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
-#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
 #' GetHypervolume(objective,,"exact") # no reference supplied
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
@@ -630,7 +478,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 #' @examples
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
-#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
 #' GetHypervolume(objective,,"exact") # no reference supplied
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
@@ -661,15 +509,15 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' @examples
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
-#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
 #' GetHypervolume(objective,,"exact") # no reference supplied
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetHVContribution(objective,reference)
 #' @export
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
-#  if(method=="exact"){
-   hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
+  #  if(method=="exact"){
+  hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
 
   return(hypervolumeContribution)
 }
@@ -684,14 +532,14 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' @examples
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
-#' objective <- matrix(runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+#' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
 #' GetHypervolume(objective,,"exact") # no reference supplied
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetHypervolume(objective,reference,"exact") # using reference point
 #' @export
 #'
-  GetHypervolume <- function(objective,reference=NULL,method="exact"){
+GetHypervolume <- function(objective,reference=NULL,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
       hypervolume <- HypervolumeExact(objective)
@@ -700,7 +548,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
     }
   }
   if(method=="approx"){
-    hypervolume <- HypervolumeBFapprox(populationObjective,reference)
+    hypervolume <- HypervolumeBFapprox(objective,reference)
   }
   return(hypervolume)
 }
