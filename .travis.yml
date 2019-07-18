@@ -4,21 +4,21 @@ matrix:
  - name: "Python 3-7 on Xenial Linux"
    python: 3.7
    dist: xenial          # required for Python >= 3.7
-   r: release
+   r: devel
    before_install:       # pygmo is available on pip for linux, but not on macOS
     - sudo pip install --upgrade pip
     - pip install --user numpy
     - pip install --user pygmo
  - name: "Python 3-6 on Linux"
    python: 3.6
-   r: release
+   r: devel
    before_install:       # pygmo is available on pip for linux, but not on macOS
     - sudo pip install --upgrade pip
     - pip install --user numpy
     - pip install --user pygmo
  - name: "Python 2.7 on Linux"
    python: 2.7
-   r: release
+   r: devel
    before_install:       # pygmo is available on pip for linux, but not on macOS
     - sudo pip install --upgrade pip
     - pip install --user numpy
@@ -47,7 +47,7 @@ matrix:
     - pip install --user pygmo
  - name: "Python 3.6 on macOS"
    os: osx
-   r: release
+   r: devel
    python: 3.6
    before_install: # install conda, then python packages
     - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
@@ -64,7 +64,7 @@ matrix:
  - name: "Python 3.7 on macOS"
    os: osx
    osx_image: xcode10.2
-   r: release
+   r: devel
    python: 3.7
    before_install: # install conda, then python packages
     - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
@@ -80,7 +80,7 @@ matrix:
     - conda install -c conda-forge pygmo
  - name: "Python 2.7 on macOS"
    os: osx
-   r: release
+   r: devel
    python: 2.7
    before_install: # install conda, then python packages
     - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
