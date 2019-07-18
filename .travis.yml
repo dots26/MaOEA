@@ -7,8 +7,6 @@ python: 3.6
 os:
  - linux
  - osx
- - windows
 before_install:
- - sudo pip install --upgrade pip
- - pip install --user numpy
- - pip install --user pygmo
+ - conda install -c anaconda numpy
+ - conda install -c conda-forge pygmo
