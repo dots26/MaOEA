@@ -2,7 +2,6 @@
 #' @title Initialize population with Latin Hypercube Sampling
 #' @param numberOfIndividuals The number of individual in the population. Integer > 0.
 #' @param chromosomeLength The number of variables per individual
-#' @param binaryEncoding whether to use binary encoding or real encoding. Default to FALSE
 #' @param minVal Minimum value of the resulting sample
 #' @param maxVal Maximum value of the resulting sample
 #' @param samplingMethod Not used
@@ -13,17 +12,17 @@
 #' InitializePopulationLHS(nIndividual,nVar,FALSE)
 #' @export
 #'
-InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength,binaryEncoding = TRUE, minVal=0,maxVal=1,samplingMethod=0) {
+InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength, minVal=0,maxVal=1,samplingMethod=0) {
   #population<-optimumLHS(n=numberOfIndividuals,k=chromosomeLength,maxSweeps=10,eps=.1,verbose=FALSE)
   population<-lhs::randomLHS(n=numberOfIndividuals,k=chromosomeLength)
 
   population<-t(population)
 
-  if(binaryEncoding==TRUE){
-    population<-round(population)
-  }else{
+#  if(binaryEncoding==TRUE){
+#    population<-round(population)
+#  }else{
     population<-population * (maxVal-minVal) + minVal
-  }
+#  }
 
   return(population)
 }
@@ -532,7 +531,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
   return(hypervolumeContribution)
 }
 
-#' Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point+(1,...,1).
+#' Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point*(1.1,...,1.1).
 #' @title Compute hypervolume
 #' @param objective The set of points in the objective space (The objective values). A single column should contain one point, so the size would be numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
 #' @param reference The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
