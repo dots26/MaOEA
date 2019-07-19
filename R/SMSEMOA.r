@@ -35,6 +35,9 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   chromosomeLength <- nrow(population)
   populationSize <- ncol(population)
 
+  if(identical(fun,DTLZ4))
+    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+
   con <- list(crossoverProbability=1,
               mutationProbability=1,
               mutationDistribution=20,

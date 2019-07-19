@@ -9,7 +9,7 @@
 #' \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 #' @param ... Further arguments to be passed to \code{fun}
-#' @return Returns a list for the next generation. It contains It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
+#' @return Returns a list for the next generation. It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
 #' @references Voß, T., Hansen, N., Igel, C.: Improved step size adaptation for the MO-CMA-ES. In: Genetic and Evolutionary Computation (GECCO). pp. 487–494. ACM, New York, NY (2010)
 #' @examples
 #'  \donttest{
@@ -34,6 +34,9 @@ SMOCMAES <- function(parent,nObjective ,fun,control=list(),...){
               hypervolumeMethodParam=list(),
               referencePoint = NULL)
   con[names(control)] <- control
+  if(identical(fun,DTLZ4))
+    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+
   control <- con
   ps_threshold <- control$successProbThreshold
   ps_target <- control$successProbTarget

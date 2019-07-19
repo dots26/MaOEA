@@ -38,6 +38,9 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
               weightVector=NULL)
   con[names(control)] <- control
 
+  if(identical(fun,DTLZ4))
+    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+
   if(is.null(con$weightVector)){
     con$weightVector <- createWeightsSobol(nDim=nObjective,nWeights = 5*nObjective)
   }
