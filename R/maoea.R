@@ -84,9 +84,6 @@ rndGen <- NULL
   # library(reticulate)
   pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
   rndGen <<- reticulate::import("numpy", delay_load = TRUE)
-  #have_pygmo <- py_module_available("pygmo")
-  #if (!have_pygmo)
-  #  packageStartupMessage("PyGMO not available, install dependencies using MaOEA::install_python_dependencies(). Installation instruction is also available in: https://esa.github.io/pagmo2/install.html")
 }
 
 #' Install the required python package: PyGMO
