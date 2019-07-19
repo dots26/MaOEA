@@ -17,7 +17,7 @@ GetHypervolume(objective, reference = NULL, method = "exact")
 Hypervolume size, a scalar value.
 }
 \description{
-Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point+(1,...,1).
+Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point*(1.1,...,1.1).
 }
 \examples{
 \donttest{

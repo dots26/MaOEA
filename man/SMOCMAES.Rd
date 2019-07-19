@@ -22,7 +22,7 @@ SMOCMAES(parent, nObjective, fun, control = list(), ...)
 \item{...}{Further arguments to be passed to \code{fun}}
 }
 \value{
-Returns a list for the next generation. It contains It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
+Returns a list for the next generation. It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
 }
 \description{
 Do an iteration of population bases steady state MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
