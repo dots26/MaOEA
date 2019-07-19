@@ -28,6 +28,7 @@ Returns a list for the next generation. It contains list$new_generation (class: 
 Do an iteration of population based MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
 }
 \examples{
+\donttest{
 nVar <- 14
 nObjective <- 5
 nIndividual <- 100
@@ -39,6 +40,7 @@ control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbab
 
 # run a generation of MO-CMA-ES with standard WFG8 test function.
 newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
+}
 }
 \references{
 Voß, T., Hansen, N., Igel, C.: Improved step size adaptation for the MO-CMA-ES. In: Genetic and Evolutionary Computation (GECCO). pp. 487–494. ACM, New York, NY (2010)

@@ -20,6 +20,6 @@ A matrix of size nObjective, containing the objective values.
 Evaluate individual with the specified test function. Non-feasible solution are given Inf as objective values.
 }
 \examples{
-individual <- runif(8,1)
+individual <- stats::runif(8)
 EvaluateIndividual(individual,WFG4,3) # the 3 is passed to WFG4 nObj
 }

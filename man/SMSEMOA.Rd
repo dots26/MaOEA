@@ -31,6 +31,7 @@ Returns a list for the next generation
 Do an iteration of SMS-EMOA. The variation used is SBX and polynomial mutation.
 }
 \examples{
+ \donttest{
 nVar <- 14
 nObjective <- 5
 nIndividual <- 100
@@ -41,6 +42,7 @@ population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 # run a generation of SMS-EMOA with standard WFG6 test function.
 SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
                                           mutationProbability = mutationProbability),nObjective)
+}
 }
 \references{
 Beume,  N.,  Naujoks,  B.,  Emmerich,  M.:  SMS-EMOA:  Multiobjective  selection
