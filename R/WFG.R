@@ -158,7 +158,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
   l <- n-k
-  #individual <- individual/seq(2,2*n,2)
+
   individual1 <- individual
   x <- rep(0,M)
   h <- x
