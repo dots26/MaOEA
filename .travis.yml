@@ -11,3 +11,7 @@ r:
  - devel
  - release
  - oldrel
+matrix:
+ exclude:
+ - os: osx
+   r: devel
