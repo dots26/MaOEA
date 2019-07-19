@@ -447,6 +447,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' @param hypervolumeMethodParam A list of parameters to be passed to the hypervolumeMethod
 #' @return The index of the least contributor, an integer.
 #' @examples
+#' \donttest{
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
 #' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
@@ -454,6 +455,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetLeastContributor(objective,reference,"exact")
+#' }
 #' @export
 GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list()){
   if(is.null(reference)){
@@ -480,6 +482,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 
 #' @return The HV contribution value of the least contributor.
 #' @examples
+#'  \donttest{
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
 #' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
@@ -487,6 +490,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetLeastContribution(objective,reference,"exact")
+#' }
 #' @export
 GetLeastContribution<- function(populationObjective,reference=NULL,method="exact"){
   if(method=="exact"){
@@ -534,6 +538,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #'
 #' @return Hypervolume size, a scalar value.
 #' @examples
+#' \donttest{
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
 #' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
@@ -541,6 +546,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetHypervolume(objective,reference,"exact") # using reference point
+#' }
 #' @export
 #'
 GetHypervolume <- function(objective,reference=NULL,method="exact"){

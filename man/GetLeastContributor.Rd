@@ -23,6 +23,7 @@ The index of the least contributor, an integer.
 Get index of the individual with least HV contribution. For the contribution itself, use GetLeastContribution()
 }
 \examples{
+\donttest{
 nObjective <- 5 # the number of objectives
 nPoint <- 10 # the number of points that will form the hypervolume
 objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
@@ -30,4 +31,5 @@ GetHypervolume(objective,,"exact") # no reference supplied
 
 reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 GetLeastContributor(objective,reference,"exact")
+}
 }

@@ -15,9 +15,10 @@
 #' pop <- matrix(stats::runif(nIndividual*nVar), nrow = nVar) # create the population
 #' a_list <- cmaes_gen(pop)
 #' control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
-#'
+#'  \donttest{
 #' # run a generation of MO-CMA-ES with standard WFG8 test function.
 #' newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
+#' }
 #' @export
 cmaes_gen <- function(population,ps_target= (1 / (5 + ( 1 / 2  )^0.5)),stepSize=0.5,evoPath = rep(0,nrow(population)),
                       covarianceMatrix = diag(nrow(population)) ){

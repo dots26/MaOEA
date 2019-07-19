@@ -18,6 +18,7 @@
 #' based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007
 #'
 #' @examples
+#'  \donttest{
 #' nVar <- 14
 #' nObjective <- 5
 #' nIndividual <- 100
@@ -28,6 +29,7 @@
 #' # run a generation of SMS-EMOA with standard WFG6 test function.
 #' SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
 #'                                           mutationProbability = mutationProbability),nObjective)
+#' }
 #' @export
 SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   chromosomeLength <- nrow(population)

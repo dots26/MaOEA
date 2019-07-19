@@ -12,6 +12,7 @@
 #' @return Returns a list for the next generation. It contains It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
 #' @references Voß, T., Hansen, N., Igel, C.: Improved step size adaptation for the MO-CMA-ES. In: Genetic and Evolutionary Computation (GECCO). pp. 487–494. ACM, New York, NY (2010)
 #' @examples
+#'  \donttest{
 #' nVar <- 14
 #' nObjective <- 5
 #' nIndividual <- 100
@@ -22,6 +23,7 @@
 #' control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
 #' # run a generation of SMO-CMA-ES with standard WFG8 test function.
 #' newGeneration <- SMOCMAES(a_list,nObjective,WFG8,control,nObjective)
+#' }
 #' @export
 SMOCMAES <- function(parent,nObjective ,fun,control=list(),...){
   con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5),
