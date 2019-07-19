@@ -35,7 +35,7 @@ InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength,binaryE
 #' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
-#' individual <- runif(8,1)
+#' individual <- stats::runif(8)
 #' EvaluateIndividual(individual,WFG4,3) # the 3 is passed to WFG4 nObj
 #' @export
 EvaluateIndividual <- function(individual,fun,...){
@@ -52,8 +52,8 @@ EvaluateIndividual <- function(individual,fun,...){
 #' @param ... Further parameters used by \code{fun}
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
-#' pop <- runif(8,50) # 8 variables, 50 individuals
-#' EvaluateIndividual(pop,WFG4,3) # the 3 is passed to WFG4 nObj
+#' pop <- matrix(runif(8*50),nrow=8) # 8 variables, 50 individuals
+#' EvaluatePopulation(pop,WFG4,3) # the 3 is passed to WFG4 nObj
 #' @export
 EvaluatePopulation <- function(pop,fun,...){
   popSize <- ncol(pop)
@@ -515,6 +515,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' @param method the HV computation method. Currently ignored and uses the WFG exact method.
 #' @return A vector of length ncol(populationObjective)
 #' @examples
+#' \donttest{
 #' nObjective <- 5 # the number of objectives
 #' nPoint <- 10 # the number of points that will form the hypervolume
 #' objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
@@ -522,6 +523,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #'
 #' reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
 #' GetHVContribution(objective,reference)
+#' }
 #' @export
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
   #  if(method=="exact"){
