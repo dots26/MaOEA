@@ -21,6 +21,7 @@
 #' \code{population} The new generation design points.
 #' \code{populationObjective} The new generation's objective values.
 #' @examples
+#' \donttest{
 #' nVar <- 14
 #' nObjective <- 5
 #' nIndividual <- 100
@@ -39,6 +40,8 @@
 #' result <- optimMaOEA( newPop, WFG8,SMSEMOA,nObjective,5,,,1000,ctrl,nObjective)
 #' finalPop <- result$x
 #' finalObjective <- result$y
+#'
+#' }
 #' @export
 optimMaOEA <- function(x=NULL,
                        fun,
