@@ -59,6 +59,8 @@ optimMaOEA <- function(x=NULL,
     if(is.null(nVar)) stop('Initial population and number of variable is not specified. Need either one to run.')
     x<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
   }
+  if(fun==DTLZ4)
+    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
   con <- list( hypervolumeReferencePoint=NULL,
                hypervolumeTarget=0.99,
                weightVectorSet=NULL,
