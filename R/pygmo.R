@@ -66,7 +66,7 @@ HypervolumeExact <- function(populationObjective,reference=NULL){
 HVContrib_WFG <- function(populationObjective,reference=NULL){
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference <- append(reference,max(populationObjective[objectiveIndex,])+1)
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
   }
 
   hv <- pygmo$hypervolume(t(populationObjective))
