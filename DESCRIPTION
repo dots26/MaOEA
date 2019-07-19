@@ -2,10 +2,10 @@ Package: MaOEA
 Type: Package
 Title: Many Objective Evolutionary Algorithm
 Version: 0.5.1
-Author: Dani Irawan
+Authors@R: c(	person("Dani", "Irawan", role = c("aut","cre"),email = "irawan_dani@yahoo.com",comment=c(ORCID='0000-0002-4213-941X')))
 Maintainer: Dani Irawan <irawan_dani@yahoo.com>
 Description: Many-objective optimization using various algorithms. Available algorithms are: SMS-EMOA, NSGA-III, MO-CMA-ES, and steady-state MO-CMA-ES. The following many-objective benchmark problems are also provided: DTLZ1-DTLZ4 and WFG4-WFG9. Requires python modules: numpy and pygmo.
-License: GPL>=3
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
