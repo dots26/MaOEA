@@ -44,6 +44,7 @@ optimMaOEA(x = NULL, fun, solver = NSGA3, nObjective,
 Main interface for the many-objective optimization evolutionary algorithm (MaOEA) package.
 }
 \examples{
+\donttest{
 nVar <- 14
 nObjective <- 5
 nIndividual <- 100
@@ -62,4 +63,6 @@ newPop <- optimMaOEA( , WFG8,NSGA3,nObjective,10,nVar,nIndividual,,ctrl,nObjecti
 result <- optimMaOEA( newPop, WFG8,SMSEMOA,nObjective,5,,,1000,ctrl,nObjective)
 finalPop <- result$x
 finalObjective <- result$y
+
+}
 }
