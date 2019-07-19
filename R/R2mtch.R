@@ -134,21 +134,13 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
           }
         }
       }
-      #print(c('windex',weightIndex))
-     # print(c(weightIndex,minimumStar,pointAchievementToBoundary))
       minR <- min(c(minimumStar,pointAchievementToBoundary))
-      # print(c(weightIndex,minR,minR^alpha))
       minR <- minR^alpha
-      #      sumR2 <- sumR2 + minR
       minRset <- append(minRset,minR)
     }
     R2contrib <- append(R2contrib,mean(minRset))
     log_R2 <- append(log_R2,mean(log(minRset)))
     logsd_R2 <- append(logsd_R2,stats::sd(log(minRset)))
-    #R2sd <- append(R2sd,sd(minRset))
-    #R2skewness <- append(R2skewness,e1071::skewness(minRset,1))
-    #R2kurtosis <- append(R2kurtosis,e1071::kurtosis(minRset,1))
-    #R2median <- append(R2median,median(minRset))
   }
   return(list(R2=R2contrib,log_R2=log_R2,logsd_R2=logsd_R2))
 }
