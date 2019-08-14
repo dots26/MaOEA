@@ -19,7 +19,7 @@ compute_R2HV(dataPoints, reference, weights = NULL, nPoints = 100)
 The function return the powered R2-indicator of the set.
 }
 \description{
-Compute the R2-HV from Ishibuchi et al.
+Compute the R2-HV from Shang et al.
 }
 \examples{
 nPointToSample <- 100
@@ -31,4 +31,7 @@ nPoints <- ncol(points) # check how many points are on the non-dominated front
 reference <- rep(2,nObjective)
 
 compute_R2HV(points,reference)
+}
+\references{
+Ke Shang, Hisao Ishibuchi, Min-Ling Zhang, and Yiping Liu. 2018. A new R2 indicator for better hypervolume approximation. In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO '18), Hernan Aguirre (Ed.). ACM, New York, NY, USA, 745-752. DOI: https://doi.org/10.1145/3205455.3205543
 }

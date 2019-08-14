@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmaes_gen.R
 \name{cmaes_gen}
 \alias{cmaes_gen}
-\title{Create an object of cmaes_gen class.}
+\title{Generator for cmaes_gen class.}
 \usage{
 cmaes_gen(population, ps_target = (1/(5 + (1/2)^0.5)), stepSize = 0.5,
   evoPath = rep(0, nrow(population)),
@@ -23,7 +23,7 @@ cmaes_gen(population, ps_target = (1/(5 + (1/2)^0.5)), stepSize = 0.5,
 An object of cmaes_gen class. It can be used as MO-CMA-ES parent. It is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable).
 }
 \description{
-Do an iteration of population bases MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
+Create a list with cmaes_gen class. Basically, the function transform the population into a class that is accepted by the MOCMAES and SMOCMAES function.
 }
 \examples{
 nVar <- 14

@@ -15,5 +15,5 @@ GetIGD(populationObjective, referenceSet)
 The IGD metric. A Scalar value.
 }
 \description{
-Get IGD value of the population objective w.r.t. a matrix of reference set (each row contain 1 point).
+Get Inverted Generational Distance (IGD) value of the population objective w.r.t. a matrix of reference set (each row contain 1 point).
 }

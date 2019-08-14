@@ -1,4 +1,4 @@
-#' Create initial sample using LHS method. The variables will be ranged between 0-1
+#' Create initial sample using Latin Hypercube Sampling (LHS) method. The variables will be ranged between 0-1
 #' @title Initialize population with Latin Hypercube Sampling
 #' @param numberOfIndividuals The number of individual in the population. Integer > 0.
 #' @param chromosomeLength The number of variables per individual
@@ -371,7 +371,7 @@ AssociateLine <- function(distanceFromLines){
   return(associatedLine)
 }
 
-#' Get IGD value of the population objective w.r.t. a matrix of reference set (each row contain 1 point).
+#' Get Inverted Generational Distance (IGD) value of the population objective w.r.t. a matrix of reference set (each row contain 1 point).
 #' @title Get IGD value
 #' @param populationObjective The objective value of the corresponding individual
 #' @param referenceSet The reference points for computing IGD
@@ -438,7 +438,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
   return(list(contribution,totalHypervolume))
 }
 
-#' Get index of the individual with least HV contribution. For the contribution itself, use GetLeastContribution()
+#' Get index of the individual with least hypervolume (HV) contribution. For the contribution itself, use GetLeastContribution()
 #' @title Get least HV contributor
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
@@ -473,7 +473,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
   return(smallestContributor)
 }
 
-#' Get the HV contribution of the individual with least HV contribution.
+#' Get the hypervolume (HV) contribution of the individual with least HV contribution.
 #' @title Get least HV contribution
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
@@ -507,7 +507,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
   return(smallestContribution)
 }
 
-#' Get the HV contribution of the population. Dominated front will give 0 contribution.
+#' Get the hypervolume (HV) contribution of the population. Dominated front will give 0 contribution.
 #' @title Get HV contribution of all points.
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
@@ -535,7 +535,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' @title Compute hypervolume
 #' @param objective The set of points in the objective space (The objective values). A single column should contain one point, so the size would be numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
 #' @param reference The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
-#' @param method Exact or approximate. Default to "exact". The exact method calls the function emoa::dominated_hypervolume, while the "approx" method require an installation of PyGMO package (http://esa.github.io/pygmo/) and will use the bf_fpras algorithm.
+#' @param method Exact using WFG method or approximate HV using the method by Bringmann and Friedrich. Default to "exact".
 #'
 #' @return Hypervolume size, a scalar value.
 #' @examples

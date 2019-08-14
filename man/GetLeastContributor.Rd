@@ -20,7 +20,7 @@ GetLeastContributor(populationObjective, reference = NULL,
 The index of the least contributor, an integer.
 }
 \description{
-Get index of the individual with least HV contribution. For the contribution itself, use GetLeastContribution()
+Get index of the individual with least hypervolume (HV) contribution. For the contribution itself, use GetLeastContribution()
 }
 \examples{
 \donttest{

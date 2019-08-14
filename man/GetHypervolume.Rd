@@ -11,7 +11,7 @@ GetHypervolume(objective, reference = NULL, method = "exact")
 
 \item{reference}{The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.}
 
-\item{method}{Exact or approximate. Default to "exact". The exact method calls the function emoa::dominated_hypervolume, while the "approx" method require an installation of PyGMO package (http://esa.github.io/pygmo/) and will use the bf_fpras algorithm.}
+\item{method}{Exact using WFG method or approximate HV using the method by Bringmann and Friedrich. Default to "exact".}
 }
 \value{
 Hypervolume size, a scalar value.

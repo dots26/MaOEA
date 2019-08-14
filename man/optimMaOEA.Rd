@@ -11,7 +11,7 @@ optimMaOEA(x = NULL, fun, solver = NSGA3, nObjective,
 \arguments{
 \item{x}{The initial population. If not supplied, will be generated using LHS. Column major, each column contain one entry.}
 
-\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
+\item{fun}{Objective function being solved.}
 
 \item{solver}{Function name of the solver. Currently available: SMSEMOA, MOCMAES, SMOCMAES, and NSGA3.}
 

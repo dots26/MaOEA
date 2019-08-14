@@ -1,5 +1,5 @@
-#' Do an iteration of population bases MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
-#' @title Create an object of cmaes_gen class.
+#' Create a list with cmaes_gen class. Basically, the function transform the population into a class that is accepted by the MOCMAES and SMOCMAES function.
+#' @title Generator for cmaes_gen class.
 #' @param population The number of objective functions. A scalar value.
 #' @param ps_target The target success rate. Used to initialize cmaes_gen$averageSuccessRate.
 #' @param stepSize The initial step size.

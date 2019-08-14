@@ -22,7 +22,7 @@ InitializePopulationLHS(numberOfIndividuals, chromosomeLength,
 A matrix of size chromosomeLength x nIndividual.
 }
 \description{
-Create initial sample using LHS method. The variables will be ranged between 0-1
+Create initial sample using Latin Hypercube Sampling (LHS) method. The variables will be ranged between 0-1
 }
 \examples{
 nVar <- 14

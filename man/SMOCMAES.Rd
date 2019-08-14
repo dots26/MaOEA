@@ -11,7 +11,7 @@ SMOCMAES(parent, nObjective, fun, control = list(), ...)
 
 \item{nObjective}{The number of objective functions. A scalar value.}
 
-\item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
+\item{fun}{Objective function being solved.}
 
 \item{control}{List of parameters for CMA-ES. Available control are as follows:
 \code{successProbTarget} Target success probability
@@ -25,7 +25,7 @@ SMOCMAES(parent, nObjective, fun, control = list(), ...)
 Returns a list for the next generation. It contains list$new_generation (class: cmaes_gen), list$population (basically a copy of list$new_generation[[]]$x), and list$populationObjective
 }
 \description{
-Do an iteration of population bases steady state MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
+Do an iteration of population based steady state Multi-Objective Covariance Matrix Adaptation Evolution Strategy (MO-CMA-ES). The variation is using simulated binary crossover (SBX) and mutation following the CMA. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
 }
 \examples{
  \donttest{

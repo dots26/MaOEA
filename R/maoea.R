@@ -2,7 +2,7 @@
 #'
 #' @title Elitist Non-dominated Sorting Genetic Algorithm version III
 #' @param x The initial population. If not supplied, will be generated using LHS. Column major, each column contain one entry.
-#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param fun Objective function being solved.
 #' @param nObjective The number of objective functions. A scalar value.
 #' @param solver Function name of the solver. Currently available: SMSEMOA, MOCMAES, SMOCMAES, and NSGA3.
 #' @param nGeneration Optional, the number of generation the solver should run.
@@ -53,14 +53,13 @@ optimMaOEA <- function(x=NULL,
                        seed =2000,
                        control=list(),...){
   set.seed(seed)
-  print(seed)
   #initialize population if not specified
   if(is.null(x)){
     if(is.null(nVar)) stop('Initial population and number of variable is not specified. Need either one to run.')
     x<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
   }
   if(fun==DTLZ4)
-    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy while calculating cos(x^100) or sin(x^100).')('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
   con <- list( hypervolumeReferencePoint=NULL,
                hypervolumeTarget=0.99,
                weightVectorSet=NULL,

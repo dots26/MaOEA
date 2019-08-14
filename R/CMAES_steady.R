@@ -1,8 +1,8 @@
-#' Do an iteration of population bases steady state MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
+#' Do an iteration of population based steady state Multi-Objective Covariance Matrix Adaptation Evolution Strategy (MO-CMA-ES). The variation is using simulated binary crossover (SBX) and mutation following the CMA. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
 #' @title Steady-state Multi-Objective CMA-ES
 #' @param parent The parent generation, an object of class cmaes_gen. The MO-CMA-ES parent is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable). The parent is then should be a vector of lists (see example).
 #' @param nObjective The number of objective functions. A scalar value.
-#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param fun Objective function being solved.
 #' @param control List of parameters for CMA-ES. Available control are as follows:
 #' \code{successProbTarget} Target success probability
 #' \code{successProbThreshold} The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
@@ -35,7 +35,7 @@ SMOCMAES <- function(parent,nObjective ,fun,control=list(),...){
               referencePoint = NULL)
   con[names(control)] <- control
   if(identical(fun,DTLZ4))
-    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
 
   control <- con
   ps_threshold <- control$successProbThreshold

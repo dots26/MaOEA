@@ -28,7 +28,7 @@ Returns a list for the next generation
 \code{populationObjective} The new generation's objective values.
 }
 \description{
-Do an iteration of SMS-EMOA. The variation used is SBX and polynomial mutation.
+Do an iteration of  S-Metric Selection (SMS)-EMOA. The variation used is simulated binary crossover (SBX) and polynomial mutation.
 }
 \examples{
  \donttest{

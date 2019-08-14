@@ -2,7 +2,7 @@
 % Please edit documentation in R/R2mtch.R
 \name{createWeights}
 \alias{createWeights}
-\title{Das and Dennis's structured weight generation (NBI)}
+\title{Das and Dennis's structured weight generation, normal boundary intersection (NBI).}
 \usage{
 createWeights(nDim, axisDivision = nDim + 2, noZero = FALSE)
 }
@@ -24,4 +24,7 @@ nObjective <- 3
 axisDiv <- 6
 
 createWeights(nObjective,axisDiv)
+}
+\references{
+Indraneel Das and J. E. Dennis. 1998. Normal-Boundary Intersection: A New Method for Generating the Pareto Surface in Nonlinear Multicriteria Optimization Problems. SIAM Journal on Optimization 1998 8:3, 631-657.
 }

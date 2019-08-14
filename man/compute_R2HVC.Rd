@@ -24,7 +24,7 @@ compute_R2HVC(dataPoints, reference, weights = NULL, alpha = 1,
 The function return R2-indicator contribution of each point.
 }
 \description{
-Compute the R2-HV contribution from Ishibuchi et al.
+Compute the R2-HVC from Shang et al.
 }
 \examples{
 nPointToSample <- 100
@@ -36,4 +36,7 @@ nPoints <- ncol(points) # check how many points are on the non-dominated front
 reference <- rep(2,nObjective)
 
 compute_R2HVC(points,reference)
+}
+\references{
+K. Shang, H. Ishibuchi and X. Ni, "R2-based Hypervolume Contribution Approximation," in IEEE Transactions on Evolutionary Computation. doi: 10.1109/TEVC.2019.2909271
 }

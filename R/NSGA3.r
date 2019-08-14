@@ -1,4 +1,4 @@
-#' Do an iteration of NSGA-III. THe variation is using SBX and polynomial mutation.
+#' Do an iteration of Elitist Non-dominated Sorting Genetic Algorithm version III (NSGA-III). THe variation is using SBX and polynomial mutation.
 #' @title Elitist Non-dominated Sorting Genetic Algorithm version III
 #' @param population The parent generation. One individual per column. nrow = number of variable, ncol = number of individuals in the population.
 #' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
@@ -39,7 +39,7 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
   con[names(control)] <- control
 
   if(identical(fun,DTLZ4))
-    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy while calculating cos(x^100) or sin(x^100).')('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
 
   if(is.null(con$weightVector)){
     con$weightVector <- createWeightsSobol(nDim=nObjective,nWeights = 5*nObjective)

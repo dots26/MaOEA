@@ -18,7 +18,7 @@ GetLeastContribution(populationObjective, reference = NULL,
 The HV contribution value of the least contributor.
 }
 \description{
-Get the HV contribution of the individual with least HV contribution.
+Get the hypervolume (HV) contribution of the individual with least HV contribution.
 }
 \examples{
  \donttest{

@@ -18,7 +18,7 @@ GetHVContribution(populationObjective, reference = NULL,
 A vector of length ncol(populationObjective)
 }
 \description{
-Get the HV contribution of the population. Dominated front will give 0 contribution.
+Get the hypervolume (HV) contribution of the population. Dominated front will give 0 contribution.
 }
 \examples{
 \donttest{

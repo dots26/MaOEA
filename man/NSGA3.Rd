@@ -28,7 +28,7 @@ NSGA3(population, fun, nObjective, control = list(), ...)
 \code{populationObjective} The new generation's objective values. Column major.
 }
 \description{
-Do an iteration of NSGA-III. THe variation is using SBX and polynomial mutation.
+Do an iteration of Elitist Non-dominated Sorting Genetic Algorithm version III (NSGA-III). THe variation is using SBX and polynomial mutation.
 }
 \examples{
 nVar <- 14

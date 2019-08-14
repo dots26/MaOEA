@@ -1,8 +1,8 @@
-#' Do an iteration of population based MO-CMA-ES. The variation is using SBX and CMA mutation. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
+#' Do an iteration of population based Multi-Objective Covariance Matrix Adaptation Evolution Strategy (MO-CMA-ES). The variation is using simulated binary crossover (SBX) and mutation following the CMA. The original MO-CMA-ES does not use crossover, to do this simply set crossoverProbability to zero.
 #' @title Multi-Objective CMA-ES
 #' @param parent The parent generation, an object of class cmaes_gen. The MO-CMA-ES parent is a 5 tuple: x (the design point, length = number of variable),averageSuccessRate (scalar),stepSize (scalar), evoPath (evolution path, vector, length = number of variable ),covarianceMatrix (square matrix with ncol = nrow = number of variable). The parent is then should be a vector of lists (see example).
 #' @param nObjective The number of objective functions. A scalar value.
-#' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
+#' @param fun Objective function being solved.
 #' @param control List of parameters for CMA-ES. Available control are as follows:
 #' \code{successProbTarget} Target success probability
 #' \code{successProbThreshold} The threshold for success probability. If the average success probability is higher than this value, the success rate growth is slowed.
@@ -37,7 +37,7 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
   con[names(control)] <- control
   control <- con
   if(identical(fun,DTLZ4))
-    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
 
   ps_threshold <- control$successProbThreshold
   ps_target <- control$successProbTarget
@@ -114,8 +114,6 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
     offspring <- nsga2R::boundedSBXover(t(parent_x),rep(0,chromosomeLength),rep(1,chromosomeLength),control$crossoverProbability,control$crossoverDistribution)
     offspring <- t(offspring)
     # update the population's x
-    print(dim(offspring))
-    print(populationSize)
     for (k in 1:populationSize){
       new_a_list[[k]]$x <- offspring[,k]
     }

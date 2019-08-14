@@ -1,4 +1,4 @@
-#' Do an iteration of SMS-EMOA. The variation used is SBX and polynomial mutation.
+#' Do an iteration of  S-Metric Selection (SMS)-EMOA. The variation used is simulated binary crossover (SBX) and polynomial mutation.
 #' @title S-Metric Selection EMOA
 #'
 #' @param population The parent generation. One individual per column.
@@ -36,7 +36,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   populationSize <- ncol(population)
 
   if(identical(fun,DTLZ4))
-    print('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy while calculating cos(x^100) or sin(x^100).')
 
   con <- list(crossoverProbability=1,
               mutationProbability=1,
