@@ -2,15 +2,17 @@
 % Please edit documentation in R/maoea.R
 \name{install_python_dependencies}
 \alias{install_python_dependencies}
-\title{Install PyGMO python package}
+\title{Install python modules required by MaOEA: numpy and PyGMO}
 \usage{
-install_python_dependencies(method = "auto", conda = "auto")
+install_python_dependencies(conda = "auto", envname = NULL, ...)
 }
 \arguments{
-\item{method}{Default: auto}
-
 \item{conda}{Default: auto}
+
+\item{envname}{Python virtual environment where the modules will be installed, default to 'r-reticulate'}
+
+\item{...}{Further argument to pass to reticulate::py_install}
 }
 \description{
-Install the required python package: PyGMO
+Install the required python package via conda.
 }
