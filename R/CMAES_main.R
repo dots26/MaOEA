@@ -27,6 +27,9 @@
 #' }
 #' @export
 MOCMAES <- function( parent,nObjective,fun,control=list(),...){
+  if (!have_pygmo)
+    stop("MOCMAES requires PyGMO to compute hypervolume")
+
   con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5 ),
               successProbThreshold = 0.44,
               crossoverProbability=1,
