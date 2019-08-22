@@ -38,7 +38,7 @@ SMOCMAES <- function(parent,nObjective ,fun,control=list(),...){
               referencePoint = NULL)
   con[names(control)] <- control
   if(identical(fun,DTLZ4))
-    message('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy.')
 
   control <- con
   ps_threshold <- control$successProbThreshold

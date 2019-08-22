@@ -39,7 +39,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   populationSize <- ncol(population)
 
   if(identical(fun,DTLZ4))
-    message('DTLZ4 may suffer from floating-point inaccuracy while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy.')
 
   con <- list(crossoverProbability=1,
               mutationProbability=1,

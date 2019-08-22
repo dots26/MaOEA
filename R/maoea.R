@@ -59,7 +59,7 @@ optimMaOEA <- function(x=NULL,
     x<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
   }
   if(fun==DTLZ4)
-    message('DTLZ4 may suffer from floating-point inaccuracy while calculating cos(x^100) or sin(x^100).')('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+    message('DTLZ4 may suffer from floating-point inaccuracy.')
   con <- list( hypervolumeReferencePoint=NULL,
                hypervolumeTarget=0.99,
                weightVectorSet=NULL,
@@ -89,11 +89,11 @@ have_pygmo <- F
   pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
   rndGen <<- reticulate::import("numpy", delay_load = TRUE)
 
-  have_numpy <- reticulate::py_module_available("numpy")
+  have_numpy <<- reticulate::py_module_available("numpy")
   if (!have_numpy)
     warning("Numpy not available")
 
-  have_pygmo <- reticulate::py_module_available("pygmo")
+  have_pygmo <<- reticulate::py_module_available("pygmo")
   if (!have_pygmo)
     warning("PyGMO not available")
 
@@ -114,7 +114,7 @@ install_python_dependencies <- function(conda = "auto",envname=NULL,...) {
     envname <- 'r-reticulate'
   }
 
-  will_install <- askYesNo(paste0('This will install numpy and pygmo and all their dependencies to the \'', envname,'\' environment.
+  will_install <- utils::askYesNo(paste0('This will install numpy and pygmo and all their dependencies to the \'', envname,'\' environment.
            Do you wish to continue?'),default=F,prompts = gettext(c("Y","N","Cancel")))
 
   if(will_install){
@@ -124,8 +124,8 @@ install_python_dependencies <- function(conda = "auto",envname=NULL,...) {
     if (!have_pygmo)
       reticulate::py_install("pygmo", method = 'conda', conda = conda,envname = envname)
 
-    have_numpy <- reticulate::py_module_available("numpy")
-    have_pygmo <- reticulate::py_module_available("pygmo")
+    have_numpy <<- reticulate::py_module_available("numpy")
+    have_pygmo <<- reticulate::py_module_available("pygmo")
 
     pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
     rndGen <<- reticulate::import("numpy", delay_load = TRUE)
