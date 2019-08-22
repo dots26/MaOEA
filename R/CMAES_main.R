@@ -26,21 +26,21 @@
 #' newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
 #' }
 #' @export
-MOCMAES <- function( parent,nObjective,fun,control=list(),...){
+MOCMAES <- function( parent, nObjective, fun, control=list(), ...){
   if (!have_pygmo)
     stop("MOCMAES requires PyGMO to compute hypervolume")
 
-  con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5 ),
+  con <- list(successProbTarget = 1 / ( 5 + ( 1 / 2  ) ^ 0.5 ),
               successProbThreshold = 0.44,
               crossoverProbability=1,
               crossoverDistribution=30,
-              hypervolumeMethod='exact',
+              hypervolumeMethod="exact",
               hypervolumeMethodParam=list(),
               referencePoint = NULL)
   con[names(control)] <- control
   control <- con
-  if(identical(fun,DTLZ4))
-    message('DTLZ4 may suffer from floating-point inaccuracy due while calculating cos(x^100) or sin(x^100).')
+  if (identical(fun, DTLZ4))
+    message("DTLZ4 may suffer from floating-point inaccuracy.")
 
   ps_threshold <- control$successProbThreshold
   ps_target <- control$successProbTarget
@@ -50,35 +50,34 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
 
   d <- 1 + chromosomeLength / 2
   cc <- ( 2 / (chromosomeLength + 2))
-  ccov <-  2 / ((chromosomeLength^2) + 6)
-  cp <- ps_target * 1 / (2 + ps_target*1)
+  ccov <-  2 / ( (chromosomeLength ^ 2) + 6)
+  cp <- ps_target * 1 / (2 + ps_target * 1)
 
   a_list <- parent
 
-  population<-matrix(,nrow=chromosomeLength,ncol=0);
-  for(populationIndex in 1:length(parent)){
-    population <- cbind(population,parent[[populationIndex]]$x)
+  population<-matrix(, nrow=chromosomeLength, ncol=0);
+  for (populationIndex in 1:length(parent)){
+    population <- cbind(population, parent[[populationIndex]]$x)
   }
 
-  populationObjective<-matrix(,nrow=nObjective,ncol=0);
+  populationObjective <- matrix(, nrow=nObjective,ncol=0);
   #evaluation of parents
-  for(parentIndex in 1:populationSize){
-    individualObjectiveValue<-EvaluateIndividual(population[,parentIndex],fun,...)
-    populationObjective<-cbind(populationObjective,individualObjectiveValue)
+  for (parentIndex in 1:populationSize){
+    individualObjectiveValue <- EvaluateIndividual(population[, parentIndex], fun, ...)
+    populationObjective <- cbind(populationObjective, individualObjectiveValue)
   }
 
   new_a_list <- a_list
   new_population <- population
   newObjectiveValue <- populationObjective
 
-  if(stats::runif(1) < control$crossoverProbability)
-  {
+  if (stats::runif(1) < control$crossoverProbability){
     parentCount <- 0
     parent_x <- population
-    parent_stepSizeAverage <- matrix(,nrow=1)
+    parent_stepSizeAverage <- matrix(, nrow=1)
 
-    while(parentCount<ncol(population)){
-      parent_index <- sample.int(ncol(population),2,replace = FALSE)
+    while (parentCount<ncol(population)){
+      parent_index <- sample.int(ncol(population), 2, replace = FALSE)
       parent_x[,(parentCount+1)] <- a_list[[parent_index[1]]]$x
       parent_x[,(parentCount+2)] <- a_list[[parent_index[2]]]$x
 
@@ -114,9 +113,13 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
     }
 
     #recombination
-    offspring <- nsga2R::boundedSBXover(t(parent_x),rep(0,chromosomeLength),rep(1,chromosomeLength),control$crossoverProbability,control$crossoverDistribution)
+    offspring <- nsga2R::boundedSBXover(t(parent_x),
+                                        rep(0,chromosomeLength),
+                                        rep(1,chromosomeLength),
+                                        control$crossoverProbability,
+                                        control$crossoverDistribution)
     offspring <- t(offspring)
-    # update the population's x
+    # update the population"s x
     for (k in 1:populationSize){
       new_a_list[[k]]$x <- offspring[,k]
     }
@@ -154,7 +157,8 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
   {
     newPopulationIndex <- append(newPopulationIndex,rnk[[frontIndex]])
     newPopulation <- cbind( newPopulation,combinedPopulation[ , rnk[[frontIndex]] ] )
-    newPopulationObjective <- cbind(newPopulationObjective,combinedObjectiveValue[ , rnk[[frontIndex]] ])
+    newPopulationObjective <- cbind(newPopulationObjective,
+                                    combinedObjectiveValue[ , rnk[[frontIndex]] ])
     newPopulationSize <- newPopulationSize + length( rnk[[frontIndex]] )
 
     frontIndex <- frontIndex+1
@@ -194,5 +198,7 @@ MOCMAES <- function( parent,nObjective,fun,control=list(),...){
   population <- newPopulation
   populationObjective <- newPopulationObjective
 
-  return(list(new_generation=a_list,population=population,populationObjective=populationObjective))
+  return(list(new_generation=a_list,
+              population=population,
+              populationObjective=populationObjective))
 }
