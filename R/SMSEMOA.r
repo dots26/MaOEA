@@ -32,7 +32,7 @@
 #' }
 #' @export
 SMSEMOA <- function(population,fun,nObjective,control=list(),...){
-  if (!have_pygmo)
+  if (!pkg.globals$have_pygmo)
     stop("SMS-EMOA requires PyGMO to compute hypervolume")
 
   chromosomeLength <- nrow(population)

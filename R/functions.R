@@ -526,7 +526,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' @export
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
   #  if(method=="exact"){
-  if (!have_pygmo)
+  if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
   hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
@@ -554,7 +554,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' @export
 #'
 GetHypervolume <- function(objective,reference=NULL,method="exact"){
-  if (!have_pygmo)
+  if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
   if(method=="exact"){

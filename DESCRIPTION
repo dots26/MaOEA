@@ -1,7 +1,7 @@
 Package: MaOEA
 Type: Package
 Title: Many Objective Evolutionary Algorithm
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: c(	person("Dani", "Irawan", role = c("aut","cre"),email = "irawan_dani@yahoo.com",comment=c(ORCID='0000-0002-4213-941X')))
 Maintainer: Dani Irawan <irawan_dani@yahoo.com>
 Description: A set of evolutionary algorithms to solve many-objective optimization. 
