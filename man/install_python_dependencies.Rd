@@ -13,6 +13,9 @@ install_python_dependencies(conda = "auto", envname = NULL, ...)
 
 \item{...}{Further argument to pass to reticulate::py_install}
 }
+\value{
+0 if dependencies installed and loaded successfully, 1 if fails.
+}
 \description{
 Install the required python package via conda.
 }
