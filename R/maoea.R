@@ -17,7 +17,7 @@
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 #' @param ... Further arguments to be passed to \code{fun}
-#' @return #' @return Returns a list for the next generation
+#' @return Returns a list for the next generation
 #' \code{population} The new generation design points.
 #' \code{populationObjective} The new generation's objective values.
 #' @examples
@@ -58,7 +58,7 @@ optimMaOEA <- function(x=NULL,
     if(is.null(nVar)) stop('Initial population and number of variable is not specified. Need either one to run.')
     x<-InitializePopulationLHS(populationSize,nVar,FALSE,0,1)
   }
-  if(fun==DTLZ4)
+  if(identical(fun,DTLZ4))
     message('DTLZ4 may suffer from floating-point inaccuracy.')
   con <- list( hypervolumeReferencePoint=NULL,
                hypervolumeTarget=0.99,
@@ -81,33 +81,45 @@ optimMaOEA <- function(x=NULL,
   return(list(x=x,y=y))
 }
 
-pygmo <- NULL
-rndGen <- NULL
-have_numpy <- F
-have_pygmo <- F
+pkg.globals <- new.env()
+
+pkg.globals$pygmo <- NULL
+pkg.globals$rndGen <- NULL
+pkg.globals$have_numpy <- F
+pkg.globals$have_pygmo <- F
+
 .onLoad <- function(libname, pkgname){
-  pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
-  rndGen <<- reticulate::import("numpy", delay_load = TRUE)
+  pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
+  pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
 
-  have_numpy <<- reticulate::py_module_available("numpy")
-  if (!have_numpy)
-    warning("Numpy not available")
-
-  have_pygmo <<- reticulate::py_module_available("pygmo")
-  if (!have_pygmo)
-    warning("PyGMO not available")
-
-  if(!have_numpy || !have_pygmo)
-    warning("Missing required python modules.
-Try using MaOEA::install_python_dependencies()
-or follow the instructions in https://esa.github.io/pagmo2/install.html.")
+  if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
+    pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+    pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+  }
 }
+
+setLoadAction(function(ns){
+  #have_numpy <<- reticulate::py_module_available("numpy")
+  if (!pkg.globals$have_numpy)
+    packageStartupMessage("Numpy not available")
+
+  #have_pygmo <<- reticulate::py_module_available("pygmo")
+  if (!pkg.globals$have_pygmo)
+    packageStartupMessage("PyGMO not available")
+
+  if(!pkg.globals$have_numpy || !pkg.globals$have_pygmo)
+    packageStartupMessage("Missing required python modules.
+Try using MaOEA::install_python_dependencies()
+or follow the instructions in https://esa.github.io/pagmo2/install.html
+and call MaOEA::load_python_dependencies().")
+})
 
 #' Install the required python package via conda.
 #' @title Install python modules required by MaOEA: numpy and PyGMO
 #' @param conda Default: auto
 #' @param envname Python virtual environment where the modules will be installed, default to 'r-reticulate'
 #' @param ... Further argument to pass to reticulate::py_install
+#' @return 0 if dependencies installed and loaded successfully, 1 if fails.
 #' @export
 install_python_dependencies <- function(conda = "auto",envname=NULL,...) {
   if(is.null(envname)){
@@ -118,16 +130,30 @@ install_python_dependencies <- function(conda = "auto",envname=NULL,...) {
            Do you wish to continue?'),default=F,prompts = gettext(c("Y","N","Cancel")))
 
   if(will_install){
-    if (!have_numpy)
+    if (!pkg.globals$have_numpy)
       reticulate::py_install("numpy", method = 'conda', conda = conda,envname = envname)
 
-    if (!have_pygmo)
+    if (!pkg.globals$have_pygmo)
       reticulate::py_install("pygmo", method = 'conda', conda = conda,envname = envname)
+  }
+  success <- load_python_dependencies()
+  return(success)
+}
 
-    have_numpy <<- reticulate::py_module_available("numpy")
-    have_pygmo <<- reticulate::py_module_available("pygmo")
+#' Import the required python package if it fails onLoad.
+#' @title Install python modules required by MaOEA: numpy and PyGMO
+#' @return 0 if dependencies loaded successfully, 1 if fails.
+#' @export
+load_python_dependencies <- function(){
+  pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
+  pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
 
-    pygmo <<- reticulate::import("pygmo", delay_load = TRUE)
-    rndGen <<- reticulate::import("numpy", delay_load = TRUE)
+  if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
+    pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+    pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+
+    return(0)
+  }else{
+    return(1)
   }
 }
