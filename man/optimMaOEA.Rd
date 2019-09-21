@@ -36,7 +36,7 @@ optimMaOEA(x = NULL, fun, solver = NSGA3, nObjective,
 \item{...}{Further arguments to be passed to \code{fun}}
 }
 \value{
-#' @return Returns a list for the next generation
+Returns a list for the next generation
 \code{population} The new generation design points.
 \code{populationObjective} The new generation's objective values.
 }
