@@ -82,7 +82,10 @@ b_poly <- function(y,alpha){
 }
 
 b_flat <- function(y,A,B,C){
-  x <- A + min(c(0,floor(y-B))*A*(B-y)/B) + min(c(0,floor(C-y))*(1-A)*(y-C)/(1-C))
+  xx <- min(c(0,floor(y-B)))*(A-(A*y/B))
+  yy <- min(c(0,floor(C-y)))*(1-A)*(y-C)/(1-C)
+
+  x <- A + xx - yy
   return(x)
 }
 
