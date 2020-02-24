@@ -46,5 +46,5 @@ SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbabil
 }
 \references{
 Beume,  N.,  Naujoks,  B.,  Emmerich,  M.:  SMS-EMOA:  Multiobjective  selection
-based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007
+based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007)
 }

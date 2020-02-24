@@ -15,7 +15,7 @@
 #' \code{populationObjective} The new generation's objective values.
 #' @param ... Further arguments to be passed to \code{fun}
 #' @references Beume,  N.,  Naujoks,  B.,  Emmerich,  M.:  SMS-EMOA:  Multiobjective  selection
-#' based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007
+#' based on dominated hypervolume. Eur. J. Oper. Res. 181 (3), 1653 – 1669 (2007)
 #'
 #' @examples
 #'  \donttest{
