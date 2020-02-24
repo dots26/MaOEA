@@ -114,7 +114,7 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
   R2contrib <- NULL
   log_R2 <- NULL
   logsd_R2 <- NULL
-
+  skew_R2 <- NULL
   nWeight <- ncol(weights)
   nPoints <- ncol(dataPoints)
   for(sIndex in indexOfInterest){
@@ -137,11 +137,12 @@ compute_R2HVC <- function(dataPoints,reference,weights=NULL,alpha=1,nWeight = 30
       minR <- minR^alpha
       minRset <- append(minRset,minR)
     }
+    skew_R2 <- append(skew_R2,skewness(log(minRset)))
     R2contrib <- append(R2contrib,mean(minRset))
     log_R2 <- append(log_R2,mean(log(minRset)))
     logsd_R2 <- append(logsd_R2,stats::sd(log(minRset)))
   }
-  return(list(R2=R2contrib,log_R2=log_R2,logsd_R2=logsd_R2))
+  return(list(R2=R2contrib,log_R2=log_R2,logsd_R2=logsd_R2,skew_R2=skew_R2))
 }
 
 gmtch <- function(point, reference, weight){
