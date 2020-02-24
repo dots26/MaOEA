@@ -4,9 +4,13 @@
 \alias{cmaes_gen}
 \title{Generator for cmaes_gen class.}
 \usage{
-cmaes_gen(population, ps_target = (1/(5 + (1/2)^0.5)), stepSize = 0.5,
+cmaes_gen(
+  population,
+  ps_target = (1/(5 + (1/2)^0.5)),
+  stepSize = 0.5,
   evoPath = rep(0, nrow(population)),
-  covarianceMatrix = diag(nrow(population)))
+  covarianceMatrix = diag(nrow(population))
+)
 }
 \arguments{
 \item{population}{The number of objective functions. A scalar value.}

@@ -4,8 +4,7 @@
 \alias{GetLeastContribution}
 \title{Get least HV contribution}
 \usage{
-GetLeastContribution(populationObjective, reference = NULL,
-  method = "exact")
+GetLeastContribution(populationObjective, reference = NULL, method = "exact")
 }
 \arguments{
 \item{populationObjective}{The objective value of the corresponding individual}

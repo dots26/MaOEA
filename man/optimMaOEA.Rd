@@ -4,9 +4,18 @@
 \alias{optimMaOEA}
 \title{Elitist Non-dominated Sorting Genetic Algorithm version III}
 \usage{
-optimMaOEA(x = NULL, fun, solver = NSGA3, nObjective,
-  nGeneration = 1, nVar = nrow(x), populationSize = ncol(x),
-  seed = 2000, control = list(), ...)
+optimMaOEA(
+  x = NULL,
+  fun,
+  solver = NSGA3,
+  nObjective,
+  nGeneration = 1,
+  nVar = nrow(x),
+  populationSize = ncol(x),
+  seed = 2000,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x}{The initial population. If not supplied, will be generated using LHS. Column major, each column contain one entry.}

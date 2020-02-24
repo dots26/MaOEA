@@ -4,8 +4,14 @@
 \alias{compute_R2HVC}
 \title{Modified tchebyscheff R2-indicator contribution designed to approximate HV}
 \usage{
-compute_R2HVC(dataPoints, reference, weights = NULL, alpha = 1,
-  nWeight = 300, indexOfInterest = 1:ncol(dataPoints))
+compute_R2HVC(
+  dataPoints,
+  reference,
+  weights = NULL,
+  alpha = 1,
+  nWeight = 300,
+  indexOfInterest = 1:ncol(dataPoints)
+)
 }
 \arguments{
 \item{dataPoints}{The Points coordinate. Each column contains a single point (column major).}

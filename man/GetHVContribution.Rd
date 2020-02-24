@@ -4,8 +4,7 @@
 \alias{GetHVContribution}
 \title{Get HV contribution of all points.}
 \usage{
-GetHVContribution(populationObjective, reference = NULL,
-  method = "exact")
+GetHVContribution(populationObjective, reference = NULL, method = "exact")
 }
 \arguments{
 \item{populationObjective}{The objective value of the corresponding individual}

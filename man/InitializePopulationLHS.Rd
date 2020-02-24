@@ -4,8 +4,13 @@
 \alias{InitializePopulationLHS}
 \title{Initialize population with Latin Hypercube Sampling}
 \usage{
-InitializePopulationLHS(numberOfIndividuals, chromosomeLength,
-  minVal = 0, maxVal = 1, samplingMethod = 0)
+InitializePopulationLHS(
+  numberOfIndividuals,
+  chromosomeLength,
+  minVal = 0,
+  maxVal = 1,
+  samplingMethod = 0
+)
 }
 \arguments{
 \item{numberOfIndividuals}{The number of individual in the population. Integer > 0.}

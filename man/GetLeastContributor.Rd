@@ -4,8 +4,12 @@
 \alias{GetLeastContributor}
 \title{Get least HV contributor}
 \usage{
-GetLeastContributor(populationObjective, reference = NULL,
-  method = "exact", hypervolumeMethodParam = list())
+GetLeastContributor(
+  populationObjective,
+  reference = NULL,
+  method = "exact",
+  hypervolumeMethodParam = list()
+)
 }
 \arguments{
 \item{populationObjective}{The objective value of the corresponding individual}
