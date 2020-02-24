@@ -7,7 +7,7 @@
 WFG9(individual, nObj, k = nObj - 1)
 }
 \arguments{
-\item{individual}{The individual to be evaluated}
+\item{individual}{The individual to be evaluated, the search space should be in [0-2i] for variable number i.}
 
 \item{nObj}{The number of objective}
 

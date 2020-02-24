@@ -1,6 +1,6 @@
 #' The WFG1 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -20,7 +20,7 @@ WFG1 <- function(individual, nObj,k = nObj-1){
   individual3 <- individual
   x <- rep(0,M)
   h <- x
-  #individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   # first transformation
   for(i in 1:k){
     individual1[i] <- individual[i]
@@ -62,7 +62,6 @@ WFG1 <- function(individual, nObj,k = nObj-1){
 
   x[M] <- r_sum(individual3[rsumMinIndex:rsumMaxIndex],weightVector)
 
-
   # shape function
   for(i in 1:(M-1)){
     h[i] <- shape_convex(M,i,x)
@@ -77,7 +76,7 @@ WFG1 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG2 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -99,7 +98,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   x <- rep(0,M)
   h <- x
 
-  #individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   # first transformation
   for(i in 1:k){
     individual1[i] <- individual[i]
@@ -145,7 +144,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG4 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -159,6 +158,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
   n <- length(individual) # number of variables
   l <- n-k
 
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   x <- rep(0,M)
   h <- x
@@ -194,7 +194,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
 
 #' The WFG5 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -207,7 +207,7 @@ WFG5 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
   l <- n-k
- # individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   x <- rep(0,M)
   h <- x
@@ -244,7 +244,7 @@ WFG5 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG6 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -258,7 +258,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
   n <- length(individual) # number of variables
   l <- n-k
 
- # individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   x <- rep(0,M)
   h <- x
@@ -293,7 +293,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG7 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -306,7 +306,7 @@ WFG7 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
   l <- n-k
-  #individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   individual2 <- individual
 
@@ -357,7 +357,7 @@ WFG7 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG8 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -370,7 +370,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
   l <- n-k
-#  individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   x <- rep(0,M)
   h <- x
@@ -411,7 +411,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG9 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -424,7 +424,7 @@ WFG9 <- function(individual, nObj,k = nObj-1){
   M <- nObj
   n <- length(individual) # number of variables
   l <- n-k
-#  individual <- individual/seq(2,2*n,2)
+  individual <- individual/seq(2,2*n,2)
   individual1 <- individual
   x <- rep(0,M)
   h <- x
