@@ -16,7 +16,7 @@ test_that("Check DTLZ return correct value based on the Pareto front", {
 test_that("Check WFG return correct value based on the Pareto front", {
   skip_if_missing_module()
   individual <- stats::runif(14)
-  individual[6:14] <- 0.35
+  individual[6:14] <- 0.35*(6:14)*2
   individual[1:5] <- 0
   nObj <- 6
   expect_lt(norm(WFG4(individual,nObj)/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
@@ -25,4 +25,29 @@ test_that("Check WFG return correct value based on the Pareto front", {
   expect_equal(norm(WFG7(individual,nObj)/c(2,4,6,8,10,12),'2'),1)
   expect_equal(norm(WFG8(individual,nObj)/c(2,4,6,8,10,12),'2'),1)
   expect_lt(norm(WFG9(individual,nObj)/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
+})
+
+
+test_that("Check WFG return correct value based on the Pareto front", {
+  skip_if_missing_module()
+  individual <- matrix(,nrow=14,ncol=2)
+  individual[6:14,1] <- 0.35*(6:14)*2
+  individual[1:5,1] <- 0
+  individual[6:14,2] <- 0.35*(6:14)*2
+  individual[1:5,2] <- 2
+  nObj <- 6
+  k <- 12
+  expect_lt(norm(WFG4(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
+  expect_lt(norm(WFG5(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG6(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG7(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG8(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG9(individual,nObj,k)[,1]/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
+
+  expect_lt(norm(WFG4(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
+  expect_lt(norm(WFG5(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG6(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG7(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG8(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2'),1)
+  expect_lt(norm(WFG9(individual,nObj,k)[,2]/c(2,4,6,8,10,12),'2')-1,0.04) # should be equal, but strongly affected by numerical error
 })
