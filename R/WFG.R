@@ -1,6 +1,6 @@
 #' The WFG1 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -79,7 +79,7 @@ WFG1 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG2 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -150,7 +150,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG4 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -202,7 +202,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
 
 #' The WFG5 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -255,7 +255,7 @@ WFG5 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG6 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -307,7 +307,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG7 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -374,7 +374,7 @@ WFG7 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG8 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples
@@ -431,7 +431,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
 
 #' The WFG9 test function.
 #' @param nObj The number of objective
-#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i.
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
 #' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
 #' @return A matrix of size nObjective, containing the objective values.
 #' @examples

@@ -7,7 +7,7 @@
 WFG2(individual, nObj, k = nObj - 1)
 }
 \arguments{
-\item{individual}{The individual to be evaluated, the search space should be in [0-2i] for variable number i.}
+\item{individual}{The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.}
 
 \item{nObj}{The number of objective}
 
