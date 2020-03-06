@@ -221,6 +221,7 @@ DTLZ4 <- function(individual,nObj,alpha=100){
 #'
 AdaptiveNormalization <- function(objectiveValue){
   minObjVal <- matrix(,nrow = nrow(objectiveValue),ncol = 1)
+
   nObjective <- nrow(objectiveValue)
   idealPoint <- rep(Inf,nObjective)
   nadirPoint <- rep(-Inf,nObjective)
@@ -457,6 +458,8 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' }
 #' @export
 GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list()){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)

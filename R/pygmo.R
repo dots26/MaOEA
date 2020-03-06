@@ -1,4 +1,6 @@
 LeastContributorExact <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
@@ -13,6 +15,8 @@ LeastContributorExact <- function(populationObjective,reference=NULL){
 }
 
 LeastContributorBFapprox <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
@@ -27,6 +31,8 @@ LeastContributorBFapprox <- function(populationObjective,reference=NULL){
 }
 
 LeastContributionApprox <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
@@ -39,6 +45,8 @@ LeastContributionApprox <- function(populationObjective,reference=NULL){
 }
 
 HypervolumeBFapprox <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       append(reference,max(populationObjective[objectiveIndex,])*1.1)
@@ -51,6 +59,8 @@ HypervolumeBFapprox <- function(populationObjective,reference=NULL){
 }
 
 HypervolumeExact <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective)){
       reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
@@ -64,6 +74,8 @@ HypervolumeExact <- function(populationObjective,reference=NULL){
 
 
 HVContrib_WFG <- function(populationObjective,reference=NULL){
+  if(is.vector(populationObjective))
+    populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
       reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
