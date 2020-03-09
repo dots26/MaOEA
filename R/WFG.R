@@ -173,7 +173,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
   h <- x
   # first transformation
   for(i in 1:n){
-    individual1[i,] <- s_multi(individual[i,],30,10,0.35)
+    individual1[i,] <- s_multi(individual[i,,drop=F],30,10,0.35)
   }
   # second transform
   for ( i in 1:(M-1)){
