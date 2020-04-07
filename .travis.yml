@@ -7,6 +7,7 @@ os:
  - osx
  - linux
 dist: xenial
+osx_image: xcode9.2
 r:
  - devel
  - release
