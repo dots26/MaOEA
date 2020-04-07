@@ -2,7 +2,7 @@
 #' @title S-Metric Selection EMOA
 #'
 #' @param population The parent generation. One individual per column.
-#' @param nObjective Number of objective
+#' @param nObjective Number of objective. Ignored as of version 0.6.1; number of row from fun is used instead.
 #' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
 #' @param control (list) Options to control the SMS-EMOA:
 #' \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
@@ -53,7 +53,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
 
   newPointSurvives <- TRUE
   #evaluation of parents
-  populationObjective<-matrix(,nrow=nObjective,ncol=0);
+  populationObjective<-NULL
   for(parentIndex in 1:populationSize){
     ind <- population[,parentIndex,drop=F]
     class(ind) <- class(population)
@@ -63,7 +63,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
 
   # create offspring
   offspring<-matrix(,nrow = chromosomeLength,ncol = 0)
-  offspringObjectiveValue<-matrix(,nrow = nObjective,ncol=0)
+  offspringObjectiveValue<-NULL
 
   parentIndex <- sample(1:populationSize,2,replace = FALSE)
   #Crossover
@@ -94,7 +94,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
 
   # fill new population
   newPopulation <- matrix(, nrow = chromosomeLength,ncol=0)
-  newPopulationObjective <- matrix(, nrow = nObjective,ncol=0)
+  newPopulationObjective <- NULL
   newPopulationSize <- integer(1)
 
   frontIndex <- 1
@@ -129,14 +129,8 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
                                                control$hypervolumeMethodParam)
     removedPoint <- individualIndexTobeChecked[smallestContributor]
 
-    newPopulation <- matrix(,nrow = chromosomeLength,ncol = 0)
-    newPopulationObjective <- matrix(,nrow = nObjective,ncol = 0)
-    for(populationIndex in 1:ncol(combinedPopulation)){
-      if(populationIndex != removedPoint){
-        newPopulation <- cbind(newPopulation,combinedPopulation[,populationIndex])
-        newPopulationObjective <-cbind(newPopulationObjective,combinedObjectiveValue[,populationIndex])
-      }
-    }
+    newPopulation <- newPopulation[-removedPoint,]
+    newPopulationObjective <- newPopulationObjective[-removedPoint,]
     if(removedPoint == ncol(combinedPopulation))
       newPointSurvives <- FALSE
   }else{
