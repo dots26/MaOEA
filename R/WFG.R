@@ -174,7 +174,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
   h <- x
   # first transformation
   for(i in 1:n){
-    individual1[i, ] <- MaOEA:::s_multi(individual[i,,drop=F],30,10,0.35)
+    individual1[i, ] <- s_multi(individual[i,,drop=F],30,10,0.35)
   }
   # second transform
   for ( i in 1:(M-1)){
@@ -183,17 +183,17 @@ WFG4 <- function(individual, nObj, k = nObj-1){
 
     weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
 
-    x[i, ] <-  MaOEA:::r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+    x[i, ] <-  r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   }
   rsumMinIndex <- k+1
   rsumMaxIndex <- n
 
   weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
 
-  x[M, ] <-  MaOEA:::r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+  x[M, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   # shape function
   for(i in 1:M){
-    h[i, ] <-  MaOEA:::shape_concave(M,i,x)
+    h[i, ] <- shape_concave(M,i,x)
   }
   S <- seq(2,2*M,2)
 
