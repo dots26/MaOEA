@@ -11,13 +11,16 @@ SMSEMOA(population, fun, nObjective, control = list(), ...)
 
 \item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
-\item{nObjective}{Number of objective}
+\item{nObjective}{Number of objective. Ignored as of version 0.6.1; number of row from fun is used instead.}
 
 \item{control}{(list) Options to control the SMS-EMOA:
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
-\code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).}
+\code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).
+\code{lbound} A vector containing the lower bound for each gene
+\code{ubound} A vector containing the upper bound for each gene
+\code{scaleinput} Whether the input should be scaled to 0-1.}
 
 \item{...}{Further arguments to be passed to \code{fun}}
 }

@@ -9,6 +9,9 @@
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 #' \code{referencePoint} The reference point for HV computation on normalized objective space, i.e. (1,...,1) is the nadir point. Default to (1.1, ... , 1.1).
+#' \code{lbound} A vector containing the lower bound for each gene
+#' \code{ubound} A vector containing the upper bound for each gene
+#' \code{scaleinput} Whether the input should be scaled to 0-1.
 #' @return Returns a list for the next generation
 #' \code{population} The new generation. Column major, each row contain 1 set of objectives.
 #' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adative schemes. Column major.
@@ -47,15 +50,37 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
               crossoverDistribution=30,
               hypervolumeMethod='exact',
               hypervolumeMethodParam=list(),
-              referencePoint = NULL)
+              referencePoint = NULL,
+              scaleinput=T,
+              lbound=rep(0,chromosomeLength),
+              ubound=rep(1,chromosomeLength))
+
   con[names(control)] <- control
   control <- con
+
+  ubound <- control$ubound
+  lbound <- control$lbound
+
+  scale_multip <- 1
+  scale_shift <- 0
+  if(control$scaleinput){
+    scale_shift <- -lbound
+    scale_multip <- (ubound-lbound)
+
+    ubound <- rep(1,chromosomeLength)
+    lbound <- rep(0,chromosomeLength)
+
+    population <- t((t(population) - scale_shift) / scale_multip) # scale available population
+
+    # if(!is.null(population))
+      # population <- t((t(population) - scale_shift) / scale_multip) # scale available population
+  }
 
   newPointSurvives <- TRUE
   #evaluation of parents
   populationObjective<-NULL
   for(parentIndex in 1:populationSize){
-    ind <- population[,parentIndex,drop=F]
+    ind <- population[,parentIndex,drop=F]*scale_multip + scale_shift
     class(ind) <- class(population)
     individualObjectiveValue<-EvaluateIndividual(ind,fun,...)
     populationObjective<-cbind(populationObjective,individualObjectiveValue)
@@ -67,10 +92,10 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
 
   parentIndex <- sample(1:populationSize,2,replace = FALSE)
   #Crossover
-  offspring <- nsga2R::boundedSBXover(t(population[,parentIndex]),rep(0,chromosomeLength),rep(1,chromosomeLength),con$crossoverProbability,con$crossoverDistribution)
+  offspring <- nsga2R::boundedSBXover(t(population[,parentIndex]),lbound,ubound,con$crossoverProbability,con$crossoverDistribution)
   offspring <- matrix(offspring[sample(1:2,1),],nrow=1, ncol=chromosomeLength)
   #Mutation
-  offspring <- nsga2R::boundedPolyMutation(offspring,rep(0,chromosomeLength),rep(1,chromosomeLength),con$mutationProbability,con$mutationDistribution)
+  offspring <- nsga2R::boundedPolyMutation(offspring,lbound,ubound,con$mutationProbability,con$mutationDistribution)
   offspring <- t(offspring)
 
   # evaluate objective
@@ -139,7 +164,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   }
 
   keep_class <- class(population)
-  population <- newPopulation
+  population <- newPopulation*scale_multip + scale_shift
   class(population) <- keep_class
   populationObjective <- newPopulationObjective
 
