@@ -82,7 +82,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   for(parentIndex in 1:populationSize){
     ind <- population[,parentIndex,drop=F]*scale_multip + scale_shift
     class(ind) <- class(population)
-    individualObjectiveValue<-EvaluateIndividual(ind,fun,...)
+    individualObjectiveValue<-fun(ind,...)
     populationObjective<-cbind(populationObjective,individualObjectiveValue)
   }
 
@@ -102,7 +102,7 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   this_offspring <- offspring[,1,drop=FALSE]
 
   class(this_offspring) <- class(population)
-  offspringObjectiveValue <- EvaluateIndividual(this_offspring,fun,...)
+  offspringObjectiveValue <- fun(this_offspring,...)
 
   combinedPopulation <- cbind(population,offspring[,1])
   combinedObjectiveValue <- cbind(populationObjective,offspringObjectiveValue)
