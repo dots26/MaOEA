@@ -9,7 +9,7 @@ os:
 dist: xenial
 osx_image: xcode9.2
 before_install:
-    - if [[ "$OSTYPE" == "osx" ]]; then sudo tlmgr install inconsolata; fi
+    - sudo tlmgr install inconsolata
 
 r:
  - devel
