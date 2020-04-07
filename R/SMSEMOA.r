@@ -52,14 +52,14 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
               hypervolumeMethodParam=list(),
               referencePoint = NULL,
               scaleinput=T,
-              lbound=rep(0,chromosomeLength),
-              ubound=rep(1,chromosomeLength))
+              lower=rep(0,chromosomeLength),
+              upper=rep(1,chromosomeLength))
 
   con[names(control)] <- control
   control <- con
 
-  ubound <- control$ubound
-  lbound <- control$lbound
+  ubound <- control$upper
+  lbound <- control$lower
 
   scale_multip <- 1
   scale_shift <- 0
@@ -67,10 +67,10 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
     scale_shift <- -lbound
     scale_multip <- (ubound-lbound)
 
+    population <- ((population) - scale_shift) / scale_multip # scale available population
+
     ubound <- rep(1,chromosomeLength)
     lbound <- rep(0,chromosomeLength)
-
-    population <- t((t(population) - scale_shift) / scale_multip) # scale available population
 
     # if(!is.null(population))
       # population <- t((t(population) - scale_shift) / scale_multip) # scale available population
@@ -92,14 +92,23 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
 
   parentIndex <- sample(1:populationSize,2,replace = FALSE)
   #Crossover
-  offspring <- nsga2R::boundedSBXover(t(population[,parentIndex]),lbound,ubound,con$crossoverProbability,con$crossoverDistribution)
+  offspring <- nsga2R::boundedSBXover(parent_chromosome = t(population[,parentIndex]),
+                                      lowerBounds = lbound,
+                                      upperBounds = ubound,
+                                      cprob = con$crossoverProbability,
+                                      mu = con$crossoverDistribution)
   offspring <- matrix(offspring[sample(1:2,1),],nrow=1, ncol=chromosomeLength)
   #Mutation
-  offspring <- nsga2R::boundedPolyMutation(offspring,lbound,ubound,con$mutationProbability,con$mutationDistribution)
+  offspring <- nsga2R::boundedPolyMutation(parent_chromosome = offspring,
+                                           lowerBounds = lbound,
+                                           upperBounds = ubound,
+                                           mprob = con$mutationProbability,
+                                           mum = con$mutationDistribution)
   offspring <- t(offspring)
 
-  # evaluate objective
+   # evaluate objective
   this_offspring <- offspring[,1,drop=FALSE]
+
 
   class(this_offspring) <- class(population)
   offspringObjectiveValue <- fun(this_offspring,...)
@@ -154,8 +163,8 @@ SMSEMOA <- function(population,fun,nObjective,control=list(),...){
                                                control$hypervolumeMethodParam)
     removedPoint <- individualIndexTobeChecked[smallestContributor]
 
-    newPopulation <- newPopulation[-removedPoint,]
-    newPopulationObjective <- newPopulationObjective[-removedPoint,]
+    newPopulation <- newPopulation[,-removedPoint]
+    newPopulationObjective <- newPopulationObjective[,-removedPoint]
     if(removedPoint == ncol(combinedPopulation))
       newPointSurvives <- FALSE
   }else{
