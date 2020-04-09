@@ -13,9 +13,9 @@ InitializePopulationLHS(
 )
 }
 \arguments{
-\item{numberOfIndividuals}{The number of individual in the population. Integer > 0.}
+\item{numberOfIndividuals}{The number of individual in the population (ncol). Integer > 0.}
 
-\item{chromosomeLength}{The number of variables per individual}
+\item{chromosomeLength}{The number of variables per individual (nrow)}
 
 \item{minVal}{Minimum value of the resulting sample}
 

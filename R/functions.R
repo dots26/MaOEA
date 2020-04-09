@@ -1,7 +1,7 @@
 #' Create initial sample using Latin Hypercube Sampling (LHS) method. The variables will be ranged between 0-1
 #' @title Initialize population with Latin Hypercube Sampling
-#' @param numberOfIndividuals The number of individual in the population. Integer > 0.
-#' @param chromosomeLength The number of variables per individual
+#' @param numberOfIndividuals The number of individual in the population (ncol). Integer > 0.
+#' @param chromosomeLength The number of variables per individual (nrow)
 #' @param minVal Minimum value of the resulting sample
 #' @param maxVal Maximum value of the resulting sample
 #' @param samplingMethod Not used
