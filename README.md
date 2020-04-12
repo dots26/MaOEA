@@ -1,4 +1,4 @@
-# MaOEA
+# MaOEA [![Build Status](https://travis-ci.org/dots26/MaOEA.svg?branch=master](https://travis-ci.org/github/dots26/MaOEA)
 
 <!-- badges: start -->
 <!-- badges: end -->
