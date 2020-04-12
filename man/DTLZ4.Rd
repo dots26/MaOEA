@@ -7,14 +7,14 @@
 DTLZ4(individual, nObj, alpha = 100)
 }
 \arguments{
-\item{individual}{The individual to be evaluated}
+\item{individual}{The vector of individual (or matrix of population) to be evaluated.}
 
 \item{nObj}{The number of objective}
 
 \item{alpha}{Alpha value of DTLZ4 function.}
 }
 \value{
-A matrix of size nObjective, containing the objective values.
+A matrix of size nObjective x population size, containing the objective values for each individual.
 }
 \description{
 The DTLZ4 test function.

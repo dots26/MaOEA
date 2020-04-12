@@ -81,30 +81,30 @@ DTLZ1 <- function(individual,nObj){
 
   popSize <- ncol(individual)
 
-  nVar <- length(individual)
+  nVar <- nrow(individual)
   popObj <- NULL
 
-  for (popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+  #for (popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
     gSigma <- 0
     for (subIndex in nObj:nVar) {
-      gSigma <- gSigma + ((individual[subIndex,popIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex,popIndex] - 0.5))))
+      gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
     }
     g <- 100*(nVar- nObj + 1 + gSigma)
 
     for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,popIndex] <- 0.5* (1+g)
+      obj[objectiveIndex,] <- 0.5* (1+g)
 
       if( (nObj-objectiveIndex) > 0){
         for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * individual[cosIndex,popIndex]
+          obj[objectiveIndex,] <- obj[objectiveIndex,] * individual[cosIndex,]
         }
       }
       if(objectiveIndex > 1)
-        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  (1 - individual[nObj - objectiveIndex + 1,popIndex])
+        obj[objectiveIndex,] <- obj[objectiveIndex,] *  (1 - individual[nObj - objectiveIndex + 1,])
     }
     popObj <- cbind(popObj,obj)
-  }
+#  }
 
   return(popObj)
 }
@@ -125,28 +125,28 @@ DTLZ2 <- function(individual,nObj){
 
   popSize <- ncol(individual)
 
-  nVar <- length(individual)
+  nVar <- nrow(individual)
   popObj <- NULL
 
-  for (popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+  # for (popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
     g <- 0
     for (subIndex in nObj:nVar) {
-      g <- g + (individual[subIndex,popIndex] - 0.5)^2
+      g <- g + (individual[subIndex,] - 0.5)^2
     }
     for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,popIndex] <- (1+g)
+      obj[objectiveIndex,] <- (1+g)
 
       if( (nObj-objectiveIndex) > 0){
         for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * cos(individual[cosIndex,popIndex] * pi / 2)
+          obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
         }
       }
       if(objectiveIndex > 1)
-        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
     popObj <- cbind(popObj,obj)
-  }
+  # }
   return(popObj)
 }
 
@@ -167,29 +167,29 @@ DTLZ3 <- function(individual,nObj){
 
   popSize <- ncol(individual)
 
-  nVar <- length(individual)
+  nVar <- nrow(individual)
   popObj <- NULL
 
-  for(popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+  #for(popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
     gSigma <- 0
     for (subIndex in nObj:nVar) {
-      gSigma <- gSigma + ((individual[subIndex,popIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex,popIndex] - 0.5))))
+      gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
     }
     g <- 100*(nVar- nObj + 1 + gSigma)
     for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,popIndex] <- (1+g)
+      obj[objectiveIndex,] <- (1+g)
 
       if( (nObj-objectiveIndex) > 0){
         for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * cos(individual[cosIndex,popIndex] * pi / 2)
+          obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
         }
       }
       if(objectiveIndex > 1)
-        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
     popObj <- cbind(popObj,obj)
-  }
+ # }
   return(popObj)
 }
 
@@ -210,28 +210,28 @@ DTLZ4 <- function(individual,nObj,alpha=100){
 
   popSize <- ncol(individual)
 
-  nVar <- length(individual)
+  nVar <- nrow(individual)
   popObj <- NULL
 
-  for(popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+  #for(popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
     g <- 0
     for (subIndex in nObj:nVar) {
-      g <- g + (individual[subIndex,popIndex] - 0.5)^2
+      g <- g + (individual[subIndex,] - 0.5)^2
     }
     for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,popIndex] <- (1+g)
+      obj[objectiveIndex,] <- (1+g)
 
       if( (nObj-objectiveIndex) > 0){
         for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,popIndex] <- (obj[objectiveIndex,popIndex]) * cos((individual[cosIndex,popIndex]^alpha) * pi / 2)
+          obj[objectiveIndex,] <- (obj[objectiveIndex,]) * cos((individual[cosIndex,]^alpha) * pi / 2)
         }
       }
       if(objectiveIndex > 1)
-        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
     popObj <- cbind(popObj,obj)
-  }
+  #}
   return(popObj)
 }
 

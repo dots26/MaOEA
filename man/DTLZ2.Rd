@@ -7,12 +7,12 @@
 DTLZ2(individual, nObj)
 }
 \arguments{
-\item{individual}{The individual to be evaluated}
+\item{individual}{The vector of individual (or matrix of population) to be evaluated.}
 
 \item{nObj}{The number of objective}
 }
 \value{
-A matrix of size nObjective, containing the objective values.
+A matrix of size nObjective x population size, containing the objective values for each individual.
 }
 \description{
 The DTLZ2 test function.
