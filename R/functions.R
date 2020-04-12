@@ -18,11 +18,11 @@ InitializePopulationLHS <- function(numberOfIndividuals,chromosomeLength, minVal
 
   population<-t(population)
 
-#  if(binaryEncoding==TRUE){
-#    population<-round(population)
-#  }else{
-    population<-population * (maxVal-minVal) + minVal
-#  }
+  #  if(binaryEncoding==TRUE){
+  #    population<-round(population)
+  #  }else{
+  population<-population * (maxVal-minVal) + minVal
+  #  }
 
   return(population)
 }
@@ -66,9 +66,9 @@ EvaluatePopulation <- function(pop,fun,...){
 }
 
 #' The DTLZ1 test function.
-#' @param individual The individual to be evaluated
+#' @param individual The vector of individual (or matrix of population) to be evaluated.
 #' @param nObj The number of objective
-#' @return A matrix of size nObjective, containing the objective values.
+#' @return A matrix of size nObjective x population size, containing the objective values for each individual.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- stats::runif(14)
@@ -76,33 +76,43 @@ EvaluatePopulation <- function(pop,fun,...){
 #' DTLZ1(individual,nObj)
 #' @export
 DTLZ1 <- function(individual,nObj){
+  if(is.vector(individual))
+    individual <- matrix(individual)
+
+  popSize <- ncol(individual)
+
   nVar <- length(individual)
-  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
-  gSigma <- 0
-  for (subIndex in nObj:nVar) {
-    gSigma <- gSigma + ((individual[subIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex] - 0.5))))
-  }
-  g <- 100*(nVar- nObj + 1 + gSigma)
+  popObj <- NULL
 
-  for(objectiveIndex in 1:nObj){
-    obj[objectiveIndex] <- 0.5* (1+g)
-
-    if( (nObj-objectiveIndex) > 0){
-      for(cosIndex in 1:(nObj-objectiveIndex)){
-        obj[objectiveIndex] <- obj[objectiveIndex] * individual[cosIndex]
-      }
+  for (popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+    gSigma <- 0
+    for (subIndex in nObj:nVar) {
+      gSigma <- gSigma + ((individual[subIndex,popIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex,popIndex] - 0.5))))
     }
-    if(objectiveIndex > 1)
-      obj[objectiveIndex] <- obj[objectiveIndex] *  (1 - individual[nObj - objectiveIndex + 1])
+    g <- 100*(nVar- nObj + 1 + gSigma)
+
+    for(objectiveIndex in 1:nObj){
+      obj[objectiveIndex,popIndex] <- 0.5* (1+g)
+
+      if( (nObj-objectiveIndex) > 0){
+        for(cosIndex in 1:(nObj-objectiveIndex)){
+          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * individual[cosIndex,popIndex]
+        }
+      }
+      if(objectiveIndex > 1)
+        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  (1 - individual[nObj - objectiveIndex + 1,popIndex])
+    }
+    popObj <- cbind(popObj,obj)
   }
 
-  return(obj)
+  return(popObj)
 }
 
 #' The DTLZ2 test function.
-#' @param individual The individual to be evaluated
+#' @param individual The vector of individual (or matrix of population) to be evaluated.
 #' @param nObj The number of objective
-#' @return A matrix of size nObjective, containing the objective values.
+#' @return A matrix of size nObjective x population size, containing the objective values for each individual.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- stats::runif(14)
@@ -110,30 +120,40 @@ DTLZ1 <- function(individual,nObj){
 #' DTLZ2(individual,nObj)
 #' @export
 DTLZ2 <- function(individual,nObj){
-  nVar <- length(individual)
-  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
-  g <- 0
-  for (subIndex in nObj:nVar) {
-    g <- g + (individual[subIndex] - 0.5)^2
-  }
-  for(objectiveIndex in 1:nObj){
-    obj[objectiveIndex] <- (1+g)
+  if(is.vector(individual))
+    individual <- matrix(individual)
 
-    if( (nObj-objectiveIndex) > 0){
-      for(cosIndex in 1:(nObj-objectiveIndex)){
-        obj[objectiveIndex] <- obj[objectiveIndex] * cos(individual[cosIndex] * pi / 2)
-      }
+  popSize <- ncol(individual)
+
+  nVar <- length(individual)
+  popObj <- NULL
+
+  for (popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+    g <- 0
+    for (subIndex in nObj:nVar) {
+      g <- g + (individual[subIndex,popIndex] - 0.5)^2
     }
-    if(objectiveIndex > 1)
-      obj[objectiveIndex] <- obj[objectiveIndex] *  sin(individual[nObj - objectiveIndex + 1] * pi / 2)
+    for(objectiveIndex in 1:nObj){
+      obj[objectiveIndex,popIndex] <- (1+g)
+
+      if( (nObj-objectiveIndex) > 0){
+        for(cosIndex in 1:(nObj-objectiveIndex)){
+          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * cos(individual[cosIndex,popIndex] * pi / 2)
+        }
+      }
+      if(objectiveIndex > 1)
+        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+    }
+    popObj <- cbind(popObj,obj)
   }
-  return(obj)
+  return(popObj)
 }
 
 #' The DTLZ3 test function.
-#' @param individual The individual to be evaluated
+#' @param individual The vector of individual (or matrix of population) to be evaluated.
 #' @param nObj The number of objective
-#' @return A matrix of size nObjective, containing the objective values.
+#' @return A matrix of size nObjective x population size, containing the objective values for each individual.
 #'
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
@@ -142,32 +162,42 @@ DTLZ2 <- function(individual,nObj){
 #' DTLZ3(individual,nObj)
 #' @export
 DTLZ3 <- function(individual,nObj){
-  nVar <- length(individual)
-  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
-  gSigma <- 0
-  for (subIndex in nObj:nVar) {
-    gSigma <- gSigma + ((individual[subIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex] - 0.5))))
-  }
-  g <- 100*(nVar- nObj + 1 + gSigma)
-  for(objectiveIndex in 1:nObj){
-    obj[objectiveIndex] <- (1+g)
+  if(is.vector(individual))
+    individual <- matrix(individual)
 
-    if( (nObj-objectiveIndex) > 0){
-      for(cosIndex in 1:(nObj-objectiveIndex)){
-        obj[objectiveIndex] <- obj[objectiveIndex] * cos(individual[cosIndex] * pi / 2)
-      }
+  popSize <- ncol(individual)
+
+  nVar <- length(individual)
+  popObj <- NULL
+
+  for(popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+    gSigma <- 0
+    for (subIndex in nObj:nVar) {
+      gSigma <- gSigma + ((individual[subIndex,popIndex] - 0.5)^2 - cos(20*pi*((individual[subIndex,popIndex] - 0.5))))
     }
-    if(objectiveIndex > 1)
-      obj[objectiveIndex] <- obj[objectiveIndex] *  sin(individual[nObj - objectiveIndex + 1] * pi / 2)
+    g <- 100*(nVar- nObj + 1 + gSigma)
+    for(objectiveIndex in 1:nObj){
+      obj[objectiveIndex,popIndex] <- (1+g)
+
+      if( (nObj-objectiveIndex) > 0){
+        for(cosIndex in 1:(nObj-objectiveIndex)){
+          obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] * cos(individual[cosIndex,popIndex] * pi / 2)
+        }
+      }
+      if(objectiveIndex > 1)
+        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+    }
+    popObj <- cbind(popObj,obj)
   }
-  return(obj)
+  return(popObj)
 }
 
 #' The DTLZ4 test function.
-#' @param individual The individual to be evaluated
+#' @param individual The vector of individual (or matrix of population) to be evaluated.
 #' @param nObj The number of objective
 #' @param alpha Alpha value of DTLZ4 function.
-#' @return A matrix of size nObjective, containing the objective values.
+#' @return A matrix of size nObjective x population size, containing the objective values for each individual.
 #' @references Deb,  K.,  Thiele,  L.,  Laumanns,  M.,  Zitzler,  E.:  Scalable  Multi-Objective  Optimization Test Problems. In: Congress on Evolutionary Computation (CEC). pp. 825–830. IEEE Press, Piscataway, NJ (2002)
 #' @examples
 #' individual <- stats::runif(14)
@@ -175,24 +205,34 @@ DTLZ3 <- function(individual,nObj){
 #' DTLZ4(individual,nObj)
 #' @export
 DTLZ4 <- function(individual,nObj,alpha=100){
-  nVar <- length(individual)
-  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
-  g <- 0
-  for (subIndex in nObj:nVar) {
-    g <- g + (individual[subIndex] - 0.5)^2
-  }
-  for(objectiveIndex in 1:nObj){
-    obj[objectiveIndex] <- (1+g)
+  if(is.vector(individual))
+    individual <- matrix(individual)
 
-    if( (nObj-objectiveIndex) > 0){
-      for(cosIndex in 1:(nObj-objectiveIndex)){
-        obj[objectiveIndex] <- (obj[objectiveIndex]) * cos((individual[cosIndex]^alpha) * pi / 2)
-      }
+  popSize <- ncol(individual)
+
+  nVar <- length(individual)
+  popObj <- NULL
+
+  for(popIndex in 1:popSize){
+    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = 1)
+    g <- 0
+    for (subIndex in nObj:nVar) {
+      g <- g + (individual[subIndex,popIndex] - 0.5)^2
     }
-    if(objectiveIndex > 1)
-      obj[objectiveIndex] <- obj[objectiveIndex] *  sin(individual[nObj - objectiveIndex + 1] * pi / 2)
+    for(objectiveIndex in 1:nObj){
+      obj[objectiveIndex,popIndex] <- (1+g)
+
+      if( (nObj-objectiveIndex) > 0){
+        for(cosIndex in 1:(nObj-objectiveIndex)){
+          obj[objectiveIndex,popIndex] <- (obj[objectiveIndex,popIndex]) * cos((individual[cosIndex,popIndex]^alpha) * pi / 2)
+        }
+      }
+      if(objectiveIndex > 1)
+        obj[objectiveIndex,popIndex] <- obj[objectiveIndex,popIndex] *  sin(individual[nObj - objectiveIndex + 1,popIndex] * pi / 2)
+    }
+    popObj <- cbind(popObj,obj)
   }
-  return(obj)
+  return(popObj)
 }
 
 
