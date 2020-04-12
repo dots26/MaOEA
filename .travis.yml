@@ -14,4 +14,4 @@ r:
 
 install:
     - ls
-    - sudo ./MaOEA/travis/install.sh
+    - sudo ./travis/install.sh
