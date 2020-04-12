@@ -13,4 +13,5 @@ r:
  - oldrel
 
 install:
-    - ./travis/install.sh
+    - ls
+    - sudo ./MaOEA/travis/install.sh
