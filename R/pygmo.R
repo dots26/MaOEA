@@ -166,7 +166,6 @@ HVContrib_WFG <- function(populationObjective,reference=NULL){
       if(any(populationObjective[,pointIndex]>reference)){
         rmIndex <- append(rmIndex,pointIndex)
         populationObjective[,pointIndex] <- reference - .Machine$double.eps*reference*10*sign(reference)
-        print('TOREF!')
       }
     }
     if(!is.null(rmIndex)){
