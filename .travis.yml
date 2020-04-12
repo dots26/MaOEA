@@ -12,6 +12,6 @@ r:
  - release
  - oldrel
 
-install:
-    - ls
-    - sudo ./travis/install.sh
+
+before_install:
+  ./travis/install.sh
