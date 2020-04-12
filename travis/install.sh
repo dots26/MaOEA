@@ -1,10 +1,6 @@
 #!/bin/bash
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
-    sudo pip install --upgrade pip
-    pip install --user numpy
-    pip install --user pygmo
-else
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
     bash miniconda.sh -b -p $HOME/miniconda
     export PATH="$HOME/miniconda/bin:$PATH"
@@ -16,4 +12,8 @@ else
     source activate test-env
     conda install -c anaconda numpy
     conda install -c conda-forge pygmo
+else
+    sudo pip3 install --upgrade pip3
+    pip3 install --user numpy
+    pip3 install --user pygmo
 fi
