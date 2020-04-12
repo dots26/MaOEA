@@ -7,12 +7,27 @@ os:
  - osx
  - linux
 dist: xenial
-
 r:
  - devel
  - release
  - oldrel
-matrix:
- exclude:
- - os: osx
-   r: devel
+
+if: os == 'linux'
+   before_install:       # pygmo is available on pip for linux, but not on macOS
+    - sudo pip install --upgrade pip
+    - pip install --user numpy
+    - pip install --user pygmo
+if: os== 'osx'
+   before_install: # install conda, then python packages
+    - wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
+    - source activate test-env
+    - conda install -c anaconda numpy
+    - conda install -c conda-forge pygmo
+
