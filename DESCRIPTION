@@ -15,6 +15,8 @@ Description: A set of evolutionary algorithms to solve many-objective optimizati
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+BugReports: https://github.com/dots26/MaOEA/issues
+URL: https://github.com/dots26/MaOEA
 RoxygenNote: 7.0.2
 Imports: reticulate, nsga2R, lhs, nnet, stringr, randtoolbox, e1071, MASS,gtools, stats, utils, pracma
 Suggests: testthat
