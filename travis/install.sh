@@ -13,7 +13,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     conda install -c anaconda numpy
     conda install -c conda-forge pygmo
 else
-    sudo pip3 install --upgrade pip3
-    pip3 install --user numpy
-    pip3 install --user pygmo
+    sudo pip install --upgrade pip
+    pip install --user numpy
+    pip install --user pygmo
 fi
