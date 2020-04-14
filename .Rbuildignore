@@ -6,3 +6,5 @@
 ^miniconda\.sh$
 ^LICENSE$
 ^theymlcopy\.yml$
+^travis/.*$
+
