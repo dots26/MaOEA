@@ -88,22 +88,26 @@ pkg.globals$rndGen <- NULL
 pkg.globals$have_numpy <- F
 pkg.globals$have_pygmo <- F
 
-.onLoad <- function(libname, pkgname){
-  pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
-  pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+# .onLoad <- function(libname, pkgname){
+# pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
+# pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+#
+# if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
+# pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+# pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+# }
+# }
 
+setLoadAction(function(ns){
+  try({pkg.globals$have_numpy <- reticulate::py_module_available("numpy")},silent = T)
+  try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
   if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
     pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
     pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
   }
-}
-
-setLoadAction(function(ns){
-  #have_numpy <<- reticulate::py_module_available("numpy")
   if (!pkg.globals$have_numpy)
     packageStartupMessage("Numpy not available")
 
-  #have_pygmo <<- reticulate::py_module_available("pygmo")
   if (!pkg.globals$have_pygmo)
     packageStartupMessage("PyGMO not available")
 
