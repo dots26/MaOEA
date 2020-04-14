@@ -1,9 +1,9 @@
-LeastContributorExact <- function(populationObjective,reference=NULL){
+LeastContributorExact <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -30,13 +30,13 @@ LeastContributorExact <- function(populationObjective,reference=NULL){
   return(leastContributor+1)
 }
 
-LeastContributorBFapprox <- function(populationObjective,reference=NULL){
+LeastContributorBFapprox <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
 
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -60,12 +60,12 @@ LeastContributorBFapprox <- function(populationObjective,reference=NULL){
   return(leastContributor+1)
 }
 
-LeastContributionApprox <- function(populationObjective,reference=NULL){
+LeastContributionApprox <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference<-append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -87,7 +87,7 @@ LeastContributionApprox <- function(populationObjective,reference=NULL){
   return(min(contribution))
 }
 
-HypervolumeBFapprox <- function(populationObjective,reference=NULL){
+HypervolumeBFapprox <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
 
@@ -96,7 +96,7 @@ HypervolumeBFapprox <- function(populationObjective,reference=NULL){
 
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -118,7 +118,7 @@ HypervolumeBFapprox <- function(populationObjective,reference=NULL){
   approxHv <- hv$compute(reference,hv_alg)
 }
 
-HypervolumeExact <- function(populationObjective,reference=NULL){
+HypervolumeExact <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
 
@@ -127,7 +127,7 @@ HypervolumeExact <- function(populationObjective,reference=NULL){
 
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective)){
-      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
     }
   }else{
     # check reference is dominated by all points
@@ -152,13 +152,13 @@ HypervolumeExact <- function(populationObjective,reference=NULL){
 }
 
 
-HVContrib_WFG <- function(populationObjective,reference=NULL){
+HVContrib_WFG <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
 
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL

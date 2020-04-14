@@ -8,6 +8,7 @@ GetLeastContributor(
   populationObjective,
   reference = NULL,
   method = "exact",
+  ref_multiplier = 1.1,
   hypervolumeMethodParam = list()
 )
 }
@@ -17,6 +18,8 @@ GetLeastContributor(
 \item{reference}{The reference point for computing HV}
 
 \item{method}{the HV computation method}
+
+\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 
 \item{hypervolumeMethodParam}{A list of parameters to be passed to the hypervolumeMethod}
 }

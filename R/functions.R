@@ -485,6 +485,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' @param reference The reference point for computing HV
 #' @param method the HV computation method
 #' @param hypervolumeMethodParam A list of parameters to be passed to the hypervolumeMethod
+#' @param ref_multiplier Multiplier to the nadir point for dynamic reference point location
 #' @return The index of the least contributor, an integer.
 #' @examples
 #' \donttest{
@@ -497,12 +498,12 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' GetLeastContributor(objective,reference,"exact")
 #' }
 #' @export
-GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list()){
+GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1,hypervolumeMethodParam=list()){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
     for(objectiveIndex in 1:nrow(populationObjective))
-      reference <- append(reference,max(populationObjective[objectiveIndex,])*1.1)
+      reference <- append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
   }
 
   if(method=="exact"){
@@ -521,7 +522,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
 #' @param method the HV computation method
-
+#' @param ref_multiplier Multiplier to the nadir point for dynamic reference point location
 #' @return The HV contribution value of the least contributor.
 #' @examples
 #'  \donttest{
@@ -534,10 +535,10 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 #' GetLeastContribution(objective,reference,"exact")
 #' }
 #' @export
-GetLeastContribution<- function(populationObjective,reference=NULL,method="exact"){
+GetLeastContribution<- function(populationObjective,reference=NULL,ref_multiplier=1.1,method="exact"){
   if(method=="exact"){
     if(is.null(reference))
-      hypervolumeContribution <- HVContrib_WFG(populationObjective)
+      hypervolumeContribution <- HVContrib_WFG(populationObjective,ref_multiplier=ref_multiplier)
     else
       hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
 
@@ -555,6 +556,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' @param populationObjective The objective value of the corresponding individual
 #' @param reference The reference point for computing HV
 #' @param method the HV computation method. Currently ignored and uses the WFG exact method.
+#' @param ref_multiplier Multiplier to the nadir point for dynamic reference point location
 #' @return A vector of length ncol(populationObjective)
 #' @examples
 #' \donttest{
@@ -567,12 +569,12 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' GetHVContribution(objective,reference)
 #' }
 #' @export
-GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
+GetHVContribution<- function(populationObjective,reference=NULL,ref_multiplier=1.1,method="exact"){
   #  if(method=="exact"){
   if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
-  hypervolumeContribution <- HVContrib_WFG(populationObjective, reference)
+  hypervolumeContribution <- HVContrib_WFG(populationObjective,reference,ref_multiplier=ref_multiplier)
 
   return(hypervolumeContribution)
 }
@@ -582,7 +584,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' @param objective The set of points in the objective space (The objective values). A single column should contain one point, so the size would be numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
 #' @param reference The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
 #' @param method Exact using WFG method or approximate HV using the method by Bringmann and Friedrich. Default to "exact".
-#'
+#' @param ref_multiplier Multiplier to the nadir point for dynamic reference point location
 #' @return Hypervolume size, a scalar value.
 #' @examples
 #' \donttest{
@@ -596,13 +598,13 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact"){
 #' }
 #' @export
 #'
-GetHypervolume <- function(objective,reference=NULL,method="exact"){
+GetHypervolume <- function(objective,reference=NULL,ref_multiplier=1.1,method="exact"){
   if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
   if(method=="exact"){
     if(is.null(reference))
-      hypervolume <- HypervolumeExact(objective)
+      hypervolume <- HypervolumeExact(objective,ref_multiplier=ref_multiplier)
     else{
       hypervolume <- HypervolumeExact(objective, reference)
     }

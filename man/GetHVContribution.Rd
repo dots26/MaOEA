@@ -4,12 +4,19 @@
 \alias{GetHVContribution}
 \title{Get HV contribution of all points.}
 \usage{
-GetHVContribution(populationObjective, reference = NULL, method = "exact")
+GetHVContribution(
+  populationObjective,
+  reference = NULL,
+  ref_multiplier = 1.1,
+  method = "exact"
+)
 }
 \arguments{
 \item{populationObjective}{The objective value of the corresponding individual}
 
 \item{reference}{The reference point for computing HV}
+
+\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 
 \item{method}{the HV computation method. Currently ignored and uses the WFG exact method.}
 }

@@ -4,12 +4,19 @@
 \alias{GetLeastContribution}
 \title{Get least HV contribution}
 \usage{
-GetLeastContribution(populationObjective, reference = NULL, method = "exact")
+GetLeastContribution(
+  populationObjective,
+  reference = NULL,
+  ref_multiplier = 1.1,
+  method = "exact"
+)
 }
 \arguments{
 \item{populationObjective}{The objective value of the corresponding individual}
 
 \item{reference}{The reference point for computing HV}
+
+\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 
 \item{method}{the HV computation method}
 }
