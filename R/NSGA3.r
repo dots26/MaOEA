@@ -2,7 +2,7 @@
 #' @title Elitist Non-dominated Sorting Genetic Algorithm version III
 #' @param population The parent generation. One individual per column. nrow = number of variable, ncol = number of individuals in the population.
 #' @param fun Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.
-#' @param nObjective The number of objective functions. A scalar value.
+#' @param nObjective The number of objective functions. A scalar value. Needed to generate weight vectors.
 #' @param control A list, containing the following:
 #' \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 #' \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
