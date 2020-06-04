@@ -582,7 +582,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,ref_multiplier=1
 #' Compute the hypervolume formed by the points w.r.t. a reference point. If no reference is supplied, use the nadir point*(1.1,...,1.1).
 #' @title Compute hypervolume
 #' @param objective The set of points in the objective space (The objective values). A single column should contain one point, so the size would be numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
-#' @param reference The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.
+#' @param reference The reference point for HV computation. A column vector.
 #' @param method Exact using WFG method or approximate HV using the method by Bringmann and Friedrich. Default to "exact".
 #' @param ref_multiplier Multiplier to the nadir point for dynamic reference point location
 #' @return Hypervolume size, a scalar value.
