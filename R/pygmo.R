@@ -11,14 +11,13 @@ LeastContributorExact <- function(populationObjective,reference=NULL,ref_multipl
     for(i in 1:popSize){
       tempPop <- populationObjective[,-i]
       for(objectiveIndex in 1:nrow(populationObjective))
-        reference<-append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
+        reference<-append(reference,max(tempPop[objectiveIndex,])*ref_multiplier)
       subhv_object <- pkg.globals$pygmo$hypervolume(t(tempPop))
       hv_subhv <- subhv_object$compute(reference,hv_cont_alg)
 
       contrib <- append(contrib,hv_forall-hv_subhv)
     }
     leastContributor <- which.min(contrib)
-
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -48,8 +47,22 @@ LeastContributorBFapprox <- function(populationObjective,reference=NULL,ref_mult
     populationObjective <- matrix(populationObjective)
 
   if(is.null(reference)){
-    for(objectiveIndex in 1:nrow(populationObjective))
-      reference<-append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
+    hv <- pkg.globals$pygmo$hypervolume(t(populationObjective))
+    hv_cont_alg <- pkg.globals$pygmo$bf_fpras()
+    hv_forall <- hv$compute(reference,hv_cont_alg)
+
+    popSize <- ncol(populationObjective)
+    contrib <- NULL
+    for(i in 1:popSize){
+      tempPop <- populationObjective[,-i]
+      for(objectiveIndex in 1:nrow(populationObjective))
+        reference<-append(reference,max(tempPop[objectiveIndex,])*ref_multiplier)
+      subhv_object <- pkg.globals$pygmo$hypervolume(t(tempPop))
+      hv_subhv <- subhv_object$compute(reference,hv_cont_alg)
+
+      contrib <- append(contrib,hv_forall-hv_subhv)
+    }
+    leastContributor <- which.min(contrib)
   }else{
     # check reference is dominated by all points
     rmIndex <- NULL
@@ -62,14 +75,12 @@ LeastContributorBFapprox <- function(populationObjective,reference=NULL,ref_mult
     if(!is.null(rmIndex)){
       warning("Some points are dominated by the reference and ignored")
     }
-    # populationObjective <- populationObjective[,-rmIndex]
+    hv <- pkg.globals$pygmo$hypervolume(t(populationObjective))
+    hv_cont_alg <- pkg.globals$pygmo$bf_approx(TRUE,1L,0.01,0.05)
+
+    leastContributor <- hv$least_contributor(reference,hv_cont_alg)
   }
 
-  hv <- pkg.globals$pygmo$hypervolume(t(populationObjective))
-  hv_cont_alg <- pkg.globals$pygmo$bf_approx(TRUE,1L,0.01,0.05)
-
-
-  leastContributor <- hv$least_contributor(reference,hv_cont_alg)
   return(leastContributor+1)
 }
 
