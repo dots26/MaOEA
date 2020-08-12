@@ -14,7 +14,7 @@ GetHypervolume(
 \arguments{
 \item{objective}{The set of points in the objective space (The objective values). A single column should contain one point, so the size would be numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.}
 
-\item{reference}{The reference points. Each column represent one point. Size: numberOfObjective x nPoint, e.g. in 5 objective problem, it is 5 x n.}
+\item{reference}{The reference point for HV computation. A column vector.}
 
 \item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 

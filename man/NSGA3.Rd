@@ -11,7 +11,7 @@ NSGA3(population, fun, nObjective, control = list(), ...)
 
 \item{fun}{Objective function being solved. Currently available in the package DTLZ1-DTLZ4, WFG4-WFG9.}
 
-\item{nObjective}{The number of objective functions. A scalar value.}
+\item{nObjective}{The number of objective functions. A scalar value. Needed to generate weight vectors.}
 
 \item{control}{A list, containing the following:
 \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
