@@ -73,7 +73,7 @@ WFG1 <- function(individual, nObj,k = nObj-1){
 
   S <- seq(2,2*M,2)
 
-  obj_val <- x + h*S
+  obj_val <- x[M,] + h*S
   return(obj_val)
 }
 
@@ -144,7 +144,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
 
   S <- seq(2,2*M,2)
 
-  obj_val <- x + h*S
+  obj_val <- x[M,] + h*S
   return(obj_val)
 }
 
