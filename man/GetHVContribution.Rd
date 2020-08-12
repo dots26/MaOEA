@@ -7,8 +7,8 @@
 GetHVContribution(
   populationObjective,
   reference = NULL,
-  ref_multiplier = 1.1,
-  method = "exact"
+  method = "exact",
+  ref_multiplier = 1.1
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ GetHVContribution(
 
 \item{reference}{The reference point for computing HV}
 
-\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
-
 \item{method}{the HV computation method. Currently ignored and uses the WFG exact method.}
+
+\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 }
 \value{
 A vector of length ncol(populationObjective)

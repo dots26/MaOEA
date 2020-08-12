@@ -498,7 +498,7 @@ ApproximateHypervolumeContribution <- function(populationObjective,referencePoin
 #' GetLeastContributor(objective,reference,"exact")
 #' }
 #' @export
-GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1,hypervolumeMethodParam=list()){
+GetLeastContributor<- function(populationObjective,reference=NULL,method="exact",hypervolumeMethodParam=list(),ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
@@ -536,7 +536,7 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
 #' GetLeastContribution(objective,reference,"exact")
 #' }
 #' @export
-GetLeastContribution<- function(populationObjective,reference=NULL,ref_multiplier=1.1,method="exact"){
+GetLeastContribution<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1){
   if(method=="exact"){
     if(is.null(reference))
       hypervolumeContribution <- HVContrib_WFG(populationObjective,ref_multiplier=ref_multiplier)
@@ -570,7 +570,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,ref_multiplie
 #' GetHVContribution(objective,reference)
 #' }
 #' @export
-GetHVContribution<- function(populationObjective,reference=NULL,ref_multiplier=1.1,method="exact"){
+GetHVContribution<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1){
   #  if(method=="exact"){
   if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
@@ -599,7 +599,7 @@ GetHVContribution<- function(populationObjective,reference=NULL,ref_multiplier=1
 #' }
 #' @export
 #'
-GetHypervolume <- function(objective,reference=NULL,ref_multiplier=1.1,method="exact"){
+GetHypervolume <- function(objective,reference=NULL,method="exact",ref_multiplier=1.1){
   if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 

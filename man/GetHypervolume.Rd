@@ -7,8 +7,8 @@
 GetHypervolume(
   objective,
   reference = NULL,
-  ref_multiplier = 1.1,
-  method = "exact"
+  method = "exact",
+  ref_multiplier = 1.1
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ GetHypervolume(
 
 \item{reference}{The reference point for HV computation. A column vector.}
 
-\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
-
 \item{method}{Exact using WFG method or approximate HV using the method by Bringmann and Friedrich. Default to "exact".}
+
+\item{ref_multiplier}{Multiplier to the nadir point for dynamic reference point location}
 }
 \value{
 Hypervolume size, a scalar value.
