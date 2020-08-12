@@ -17,7 +17,7 @@ Encoding: UTF-8
 LazyData: true
 BugReports: https://github.com/dots26/MaOEA/issues
 URL: https://github.com/dots26/MaOEA
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Imports: reticulate, nsga2R, lhs, nnet, stringr, randtoolbox, e1071, MASS,gtools, stats, utils, pracma
 Suggests: testthat
 SystemRequirements: Python 3.x with following modules: PyGMO, NumPy, and cloudpickle
