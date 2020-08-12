@@ -502,8 +502,9 @@ GetLeastContributor<- function(populationObjective,reference=NULL,method="exact"
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
   if(is.null(reference)){
-    for(objectiveIndex in 1:nrow(populationObjective))
+    for(objectiveIndex in 1:nrow(populationObjective)){
       reference <- append(reference,max(populationObjective[objectiveIndex,])*ref_multiplier)
+    }
   }
 
   if(method=="exact"){
