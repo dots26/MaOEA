@@ -82,8 +82,15 @@ b_poly <- function(y,alpha){
 }
 
 b_flat <- function(y,A,B,C){
-  xx <- min(c(0,floor(y-B)))*(A-(A*y/B))
-  yy <- min(c(0,floor(C-y)))*(1-A)*(y-C)/(1-C)
+  fun1 <- function(y1,A,B,C){
+    return( min(c(0,floor(y1-B)))*(A-(A*y1/B)))
+  }
+  fun2 <- function(y1,A,B,C){
+    return( min(c(0,floor(C-y1)))*(1-A)*(y1-C)/(1-C))
+  }
+
+  xx <- sapply(X = y,FUN = fun1,A=A,B=B,C=C)
+  yy <- sapply(X = y,FUN = fun2,A=A,B=B,C=C)
 
   x <- A + xx - yy
   return(x)
