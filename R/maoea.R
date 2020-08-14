@@ -87,36 +87,58 @@ pkg.globals$pygmo <- NULL
 pkg.globals$rndGen <- NULL
 pkg.globals$have_numpy <- F
 pkg.globals$have_pygmo <- F
-
-# .onLoad <- function(libname, pkgname){
-# pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
-# pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
-#
-# if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
-# pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
-# pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
-# }
-# }
+.onLoad <- function(libname, pkgname){
+  pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+  pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+}
 
 setLoadAction(function(ns){
-  try({pkg.globals$have_numpy <- reticulate::py_module_available("numpy")},silent = T)
-  try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
-  if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
-    pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
-    pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
-  }
-  if (!pkg.globals$have_numpy)
-    packageStartupMessage("Numpy not available")
-
-  if (!pkg.globals$have_pygmo)
-    packageStartupMessage("PyGMO not available")
-
-  if(!pkg.globals$have_numpy || !pkg.globals$have_pygmo)
-    packageStartupMessage("Missing required python modules.
-Try using MaOEA::install_python_dependencies()
+  packageStartupMessage("Check required python modules:
+reticulate::py_module_available('numpy') and reticulate::py_module_available('pygmo').
+If not available, try using MaOEA::install_python_dependencies()
 or follow the instructions in https://esa.github.io/pagmo2/install.html
 and call MaOEA::load_python_dependencies().")
 })
+
+# .onLoad <- function(libname, pkgname){
+#   pkg.globals$have_numpy <- reticulate::py_module_available("numpy")
+#   pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+#
+#   if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
+#     pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+#     pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+#   }else{
+#     packageStartupMessage("Missing required python modules.
+# Try using MaOEA::install_python_dependencies()
+# or follow the instructions in https://esa.github.io/pagmo2/install.html
+# and call MaOEA::load_python_dependencies().")
+#   }
+#   if (!pkg.globals$have_numpy)
+#     packageStartupMessage("Numpy not available")
+#
+#   if (!pkg.globals$have_pygmo)
+#     packageStartupMessage("PyGMO not available")
+# }
+
+# setLoadAction(function(ns){
+#   try({pkg.globals$have_numpy <- reticulate::py_module_available("numpy")},silent = T)
+#   try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
+#   if(pkg.globals$have_pygmo && pkg.globals$have_numpy){
+#     pkg.globals$pygmo <- reticulate::import("pygmo", delay_load = TRUE)
+#     pkg.globals$rndGen <- reticulate::import("numpy", delay_load = TRUE)
+#   }
+#   if (!pkg.globals$have_numpy)
+#     packageStartupMessage("Numpy not available")
+#
+#   if (!pkg.globals$have_pygmo)
+#     packageStartupMessage("PyGMO not available")
+#
+#   if(!pkg.globals$have_numpy || !pkg.globals$have_pygmo)
+#     packageStartupMessage("Missing required python modules.
+# Try using MaOEA::install_python_dependencies()
+# or follow the instructions in https://esa.github.io/pagmo2/install.html
+# and call MaOEA::load_python_dependencies().")
+# })
 
 #' Install the required python package via conda.
 #' @title Install python modules required by MaOEA: numpy and PyGMO
