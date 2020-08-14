@@ -41,7 +41,7 @@
 #' @export
 SMSEMOA <- function(population,fun,nObjective,control=list(),...){
   if (!pkg.globals$have_pygmo)
-    try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
+    pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
   if (!pkg.globals$have_pygmo)
     stop("SMS-EMOA requires PyGMO to compute hypervolume")
 

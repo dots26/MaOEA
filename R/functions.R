@@ -589,8 +589,7 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1){
   #  if(method=="exact"){
   if (!pkg.globals$have_pygmo)
-    try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
-
+    pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
   if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
