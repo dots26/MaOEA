@@ -31,6 +31,8 @@
 #' @export
 SMOCMAES <- function(parent,nObjective ,fun,control=list(),...){
   if (!pkg.globals$have_pygmo)
+    try({pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")},silent = T)
+  if (!pkg.globals$have_pygmo)
     stop("SMOCMAES requires PyGMO to compute hypervolume")
 
   con <- list(successProbTarget = 1 / (5 + ( 1 / 2  )^0.5),
