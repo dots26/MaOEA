@@ -625,6 +625,8 @@ GetHVContribution<- function(populationObjective,reference=NULL,method="exact",r
 #'
 GetHypervolume <- function(objective,reference=NULL,method="exact",ref_multiplier=1.1){
   if (!pkg.globals$have_pygmo)
+    pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+  if (!pkg.globals$have_pygmo)
     stop("HV computation requires PyGMO")
 
   if(method=="exact"){
