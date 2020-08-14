@@ -63,6 +63,10 @@ ctrl <- list(crossoverProbability = 1,
 #Initial population can be supplied, like below but for this example, we skip it
 #population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 
+numpyready <- reticulate::py_module_available('numpy')
+pygmoready <- reticulate::py_module_available('pygmo')
+py_module_ready <- numpyready && pygmoready
+if(py_module_ready){ # prevent error on testing the example
 # Hybrid NSGA-III and SMSEMOA example
 # 2 calls for nObjective. 1 for optimMaOEA, 1 for WFG8
 # generate initial population and run 10 gen. NSGA-III with standard WFG8 test function.
@@ -72,6 +76,6 @@ newPop <- optimMaOEA( , WFG8,NSGA3,nObjective,10,nVar,nIndividual,,ctrl,nObjecti
 result <- optimMaOEA( newPop, WFG8,SMSEMOA,nObjective,5,,,1000,ctrl,nObjective)
 finalPop <- result$x
 finalObjective <- result$y
-
+}
 }
 }

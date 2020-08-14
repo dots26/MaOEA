@@ -31,9 +31,14 @@ Compute the hypervolume formed by the points w.r.t. a reference point. If no ref
 nObjective <- 5 # the number of objectives
 nPoint <- 10 # the number of points that will form the hypervolume
 objective <- matrix(stats::runif(nObjective*nPoint), nrow = nObjective, ncol = nPoint)
+numpyready <- reticulate::py_module_available('numpy')
+pygmoready <- reticulate::py_module_available('pygmo')
+py_module_ready <- numpyready && pygmoready
+if(py_module_ready) # prevent error on testing the example
 GetHypervolume(objective,,"exact") # no reference supplied
 
 reference <- rep(2,nObjective) # create a reference point at (2,2,2,2,2)
+if(py_module_ready) # prevent error on testing the example
 GetHypervolume(objective,reference,"exact") # using reference point
 }
 }

@@ -38,6 +38,10 @@ pop <- matrix(stats::runif(nIndividual*nVar), nrow = nVar) # create the populati
 a_list <- cmaes_gen(pop)
 control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
 # run a generation of SMO-CMA-ES with standard WFG8 test function.
+numpyready <- reticulate::py_module_available('numpy')
+pygmoready <- reticulate::py_module_available('pygmo')
+py_module_ready <- numpyready && pygmoready
+if(py_module_ready) # prevent error on testing the example
 newGeneration <- SMOCMAES(a_list,nObjective,WFG8,control,nObjective)
 }
 }

@@ -31,6 +31,10 @@
 #' population <- matrix(runif(nIndividual*nVar), nrow = nVar)
 #'
 #' # run a generation of SMS-EMOA with standard WFG6 test function.
+#' numpyready <- reticulate::py_module_available('numpy')
+#' pygmoready <- reticulate::py_module_available('pygmo')
+#' py_module_ready <- numpyready && pygmoready
+#' if(py_module_ready) # prevent error on testing the example
 #' SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
 #'                                           mutationProbability = mutationProbability),nObjective)
 #' }

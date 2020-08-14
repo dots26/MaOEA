@@ -17,6 +17,10 @@
 #' control <- list(successProbTarget=ps_target,crossoverProbability=crossoverProbability)
 #'  \donttest{
 #' # run a generation of MO-CMA-ES with standard WFG8 test function.
+#' numpyready <- reticulate::py_module_available('numpy')
+#' pygmoready <- reticulate::py_module_available('pygmo')
+#' py_module_ready <- numpyready && pygmoready
+#' if(py_module_ready) # prevent error on testing the example
 #' newGeneration <- MOCMAES(a_list,nObjective,WFG8,control,nObjective)
 #' }
 #' @export
