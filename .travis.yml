@@ -12,7 +12,11 @@ r:
  - release
  - oldrel
 
-
 before_install:
  - chmod +x ./travis/install.sh
  - ./travis/install.sh
+
+matrix:
+  exclude:
+    - r: devel
+      os: osx
