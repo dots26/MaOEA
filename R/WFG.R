@@ -196,7 +196,6 @@ WFG3 <- function(individual, nObj,k = nObj-1){
   }
 
   # shape function
-  # print(x)
   for(i in 1:M-1){
     h[i, ] <- shape_linear(M,i,x)
   }
@@ -337,7 +336,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
   x <- pracma::zeros(M,nIndividual)
   h <- x
   # first transformation
-  individual1[1:k, ] <- individual[1:k ]
+  individual1[1:k, ] <- individual[1:k, ]
   for(i in (k+1):n){
     individual1[i, ] <- s_linear(individual[i, ],0.35)
   }
@@ -346,6 +345,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
   i <- 1:(M-1)
   rsumMinIndex <- (i-1)*k/(M-1)+1
   rsumMaxIndex <- (i*k)/(M-1)
+
   for(i in 1:(M-1)){
     x[i, ] <- r_nonsep(individual1[rsumMinIndex[i]:rsumMaxIndex[i],,drop=F],k/(M-1))
   }
@@ -363,6 +363,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
   obj_val <- x[M, ] + h*S
   return(obj_val)
 }
+
 
 #' The WFG7 test function.
 #' @param nObj The number of objective
