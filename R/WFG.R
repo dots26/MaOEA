@@ -110,9 +110,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   }
 
   # second transform
-  for(i in 1:k){
-    individual2[i, ] <- individual1[i, ]
-  }
+  individual2[1:k, ] <- individual1[1:k, ]
   for(i in (k+1):(k+ (l/2) ) ){
     individual2[i, ] <- r_nonsep(c(individual1[k+2*(i-k)-1, ],individual1[k+2*(i-k), ]),2)
   }
@@ -131,7 +129,6 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
   x[M, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
 
-
   # shape function
   for(i in 1:(M-1)){
     h[i, ] <- shape_convex(M,i,x)
@@ -139,7 +136,73 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   h[M, ] <- shape_disconnected(M,x,1,1,5)
 
   S <- seq(2,2*M,2)
+  obj_val <- x[M,] + h*S
+  return(obj_val)
+}
 
+#' The WFG3 test function.
+#' @param nObj The number of objective
+#' @param individual The individual to be evaluated, the search space should be in [0-2i] for variable number i. Can accept multiple individualm each in different column.
+#' @param k Number of distance related parameters. The reference suggests a positive integer multiplied by (nObj-1). Default to nObj-1
+#' @return A matrix of size nObjective, containing the objective values.
+#' @examples
+#' individual <- runif(14)
+#' nObj <- 4
+#' WFG3(individual,nObj)
+#'
+#' @references Huband, S., Hingston, P., Barone, L., While, L.: A review of multiobjective test problems and a scalable test problem toolkit. Trans. Evol. Comp 10 (5), 477–506 (2006)
+#' @export
+WFG3 <- function(individual, nObj,k = nObj-1){
+  M <- nObj
+  if(is.vector(individual))
+    individual <- matrix(individual,ncol=1)
+  nIndividual <- ncol(individual)
+  n <- nrow(individual) # number of variables
+  l <- n-k
+
+
+  individual1 <- individual
+  individual2 <- individual
+  individual3 <- individual
+  x <- pracma::zeros(M,nIndividual)
+  h <- x
+
+  individual <- individual/seq(2,2*n,2)
+  # first transformation
+  individual1[1:k, ] <- individual[1:k, ]
+  for(i in (k+1):n){
+    individual1[i, ] <- s_linear(individual[i, ],0.35)
+  }
+
+  # second transform
+  individual2[1:k, ] <- individual1[1:k, ]
+  for(i in (k+1):(k+ (l/2) ) ){
+    individual2[i, ] <- r_nonsep(c(individual1[k+2*(i-k)-1, ],individual1[k+2*(i-k), ]),2)
+  }
+
+  # third transform
+  rsumMinIndex <- k+1
+  rsumMaxIndex <- k+l/2
+
+  weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+  x[M, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+  for(i in 1:(M-1)){
+    rsumMinIndex <- (i-1)*k/(M-1)+1
+    rsumMaxIndex <- (i*k)/(M-1)
+    weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+
+    x[i, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+    x[i, ] <- ((x[i, ]-0.5) * x[M,]) +0.5
+  }
+
+  # shape function
+  # print(x)
+  for(i in 1:M-1){
+    h[i, ] <- shape_linear(M,i,x)
+  }
+  h[M, ] <- shape_linear(M,M,x)
+
+  S <- seq(2,2*M,2)
   obj_val <- x[M,] + h*S
   return(obj_val)
 }

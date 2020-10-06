@@ -137,17 +137,19 @@ r_nonsep <- function(y, A){
   if(is.vector(y))
     y <- matrix(y,ncol=1)
   nVar <- nrow(y)
+  # nominator <- 0
   nominator <- colSums(y)
   for(varIndex in 1:nVar){
     subsum <- 0
-    if((A-2) > 0){
+    if((A-2) >= 0){
       k <- 0:(A-2)
       jk <- ((varIndex+k) %% nVar)+1
       subsum <- abs(pracma::repmat(y[varIndex,],A-1,1)-y[jk,])
       subsum <- colSums(subsum)
       # for(k in 0:(A-2)){
-      #   subsum <- subsum + abs(y[varIndex,]-y[1+((varIndex+k)%%nVar),])
+      #   subsum <- subsum +abs(y[varIndex,]-y[1+((varIndex+k)%%nVar),])
       # }
+      # subsum <- subsum + y[varIndex,]
     }
     nominator <- nominator + subsum
   }
