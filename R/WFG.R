@@ -454,21 +454,28 @@ WFG8 <- function(individual, nObj,k = nObj-1){
   individual1 <- individual
   x <- pracma::zeros(M,nIndividual)
   h <- x
+
   # first transformation
   individual1[1:k, ] <- individual[1:k, ]
   for(i in (k+1):n){
-    individual1[i, ] <- s_linear(individual[i, ],0.35)
+    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[1:(i-1), ,drop=F],rep(1,(n-i))),0.98/49.98,0.02,50)
+  }
+
+  # second transformation
+  individual2[1:k, ] <- individual1[1:k, ]
+  for(i in (k+1):n){
+    individual2[i, ] <- s_linear(individual1[i, ],0.35)
   }
 
 
-  # second transform
+  # third transform
   for ( i in 1:(M-1)){
     rsumMinIndex <- (i-1)*k/(M-1)+1
     rsumMaxIndex <- (i*k)/(M-1)
 
     weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
 
-    x[i, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+    x[i, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   }
 
   rsumMinIndex <- k+1
@@ -476,7 +483,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
 
   weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
 
-  x[M, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+  x[M, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   # shape function
   for(i in 1:M){
     h[i, ] <- shape_concave(M,i,x)
@@ -534,6 +541,68 @@ WFG9 <- function(individual, nObj,k = nObj-1){
 
   x[M, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],l)
 
+  # shape function
+  for(i in 1:M){
+    h[i, ] <- shape_concave(M,i,x)
+  }
+  S <- seq(2,2*M,2)
+
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
+  return(obj_val)
+}
+
+
+WFG9dum <- function(individual, nObj,k = nObj-1){
+  M <- nObj
+  if(is.vector(individual))
+    individual <- matrix(individual,ncol=1)
+  nIndividual <- ncol(individual)
+  n <- nrow(individual) # number of variables
+  l <- n-k
+  individual <- individual/seq(2,2*n,2)
+  individual1 <- individual
+  x <- pracma::zeros(M,nIndividual)
+  h <- x
+  # first transformation
+  for(i in 1:(n-1)){
+    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[(i+1):n, ,drop=F],rep(1,(n-i))),0.98/49.98,0.02,50)
+  }
+  individual1[n, ] <- (individual[n, ])
+
+  # second transform
+  for ( i in 1:(k)){
+    individual1[i,] <- s_deceptive(individual1[i, ],0.35,0.001,0.05)
+  }
+  for ( i in (k+1):(n)){
+    individual1[i,] <- s_multi(individual1[i, ],30,95,0.35)
+  }
+  # third transform
+  # for(i in 1:(M-1)){
+  #   rsumMinIndex <- (i-1)*k/(M-1)+1
+  #   rsumMaxIndex <- (i*k)/(M-1)
+  #
+  #   x[i, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],k/(M-1))
+  # }
+  # rsumMinIndex <- k+1
+  # rsumMaxIndex <- n
+  #
+  # x[M, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],l)
+
+  for ( i in 1:(M-1)){
+    rsumMinIndex <- (i-1)*k/(M-1)+1
+    rsumMaxIndex <- (i*k)/(M-1)
+
+    weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+
+    x[i, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+  }
+
+  rsumMinIndex <- k+1
+  rsumMaxIndex <- n
+
+  weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+
+  x[M, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   # shape function
   for(i in 1:M){
     h[i, ] <- shape_concave(M,i,x)
