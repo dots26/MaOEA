@@ -255,7 +255,7 @@ WFG4 <- function(individual, nObj, k = nObj-1){
   }
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -308,7 +308,7 @@ WFG5 <- function(individual, nObj,k = nObj-1){
   }
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -360,7 +360,7 @@ WFG6 <- function(individual, nObj,k = nObj-1){
   }
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -428,7 +428,7 @@ WFG7 <- function(individual, nObj,k = nObj-1){
   S <- seq(2,2*M,2)
 
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -483,7 +483,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
   }
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -511,19 +511,17 @@ WFG9 <- function(individual, nObj,k = nObj-1){
   h <- x
   # first transformation
   for(i in 1:(n-1)){
-    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[(i+1):n, ],rep(1,(n-i))),0.98/49.98,0.02,50)
+    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[(i+1):n, ,drop=F],rep(1,(n-i))),0.98/49.98,0.02,50)
   }
   individual1[n, ] <- (individual[n, ])
 
-
   # second transform
   for ( i in 1:(k)){
-    s_deceptive(individual1[i, ],0.35,0.001,0.05)
+    individual1[i,] <- s_deceptive(individual1[i, ],0.35,0.001,0.05)
   }
   for ( i in (k+1):(n)){
-    s_multi(individual1[i, ],30,95,0.35)
+    individual1[i,] <- s_multi(individual1[i, ],30,95,0.35)
   }
-
   # third transform
   for(i in 1:(M-1)){
     rsumMinIndex <- (i-1)*k/(M-1)+1
@@ -535,12 +533,13 @@ WFG9 <- function(individual, nObj,k = nObj-1){
   rsumMaxIndex <- n
 
   x[M, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],l)
+
   # shape function
   for(i in 1:M){
     h[i, ] <- shape_concave(M,i,x)
   }
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M, ] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
