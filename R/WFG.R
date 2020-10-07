@@ -452,6 +452,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
   l <- n-k
   individual <- individual/seq(2,2*n,2)
   individual1 <- individual
+  individual2 <- individual
   x <- pracma::zeros(M,nIndividual)
   h <- x
 
