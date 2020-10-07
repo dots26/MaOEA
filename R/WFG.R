@@ -458,7 +458,7 @@ WFG8 <- function(individual, nObj,k = nObj-1){
   # first transformation
   individual1[1:k, ] <- individual[1:k, ]
   for(i in (k+1):n){
-    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[1:(i-1), ,drop=F],rep(1,(n-i))),0.98/49.98,0.02,50)
+    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[1:(i-1), ,drop=F],rep(1,(i-1))),0.98/49.98,0.02,50)
   }
 
   # second transformation
