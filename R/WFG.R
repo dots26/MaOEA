@@ -71,7 +71,7 @@ WFG1 <- function(individual, nObj,k = nObj-1){
 
   S <- seq(2,2*M,2)
 
-  obj_val <- x[M,] + h*S
+  obj_val  <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -108,11 +108,12 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   for(i in (k+1):n){
     individual1[i, ] <- s_linear(individual[i, ],0.35)
   }
-
   # second transform
   individual2[1:k, ] <- individual1[1:k, ]
+  for(indIndex in 1:nIndividual)
   for(i in (k+1):(k+ (l/2) ) ){
-    individual2[i, ] <- r_nonsep(c(individual1[k+2*(i-k)-1, ],individual1[k+2*(i-k), ]),2)
+    individual2[i, indIndex] <- r_nonsep(c(individual1[k+2*(i-k)-1,indIndex ],
+                                           individual1[k+2*(i-k),indIndex ]),2)
   }
 
   # third transform
@@ -136,7 +137,7 @@ WFG2 <- function(individual, nObj,k = nObj-1){
   h[M, ] <- shape_disconnected(M,x,1,1,5)
 
   S <- seq(2,2*M,2)
-  obj_val <- x[M,] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -170,14 +171,18 @@ WFG3 <- function(individual, nObj,k = nObj-1){
   individual <- individual/seq(2,2*n,2)
   # first transformation
   individual1[1:k, ] <- individual[1:k, ]
-  for(i in (k+1):n){
-    individual1[i, ] <- s_linear(individual[i, ],0.35)
+
+  for(indIndex in 1:nIndividual)
+    for(i in (k+1):n){
+    individual1[i, indIndex] <- s_linear(individual[i, indIndex],0.35)
   }
 
   # second transform
   individual2[1:k, ] <- individual1[1:k, ]
-  for(i in (k+1):(k+ (l/2) ) ){
-    individual2[i, ] <- r_nonsep(c(individual1[k+2*(i-k)-1, ],individual1[k+2*(i-k), ]),2)
+  for(indIndex in 1:nIndividual)
+    for(i in (k+1):(k+ (l/2) ) ){
+    individual2[i, indIndex] <- r_nonsep(c(individual1[k+2*(i-k)-1, indIndex],
+                                           individual1[k+2*(i-k), indIndex]),2)
   }
 
   # third transform
@@ -202,7 +207,7 @@ WFG3 <- function(individual, nObj,k = nObj-1){
   h[M, ] <- shape_linear(M,M,x)
 
   S <- seq(2,2*M,2)
-  obj_val <- x[M,] + h*S
+  obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
   return(obj_val)
 }
 
@@ -553,61 +558,65 @@ WFG9 <- function(individual, nObj,k = nObj-1){
 }
 
 
-WFG9dum <- function(individual, nObj,k = nObj-1){
+WFG1dum <- function(individual, nObj,k = nObj-1){
   M <- nObj
   if(is.vector(individual))
     individual <- matrix(individual,ncol=1)
   nIndividual <- ncol(individual)
   n <- nrow(individual) # number of variables
   l <- n-k
-  individual <- individual/seq(2,2*n,2)
+
   individual1 <- individual
+  individual2 <- individual
+  individual3 <- individual
   x <- pracma::zeros(M,nIndividual)
   h <- x
+  individual <- individual/seq(2,2*n,2)
   # first transformation
-  for(i in 1:(n-1)){
-    individual1[i, ] <- b_param(individual[i, ],r_sum(individual[(i+1):n, ,drop=F],rep(1,(n-i))),0.98/49.98,0.02,50)
+  individual1[1:k, ] <- individual[1:k, ]
+  for(i in (k+1):n){
+    individual1[i, ] <- s_linear(individual[i, ],0.35)
   }
-  individual1[n, ] <- (individual[n, ])
 
   # second transform
-  for ( i in 1:(k)){
-    individual1[i,] <- s_deceptive(individual1[i, ],0.35,0.001,0.05)
+  for(i in 1:k){
+    individual2[i, ] <- individual1[i, ]
   }
-  for ( i in (k+1):(n)){
-    individual1[i,] <- s_multi(individual1[i, ],30,95,0.35)
+  for(i in (k+1):n){
+    individual2[i, ] <- b_flat(individual1[i, ],0.8,0.75,0.85)
   }
-  # third transform
-  # for(i in 1:(M-1)){
-  #   rsumMinIndex <- (i-1)*k/(M-1)+1
-  #   rsumMaxIndex <- (i*k)/(M-1)
-  #
-  #   x[i, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],k/(M-1))
-  # }
-  # rsumMinIndex <- k+1
-  # rsumMaxIndex <- n
-  #
-  # x[M, ] <- r_nonsep(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],l)
 
-  for ( i in 1:(M-1)){
+  # third transform
+  for(i in 1:n){
+    individual3[i, ] <- b_poly(individual2[i, ],0.02)
+  }
+
+  # fourth transform
+  for(i in 1:(M-1)){
     rsumMinIndex <- (i-1)*k/(M-1)+1
     rsumMaxIndex <- (i*k)/(M-1)
+    weightMin <- 2*rsumMinIndex
+    weightMax <- 2*rsumMaxIndex
 
-    weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+    weightVector <- seq(weightMin,weightMax,2)
 
-    x[i, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+    x[i, ] <- r_sum(individual3[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
   }
-
   rsumMinIndex <- k+1
   rsumMaxIndex <- n
+  weightMin <- 2*rsumMinIndex
+  weightMax <- 2*rsumMaxIndex
 
-  weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
+  weightVector <- seq(weightMin,weightMax,2)
 
-  x[M, ] <- r_sum(individual1[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+  x[M, ] <- r_sum(individual3[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
+
   # shape function
-  for(i in 1:M){
-    h[i, ] <- shape_concave(M,i,x)
+  for(i in 1:(M-1)){
+    h[i, ] <- shape_convex(M,i,x)
   }
+  h[M, ] <- shape_mixed(M,x,1,5)
+
   S <- seq(2,2*M,2)
 
   obj_val <- pracma::repmat(matrix(x[M, ],nrow=1),M,1) + h*S
