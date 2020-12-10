@@ -17,6 +17,8 @@ NSGA3(population, fun, nObjective, control = list(), ...)
 \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
+\code{crossoverMethod} Either "sbx" (simulated binary) or "uniform"
+\code{mutationMethod} Either "polymut" (polynomial mutation), "truncgauss" (truncated gaussian), "ortho" (orthogonal sampling),  "mirror" (mirrored orthogonal sampling)
 \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.}
 
