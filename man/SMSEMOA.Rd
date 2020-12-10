@@ -34,7 +34,7 @@ SMSEMOA(
 \code{nDirection} Used in "ortho". Number of orthogonal search direction used.
 \code{checkMirror} If TRUE, and "ortho" is used, then the mirrorred mutation is checked for one additional evaluation for each offspring.
 \code{scaleinput} Whether the input should be scaled to 0-1.
-\code{stepsize} Stepsize for gaussian mutation. Default to 0.3.}
+\code{stepsize} Stepsize for gaussian mutation. Default to \code{rep(1,nVar)}.}
 
 \item{...}{Further arguments to be passed to \code{fun}}
 }

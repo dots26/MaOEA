@@ -18,7 +18,7 @@
 #' \code{nDirection} Used in "ortho". Number of orthogonal search direction used.
 #' \code{checkMirror} If TRUE, and "ortho" is used, then the mirrorred mutation is checked for one additional evaluation for each offspring.
 #' \code{scaleinput} Whether the input should be scaled to 0-1.
-#' \code{stepsize} Stepsize for gaussian mutation. Default to 0.3.
+#' \code{stepsize} Stepsize for gaussian mutation. Default to \code{rep(1,nVar)}.
 #' @return Returns a list for the next generation
 #' \code{population} The new generation. Column major, each row contain 1 set of objectives.
 #' \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adaptive schemes.
@@ -77,7 +77,7 @@ SMSEMOA <- function(population,fun,
               hypervolumeMethod='exact',
               hypervolumeMethodParam=list(),
               referencePoint = NULL,
-              stepsize=0.3,
+              stepsize=1,
               scaleinput=T,
               lower=rep(0,chromosomeLength),
               upper=rep(1,chromosomeLength),
