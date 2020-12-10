@@ -7,6 +7,8 @@
 #' \code{weightVector} NSGA-III require a set of reference points defined a priori. The reference can be any point. If not supplied, 5*nObjective points are generated from a sobol sequence. Column major: nrow = nObjective, ncol = number of reference points
 #' \code{crossoverProbability} The probability of doing crossover. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1.
 #' \code{mutationProbability} The probability of doing mutation. Should be between 0-1. Negative value will behave like a zero, and values larger than 1 will behave like 1. Default to 1
+#' \code{crossoverMethod} Either "sbx" (simulated binary) or "uniform"
+#' \code{mutationMethod} Either "polymut" (polynomial mutation), "truncgauss" (truncated gaussian), "ortho" (orthogonal sampling),  "mirror" (mirrored orthogonal sampling)
 #' \code{mutationDistribution} The distribution index for polynomial mutation. Larger index makes the distribution sharper around the parent.
 #' \code{crossoverDistribution} The distribution index for SBX. Larger index makes the distribution sharper around each parent.
 #' @param ... Further arguments to be passed to \code{fun}
@@ -35,8 +37,14 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
               mutationProbability=1,
               mutationDistribution=20,
               crossoverDistribution=30,
-              weightVector=NULL)
+              weightVector=NULL,
+              crossoverMethod=c("sbx","uniform"),
+              mutationMethod=c("truncgauss","poly","ortho"))
   con[names(control)] <- control
+  control <- con
+
+  crossovermethod<- control$crossoverMethod[1]
+  mutationmethod <- control$mutationMethod[1]
 
   if(identical(fun,DTLZ4))
     message('DTLZ4 may suffer from floating-point inaccuracy.')
@@ -73,11 +81,43 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
     parentCount<- parentCount +2
   }
 
-  #recombination
-  offspring <- nsga2R::boundedSBXover(t(population),rep(0,chromosomeLength),rep(1,chromosomeLength),con$crossoverProbability,con$crossoverDistribution)
+  #crossover
+  if(crossovermethod=="sbx"){
+    offspring <- nsga2R::boundedSBXover(parent_chromosome = t(population),
+                                        lowerBounds = lbound,
+                                        upperBounds = ubound,
+                                        cprob = con$crossoverProbability,
+                                        mu = con$crossoverDistribution)
+  }else{
+    offspring <- uniformXover(parent_chromosome = t(population),
+                              lowerBounds = lbound,
+                              upperBounds =  ubound,
+                              cprob = con$crossoverProbability)
+  }
 
   #Mutation
-  offspring <- nsga2R::boundedPolyMutation(offspring,rep(0,chromosomeLength),rep(1,chromosomeLength),con$mutationProbability,con$mutationDistribution)
+  if(mutationmethod=="poly"){
+    offspring <- nsga2R::boundedPolyMutation(parent_chromosome = offspring,
+                                             lowerBounds = lbound,
+                                             upperBounds = ubound,
+                                             mprob = con$mutationProbability,
+                                             mum = con$mutationDistribution)
+  }else if(mutationmethod=="ortho"){
+    offspring <- orthogonal_sampling_mutation(parent_chromosome = offspring,
+                                              lowerBounds = lbound,
+                                              upperBounds =  ubound,
+                                              mprob = eff_pm,
+                                              sigma = eff_stepsize,
+                                              nOffspring = 1,
+                                              nDirection = nDirection)
+  }else{
+    offspring <- truncnormMutation(parent_chromosome = offspring,
+                                   lowerBounds = lbound,
+                                   upperBounds =  ubound,
+                                   mprob = eff_pm,
+                                   sigma = eff_stepsize)
+  }
+  # offspring <- nsga2R::boundedPolyMutation(offspring,rep(0,chromosomeLength),rep(1,chromosomeLength),con$mutationProbability,con$mutationDistribution)
   offspring <- t(offspring)
 
 

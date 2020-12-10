@@ -4,7 +4,14 @@
 \alias{SMSEMOA}
 \title{S-Metric Selection EMOA}
 \usage{
-SMSEMOA(population, fun, nObjective, control = list(), ...)
+SMSEMOA(
+  population,
+  fun,
+  nObjective = nrow(populationObjective),
+  populationObjective = NULL,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{population}{The parent generation. One individual per column.}
@@ -21,7 +28,13 @@ SMSEMOA(population, fun, nObjective, control = list(), ...)
 \code{ref_multiplier} In case that a reference point is not supplied, the reference is set as a multiply of the current nadir. Default to 1.1.
 \code{lbound} A vector containing the lower bound for each gene
 \code{ubound} A vector containing the upper bound for each gene
-\code{scaleinput} Whether the input should be scaled to 0-1.}
+\code{crossoverMethod} Either "sbx" (simulated binary) or "uniform"
+\code{mutationMethod} Either "polymut" (polynomial mutation), "truncgauss" (truncated gaussian), "ortho" (orthogonal sampling)
+\code{searchDir} The search direction used for orthogonal sampling. Will be orthonormalized using the Gram-Schmidt process.
+\code{nDirection} Used in "ortho". Number of orthogonal search direction used.
+\code{checkMirror} If TRUE, and "ortho" is used, then the mirrorred mutation is checked for one additional evaluation for each offspring.
+\code{scaleinput} Whether the input should be scaled to 0-1.
+\code{stepsize} Stepsize for gaussian mutation. Default to 0.3.}
 
 \item{...}{Further arguments to be passed to \code{fun}}
 }
@@ -30,6 +43,7 @@ Returns a list for the next generation
 \code{population} The new generation. Column major, each row contain 1 set of objectives.
 \code{successfulOffspring} Binary, 1 if the offspring is kept in the new generation. Used in some adaptive schemes.
 \code{populationObjective} The new generation's objective values.
+\code{searchDir} The search direction used. Not NULL if orthogonal sampling is used. Can be used to do weighted optimization.
 }
 \description{
 Do an iteration of  S-Metric Selection (SMS)-EMOA. The variation used is simulated binary crossover (SBX) and polynomial mutation.
@@ -48,8 +62,14 @@ numpyready <- reticulate::py_module_available('numpy')
 pygmoready <- reticulate::py_module_available('pygmo')
 py_module_ready <- numpyready && pygmoready
 if(py_module_ready) # prevent error on testing the example
-SMSEMOA(population,WFG6,nObjective,list(crossoverProbability = crossoverProbability,
-                                          mutationProbability = mutationProbability),nObjective)
+SMSEMOA(population = population,
+        fun = WFG6,
+        nObjective = nObjective,
+        populationObjective = NULL,
+        control = list(crossoverProbability = crossoverProbability,
+                       mutationProbability = mutationProbability,
+                       mutationMethod = "poly"),
+        nObj=nObjective)
 }
 }
 \references{
