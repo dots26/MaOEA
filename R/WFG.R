@@ -197,7 +197,8 @@ WFG3 <- function(individual, nObj,k = nObj-1){
     weightVector <- rep(1,rsumMaxIndex-rsumMinIndex+1)
 
     x[i, ] <- r_sum(individual2[rsumMinIndex:rsumMaxIndex,,drop=F],weightVector)
-    x[i, ] <- ((x[i, ]-0.5) * x[M,]) +0.5
+    if(i>1) x[i, ] <- ((x[i, ]-0.5) * x[M,]) +0.5
+    if(i==1) x[i, ] <- x[i, ]
   }
 
   # shape function
