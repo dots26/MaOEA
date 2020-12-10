@@ -60,7 +60,7 @@ truncnormMutation <- function(parent_chromosome,
                                                   a=lowerBounds[i],
                                                   b=upperBounds[i],
                                                   mean=thisoffspring[i],
-                                                  sd=sigma)
+                                                  sd=sigma[i])
       }
     }
     offspring <- rbind(offspring,matrix(thisoffspring,nrow=1))
