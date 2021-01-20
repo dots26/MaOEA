@@ -42,7 +42,7 @@ LeastContributorExact <- function(populationObjective,reference=NULL,ref_multipl
   return(leastContributor+1)
 }
 
-LeastContributorBFapprox <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
+LeastContributorapprox <- function(populationObjective,reference=NULL,ref_multiplier=1.1){
   if(is.vector(populationObjective))
     populationObjective <- matrix(populationObjective)
 
@@ -106,7 +106,8 @@ LeastContributionApprox <- function(populationObjective,reference=NULL,ref_multi
   }
 
   hv <- pkg.globals$pygmo$hypervolume(t(populationObjective))
-  contribution <- hv$contributions(reference)
+  hv_cont_alg <- pkg.globals$pygmo$bf_approx(TRUE,1L,0.01,0.05)
+  contribution <- hv$contributions(reference,hv_cont_alg)
 
   return(min(contribution))
 }
