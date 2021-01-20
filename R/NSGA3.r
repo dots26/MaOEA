@@ -38,11 +38,17 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
               mutationDistribution=20,
               crossoverDistribution=30,
               weightVector=NULL,
+              stepsize=1,
+              lbound = rep(0,nrow(population)),
+              ubound = rep(1,nrow(population)),
               crossoverMethod=c("sbx","uniform"),
               mutationMethod=c("truncgauss","poly","ortho"))
   con[names(control)] <- control
   control <- con
 
+  eff_stepsize = con$stepsize
+  lbound = con$lbound
+  ubound = con$ubound
   crossovermethod<- control$crossoverMethod[1]
   mutationmethod <- control$mutationMethod[1]
 
@@ -106,7 +112,7 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
     offspring <- orthogonal_sampling_mutation(parent_chromosome = offspring,
                                               lowerBounds = lbound,
                                               upperBounds =  ubound,
-                                              mprob = eff_pm,
+                                              mprob = con$mutationProbability,
                                               sigma = eff_stepsize,
                                               nOffspring = 1,
                                               nDirection = nDirection)
@@ -114,7 +120,7 @@ NSGA3 <- function(population,fun,nObjective,control=list(),...){
     offspring <- truncnormMutation(parent_chromosome = offspring,
                                    lowerBounds = lbound,
                                    upperBounds =  ubound,
-                                   mprob = eff_pm,
+                                   mprob = con$mutationProbability,
                                    sigma = eff_stepsize)
   }
   # offspring <- nsga2R::boundedPolyMutation(offspring,rep(0,chromosomeLength),rep(1,chromosomeLength),con$mutationProbability,con$mutationDistribution)
