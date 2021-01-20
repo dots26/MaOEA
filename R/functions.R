@@ -85,26 +85,26 @@ DTLZ1 <- function(individual,nObj){
   popObj <- NULL
 
   #for (popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
-    gSigma <- 0
-    for (subIndex in nObj:nVar) {
-      gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
-    }
-    g <- 100*(nVar- nObj + 1 + gSigma)
+  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
+  gSigma <- 0
+  for (subIndex in nObj:nVar) {
+    gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
+  }
+  g <- 100*(nVar- nObj + 1 + gSigma)
 
-    for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,] <- 0.5* (1+g)
+  for(objectiveIndex in 1:nObj){
+    obj[objectiveIndex,] <- 0.5* (1+g)
 
-      if( (nObj-objectiveIndex) > 0){
-        for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,] <- obj[objectiveIndex,] * individual[cosIndex,]
-        }
+    if( (nObj-objectiveIndex) > 0){
+      for(cosIndex in 1:(nObj-objectiveIndex)){
+        obj[objectiveIndex,] <- obj[objectiveIndex,] * individual[cosIndex,]
       }
-      if(objectiveIndex > 1)
-        obj[objectiveIndex,] <- obj[objectiveIndex,] *  (1 - individual[nObj - objectiveIndex + 1,])
     }
-    popObj <- cbind(popObj,obj)
-#  }
+    if(objectiveIndex > 1)
+      obj[objectiveIndex,] <- obj[objectiveIndex,] *  (1 - individual[nObj - objectiveIndex + 1,])
+  }
+  popObj <- cbind(popObj,obj)
+  #  }
 
   return(popObj)
 }
@@ -129,23 +129,23 @@ DTLZ2 <- function(individual,nObj){
   popObj <- NULL
 
   # for (popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
-    g <- 0
-    for (subIndex in nObj:nVar) {
-      g <- g + (individual[subIndex,] - 0.5)^2
-    }
-    for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,] <- (1+g)
+  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
+  g <- 0
+  for (subIndex in nObj:nVar) {
+    g <- g + (individual[subIndex,] - 0.5)^2
+  }
+  for(objectiveIndex in 1:nObj){
+    obj[objectiveIndex,] <- (1+g)
 
-      if( (nObj-objectiveIndex) > 0){
-        for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
-        }
+    if( (nObj-objectiveIndex) > 0){
+      for(cosIndex in 1:(nObj-objectiveIndex)){
+        obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
       }
-      if(objectiveIndex > 1)
-        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
-    popObj <- cbind(popObj,obj)
+    if(objectiveIndex > 1)
+      obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
+  }
+  popObj <- cbind(popObj,obj)
   # }
   return(popObj)
 }
@@ -171,25 +171,25 @@ DTLZ3 <- function(individual,nObj){
   popObj <- NULL
 
   #for(popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
-    gSigma <- 0
-    for (subIndex in nObj:nVar) {
-      gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
-    }
-    g <- 100*(nVar- nObj + 1 + gSigma)
-    for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,] <- (1+g)
+  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
+  gSigma <- 0
+  for (subIndex in nObj:nVar) {
+    gSigma <- gSigma + ((individual[subIndex,] - 0.5)^2 - cos(20*pi*((individual[subIndex,] - 0.5))))
+  }
+  g <- 100*(nVar- nObj + 1 + gSigma)
+  for(objectiveIndex in 1:nObj){
+    obj[objectiveIndex,] <- (1+g)
 
-      if( (nObj-objectiveIndex) > 0){
-        for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
-        }
+    if( (nObj-objectiveIndex) > 0){
+      for(cosIndex in 1:(nObj-objectiveIndex)){
+        obj[objectiveIndex,] <- obj[objectiveIndex,] * cos(individual[cosIndex,] * pi / 2)
       }
-      if(objectiveIndex > 1)
-        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
-    popObj <- cbind(popObj,obj)
- # }
+    if(objectiveIndex > 1)
+      obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
+  }
+  popObj <- cbind(popObj,obj)
+  # }
   return(popObj)
 }
 
@@ -214,23 +214,23 @@ DTLZ4 <- function(individual,nObj,alpha=100){
   popObj <- NULL
 
   #for(popIndex in 1:popSize){
-    obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
-    g <- 0
-    for (subIndex in nObj:nVar) {
-      g <- g + (individual[subIndex,] - 0.5)^2
-    }
-    for(objectiveIndex in 1:nObj){
-      obj[objectiveIndex,] <- (1+g)
+  obj <- matrix(rep(1,nObj),nrow = nObj,ncol = popSize)
+  g <- 0
+  for (subIndex in nObj:nVar) {
+    g <- g + (individual[subIndex,] - 0.5)^2
+  }
+  for(objectiveIndex in 1:nObj){
+    obj[objectiveIndex,] <- (1+g)
 
-      if( (nObj-objectiveIndex) > 0){
-        for(cosIndex in 1:(nObj-objectiveIndex)){
-          obj[objectiveIndex,] <- (obj[objectiveIndex,]) * cos((individual[cosIndex,]^alpha) * pi / 2)
-        }
+    if( (nObj-objectiveIndex) > 0){
+      for(cosIndex in 1:(nObj-objectiveIndex)){
+        obj[objectiveIndex,] <- (obj[objectiveIndex,]) * cos((individual[cosIndex,]^alpha) * pi / 2)
       }
-      if(objectiveIndex > 1)
-        obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
     }
-    popObj <- cbind(popObj,obj)
+    if(objectiveIndex > 1)
+      obj[objectiveIndex,] <- obj[objectiveIndex,] *  sin(individual[nObj - objectiveIndex + 1,] * pi / 2)
+  }
+  popObj <- cbind(popObj,obj)
   #}
   return(popObj)
 }
@@ -587,13 +587,19 @@ GetLeastContribution<- function(populationObjective,reference=NULL,method="exact
 #' }
 #' @export
 GetHVContribution<- function(populationObjective,reference=NULL,method="exact",ref_multiplier=1.1){
-  #  if(method=="exact"){
-  if (!pkg.globals$have_pygmo)
-    pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
-  if (!pkg.globals$have_pygmo)
-    stop("HV computation requires PyGMO")
-
-  hypervolumeContribution <- HVContrib_WFG(populationObjective,reference,ref_multiplier=ref_multiplier)
+  if(method=="exact"){
+    if (!pkg.globals$have_pygmo)
+      pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+    if (!pkg.globals$have_pygmo)
+      stop("HV computation requires PyGMO")
+    hypervolumeContribution <- HVContrib_WFG(populationObjective,reference,ref_multiplier=ref_multiplier)
+  }else{
+    if (!pkg.globals$have_pygmo)
+      pkg.globals$have_pygmo <- reticulate::py_module_available("pygmo")
+    if (!pkg.globals$have_pygmo)
+      stop("HV computation requires PyGMO")
+    hypervolumeContribution <- HVContrib_WFG(populationObjective,reference,ref_multiplier=ref_multiplier)
+  }
 
   return(hypervolumeContribution)
 }
@@ -636,7 +642,11 @@ GetHypervolume <- function(objective,reference=NULL,method="exact",ref_multiplie
     }
   }
   if(method=="approx"){
-    hypervolume <- HypervolumeBFapprox(objective,reference)
+    if(is.null(reference)){
+      hypervolume <- HypervolumeBFapprox(objective,ref_multiplier=ref_multiplier)
+    }else{
+      hypervolume <- HypervolumeBFapprox(objective,reference)
+    }
   }
   return(hypervolume)
 }
