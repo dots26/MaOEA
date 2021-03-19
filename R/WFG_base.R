@@ -118,7 +118,7 @@ s_deceptive <- function(y,A,B,C){
 }
 
 s_multi <- function(y,A,B,C){
-  first_term <- cos((4*A)+2*pi*(0.5-(abs(y-C)/(2*(floor(C-y)+C)))))
+  first_term <- cos(((4*A)+2)*pi*(0.5-(abs(y-C)/(2*(floor(C-y)+C)))))
   second_term <- 4*B * (abs(y-C)/(2*(floor(C-y)+C))) * (abs(y-C)/(2*(floor(C-y)+C)))
   nominator <- 1 + first_term + second_term
   denominator <- B + 2
@@ -137,20 +137,20 @@ r_nonsep <- function(y, A){
   if(is.vector(y))
     y <- matrix(y,ncol=1)
   nVar <- nrow(y)
-  # nominator <- 0
+  nominator <- 0
   nominator <- colSums(y)
-  for(varIndex in 1:nVar){
+  for(j in 1:nVar){
     subsum <- 0
     if((A-2) >= 0){
       k <- 0:(A-2)
-      jk <- ((varIndex+k) %% nVar)+1
-      subsum <- abs(pracma::repmat(y[varIndex,],A-1,1)-y[jk,])
+      jk <- ((j+k) %% nVar)+1
+      subsum <- abs(pracma::repmat(y[j,],A-1,1)-y[jk,])
       subsum <- colSums(subsum)
       # for(k in 0:(A-2)){
-      #   subsum <- subsum +abs(y[varIndex,]-y[1+((varIndex+k)%%nVar),])
+      #   subsum <- subsum +abs(y[j,]-y[1+((j+k)%%nVar),])
       # }
-      # subsum <- subsum + y[varIndex,]
     }
+    # subsum <- subsum + y[j,]
     nominator <- nominator + subsum
   }
   denominator <- nVar/A * ceiling(A/2) * (1+ 2*A - 2*ceiling(A/2))
