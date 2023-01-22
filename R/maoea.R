@@ -79,6 +79,9 @@ optimMaOEA <- function(x=NULL,
   for(i in 1:nGeneration){
     newGeneration <- solver(x,fun,nObjective,con,...)
     x <- newGeneration$population
+    if(identical(solver, MOCMAES) || identical(solver, SMOCMAES)){
+      x <- newGeneration$new_generation  
+    }
     y <- newGeneration$objective
   }
 
